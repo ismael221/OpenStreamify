@@ -25,6 +25,18 @@
         </tbody>
     </table>
 
+    <div>
+        <h2>Análises: </h2>
+
+        <h2>Enviar analise:</h2>
+        <form th:action="@{/adicionarAnalise}" method="POST">
+            <p>Id: <input type="text" th:field="${analise.id}"></p>
+            <p>Filme: <input type="text" th:field="${analise.filme}"></p>
+            <p>Analise: <input type="text" th:field="${analise.analise}"></p>
+            <p>Nota: <input type="text" th:field="${analise.nota}"></p>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
     <div th:insert="footerNav.html :: footer">
     </div>
 </body>

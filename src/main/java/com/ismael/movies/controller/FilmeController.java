@@ -1,5 +1,6 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.model.Analise;
 import com.ismael.movies.model.Filme;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +52,8 @@ public class FilmeController {
         {
                 for (Filme filme:filmes){
                         if (filme.getId() == id){
-                                model.addAttribute("filme",filme);
+                                model.addAttribute("filme",filme );
+                                model.addAttribute("analise",new Analise());
                                 return "detalhes";
                         }
                 }
