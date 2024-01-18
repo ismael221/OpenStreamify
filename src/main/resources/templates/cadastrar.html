@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Filme</title>
+</head>
+<body>
+    <h1>Cadastre seu filme</h1>
+
+    <div>
+        <form th:action="@{/cadastrarFilme}" method="POST" >
+            <p>Id: <input type="text" th:field="${filme.id}"></p>
+            <p>Titulo: <input type="text" th:field="${filme.titulo}"></p>
+            <p>Sinopse: <input type="text" th:field="${filme.sinopse}"></p>
+            <p>Genero: <input type="text" th:field="${filme.genero}"></p>
+            <p>Ano Lançamento: <input type="text" th:field="${filme.anoLancamento}" ></p>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <div th:insert="footerNav.html :: footer">
+    </div>
+</body>
+</html>

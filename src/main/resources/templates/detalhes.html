@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes</title>
+</head>
+<body>
+    <h1>Detalhes dos filmes</h1>
+    <table>
+        <thead>
+        <th>ID</th>
+        <th>Titulo</th>
+        <th>Sinopse</th>
+        <th>Genero</th>
+        <th>Ano lançamento</th>
+        </thead>
+        <tbody>
+        <tr >
+            <td th:text="${filme.id}" />
+            <td th:text="${filme.titulo}" />
+            <td th:text="${filme.sinopse}" />
+            <td th:text="${filme.genero}" />
+            <td th:text="${filme.anoLancamento}" />
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:insert="footerNav.html :: footer">
+    </div>
+</body>
+</html>

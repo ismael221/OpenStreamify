@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de filmes</title>
+</head>
+<body>
+  <h1>Lista de Filmes</h1>
+    <div>
+        <ul th:each="filme: ${filmes}">
+            <a th:href="@{/detalhes/{id}(id=${filme.id})}"><li th:text="${filme.titulo}" /></a>
+        </ul>
+    </div>
+    <div th:insert="footerNav.html :: footer">
+
+    </div>
+</body>
+</html>
