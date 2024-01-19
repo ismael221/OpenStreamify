@@ -8,7 +8,7 @@
     <h1>Cadastre seu filme</h1>
 
     <div>
-        <form th:action="@{/cadastrarFilme}" method="POST" >
+        <form th:action="@{/cadastrarFilme}" method="POST" th:object="${filme}">
             <p>Id: <input type="text" th:field="${filme.id}"></p>
             <p>Titulo: <input type="text" th:field="${filme.titulo}"></p>
             <p>Sinopse: <input type="text" th:field="${filme.sinopse}"></p>

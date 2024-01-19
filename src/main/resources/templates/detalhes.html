@@ -5,37 +5,35 @@
     <title>Detalhes</title>
 </head>
 <body>
-    <h1>Detalhes dos filmes</h1>
-    <table>
-        <thead>
-        <th>ID</th>
-        <th>Titulo</th>
-        <th>Sinopse</th>
-        <th>Genero</th>
-        <th>Ano lançamento</th>
-        </thead>
-        <tbody>
-        <tr >
-            <td th:text="${filme.id}" />
-            <td th:text="${filme.titulo}" />
-            <td th:text="${filme.sinopse}" />
-            <td th:text="${filme.genero}" />
-            <td th:text="${filme.anoLancamento}" />
-        </tr>
-        </tbody>
-    </table>
-
     <div>
-        <h2>Análises: </h2>
 
         <h2>Enviar analise:</h2>
-        <form th:action="@{/adicionarAnalise}" method="POST">
-            <p>Id: <input type="text" th:field="${analise.id}"></p>
-            <p>Filme: <input type="text" th:field="${analise.filme}"></p>
+        <form th:action="@{/cadastrarAnalise}"  th:object="${analise}" method="POST">
+            <input type="text" th:field="${filme.id}" hidden>
+            <input type="text" th:field="${filme.titulo}" hidden>
             <p>Analise: <input type="text" th:field="${analise.analise}"></p>
             <p>Nota: <input type="text" th:field="${analise.nota}"></p>
             <button type="submit">Enviar</button>
         </form>
+
+        <h2>Análises: </h2>
+
+        <table>
+            <thead>
+            <th>ID</th>
+            <th>Filme</th>
+            <th>Analise</th>
+            <th>Nota</th>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${analises}">
+                <td th:text="${a.id}"/>
+                <td th:text="${a.filme}"  />
+                <td th:text="${a.analise}" />
+                <td th:text="${a.nota}" />
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div th:insert="footerNav.html :: footer">
     </div>

@@ -7,9 +7,27 @@
 <body>
   <h1>Lista de Filmes</h1>
     <div>
-        <ul th:each="filme: ${filmes}">
-            <a th:href="@{/detalhes/{id}(id=${filme.id})}"><li th:text="${filme.titulo}" /></a>
-        </ul>
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>Titulo</th>
+                <th>Sinopse</th>
+                <th>Genero</th>
+                <th>Ano lançamento</th>
+            </thead>
+            <tbody>
+                <tr th:each="filme: ${filmes}">
+                    <td th:text="${filme.id}" />
+                    <td th:text="${filme.titulo}" />
+                    <td th:text="${filme.sinopse}" />
+                    <td th:text="${filme.genero}" />
+                    <td th:text="${filme.anoLancamento}" />
+                    <td>
+                        <a th:href="@{'/exibirAnalise?id='+ ${filme.id}}">Analises</a>
+                    </td>
+                </tr>
+            <tbody/>
+        </table>
     </div>
     <div th:insert="footerNav.html :: footer">
 
