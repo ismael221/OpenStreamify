@@ -23,4 +23,21 @@ public class AnaliseService {
          List<Analise> comentarios =  analiseRepository.findByFilme_Id(filmeId);
          return comentarios;
     }
+
+    public Analise getAnalisePorId(Integer id){
+          return  analiseRepository.findById(id).orElseThrow();
+    }
+
+    public  Analise atualizarAnalise(Integer id,Analise analise){
+            Analise a = getAnalisePorId(id);
+            a.setFilme(analise.getFilme());
+            a.setNota(analise.getNota());
+            a.setComment(analise.getComment());
+            analiseRepository.save(a);
+            return a;
+    }
+
+    public void deleteAnalise(Integer id){
+        analiseRepository.deleteById(id);
+    }
 }
