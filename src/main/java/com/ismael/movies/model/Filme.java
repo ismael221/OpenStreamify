@@ -3,8 +3,6 @@ package com.ismael.movies.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 @Entity
 @Table(name = "filmes")
@@ -15,7 +13,7 @@ public class Filme {
     private String titulo;
     private String sinopse;
     private String genero;
-    private String  anoLancamento;
+    private String anoLancamento;
 
     public Filme() {
     }

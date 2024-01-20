@@ -18,21 +18,15 @@
 
         <h2>Análises: </h2>
 
-        <table>
+        <table border="2px">
             <thead>
-            <th>ID</th>
-            <th>Filme</th>
-            <th>Analise</th>
-            <th>Nota</th>
+            <td>Comentário</td>
+            <td>Nota</td>
             </thead>
-            <tbody>
-            <tr th:each="a : ${analises}">
-                <td th:text="${a.id}"/>
-                <td th:text="${a.filme}"  />
+            <tr th:each="a : ${analises}" >
                 <td th:text="${a.comment}" />
                 <td th:text="${a.nota}" />
             </tr>
-            </tbody>
         </table>
     </div>
     <div th:insert="footerNav.html :: footer">
