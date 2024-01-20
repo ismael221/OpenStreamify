@@ -2,6 +2,7 @@ package com.ismael.movies.controller;
 
 import com.ismael.movies.model.Analise;
 import com.ismael.movies.model.Filme;
+import com.ismael.movies.service.AnaliseService;
 import com.ismael.movies.service.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,8 +22,8 @@ public class FilmeController {
         @Autowired
         FilmeService filmeService;
 
-        private List<Filme> filmes = filmeService.listaFilmes();
-        private  List<Analise> analises = new ArrayList<>();
+        @Autowired
+        AnaliseService analiseService;
 
         @GetMapping("/")
         public String homePage(){
@@ -36,47 +37,32 @@ public class FilmeController {
         }
 
         @PostMapping("/cadastrarFilme")
-        public String cadastrarFilme(@ModelAttribute Filme filme) {
+        public String cadastrarFilme(@ModelAttribute Filme filme) throws ParseException {
                 filmeService.cadastrarFilme(filme);
                 return "redirect:/listarFilmes";
         }
 
         @GetMapping("/listarFilmes")
         public String listarFilmes(Model model){
-                model.addAttribute("filmes",filmes);
+                model.addAttribute("filmes",filmeService.listaFilmes());
                 return "filmes";
         }
 
-        @GetMapping("/exibirAnalise")
-        public String analisePorFilme(Model model, @RequestParam String id)
+        @GetMapping("/exibirAnalise/{id}")
+        public String analisePorFilme(Model model, @PathVariable Integer id)
         {
-                Integer idFilme = Integer.parseInt(id);
-                Filme filmeEncontrado = new Filme();
-                for (Filme f:filmes){
-                        if (f.getId() == idFilme){
-                                filmeEncontrado = f;
-                                break;
-                        }
-                }
-
-                List<Analise> analisesEcontradas = new ArrayList<>();
-                for (Analise a:analises){
-                        if (a.getId() == idFilme){
-                                analisesEcontradas.add(a);
-                                break;
-                        }
-                }
-                model.addAttribute("filme",filmeEncontrado );
-                model.addAttribute("analise", new Analise());
+                Filme filmeEncontrado = filmeService.getFilmePorID(id);
+                List<Analise> analisesEcontradas = analiseService.listarAnalises(id);
+                model.addAttribute("filme",filmeEncontrado);
+                model.addAttribute("feedback", new Analise());
                 model.addAttribute("analises", analisesEcontradas);
                 return  "detalhes";
         }
 
         @PostMapping("/cadastrarAnalise")
         public String cadastrarAnalise(@ModelAttribute Analise analise,@ModelAttribute Filme filme,Model model) {
-                analise.setId(filme.getId());
-                analise.setFilme(filme.getTitulo());
-                analises.add(analise);
+                analise.setFilme(filme);
+                analiseService.adicionarAnalise(analise);
                 return "redirect:/listarFilmes";
         }
 

@@ -23,7 +23,7 @@
                     <td th:text="${filme.genero}" />
                     <td th:text="${filme.anoLancamento}" />
                     <td>
-                        <a th:href="@{'/exibirAnalise?id='+ ${filme.id}}">Analises</a>
+                        <a th:href="@{/exibirAnalise/{id}(id=${filme.id})}">Analises</a>
                     </td>
                 </tr>
             <tbody/>

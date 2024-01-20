@@ -8,11 +8,11 @@
     <div>
 
         <h2>Enviar analise:</h2>
-        <form th:action="@{/cadastrarAnalise}"  th:object="${analise}" method="POST">
+        <form th:action="@{/cadastrarAnalise}" method="POST" th:object="${feedback}">
             <input type="text" th:field="${filme.id}" hidden>
-            <input type="text" th:field="${filme.titulo}" hidden>
-            <p>Analise: <input type="text" th:field="${analise.analise}"></p>
-            <p>Nota: <input type="text" th:field="${analise.nota}"></p>
+            <input type="" th:field="${filme.titulo}" hidden>
+            <p>Analise: <input type="text" th:field="${feedback.comment}"></p>
+            <p>Nota: <input type="text" th:field="${feedback.nota}"></p>
             <button type="submit">Enviar</button>
         </form>
 
@@ -29,7 +29,7 @@
             <tr th:each="a : ${analises}">
                 <td th:text="${a.id}"/>
                 <td th:text="${a.filme}"  />
-                <td th:text="${a.analise}" />
+                <td th:text="${a.comment}" />
                 <td th:text="${a.nota}" />
             </tr>
             </tbody>
