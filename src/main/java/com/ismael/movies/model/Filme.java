@@ -1,9 +1,16 @@
 package com.ismael.movies.model;
 
+import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
+@Entity
+@Table(name = "filmes")
 public class Filme {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String titulo;
     private String sinopse;

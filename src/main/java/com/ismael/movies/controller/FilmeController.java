@@ -2,6 +2,8 @@ package com.ismael.movies.controller;
 
 import com.ismael.movies.model.Analise;
 import com.ismael.movies.model.Filme;
+import com.ismael.movies.service.FilmeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,10 @@ import java.util.List;
 @Controller
 public class FilmeController {
 
-        private List<Filme> filmes= new ArrayList();
+        @Autowired
+        FilmeService filmeService;
+
+        private List<Filme> filmes = filmeService.listaFilmes();
         private  List<Analise> analises = new ArrayList<>();
 
         @GetMapping("/")
@@ -31,11 +36,8 @@ public class FilmeController {
         }
 
         @PostMapping("/cadastrarFilme")
-        public String cadastrarFilme(@ModelAttribute Filme filme) throws ParseException {
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                Date data = format.parse(filme.getAnoLancamento());
-                filmes.add(filme);
-                System.out.println(filme);
+        public String cadastrarFilme(@ModelAttribute Filme filme) {
+                filmeService.cadastrarFilme(filme);
                 return "redirect:/listarFilmes";
         }
 
@@ -71,7 +73,7 @@ public class FilmeController {
         }
 
         @PostMapping("/cadastrarAnalise")
-        public String cadastrarFilme(@ModelAttribute Analise analise,@ModelAttribute Filme filme,Model model) {
+        public String cadastrarAnalise(@ModelAttribute Analise analise,@ModelAttribute Filme filme,Model model) {
                 analise.setId(filme.getId());
                 analise.setFilme(filme.getTitulo());
                 analises.add(analise);
