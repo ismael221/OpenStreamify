@@ -8,16 +8,18 @@
     <h1>Cadastre seu filme</h1>
 
     <div>
-        <form th:action="@{/cadastrarFilme}" method="POST" th:object="${filme}">
-            <p>Titulo: <input type="text" th:field="${filme.titulo}"></p>
-            <p>Sinopse: <input type="text" th:field="${filme.sinopse}"></p>
-            <p>Genero: <input type="text" th:field="${filme.genero}"></p>
-            <p>Ano Lançamento: <input type="date" th:field="${filme.anoLancamento}" ></p>
+        <form method="POST" th:object="${filme}" id="formCadastroFilme">
+            <p>Titulo: <input type="text" th:field="${filme.titulo}" id="titulo" name="titulo"></p>
+            <p>Sinopse: <input type="text" th:field="${filme.sinopse}" id="sinopse" name="sinopse"></p>
+            <p>Genero: <input type="text" th:field="${filme.genero}" id="genero" name="genero"></p>
+            <p>Ano Lançamento: <input type="date" th:field="${filme.anoLancamento}" id="anoLancamento" name="anoLancamento"></p>
             <button type="submit">Cadastrar</button>
         </form>
     </div>
 
     <div th:insert="footerNav.html :: footer">
     </div>
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:src="@{/js/script.js}"></script>
 </body>
 </html>
