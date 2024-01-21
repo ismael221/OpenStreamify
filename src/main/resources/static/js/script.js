@@ -1,5 +1,5 @@
 $(document).ready(function (){
-
+    carregarFilmes();
 })
 
 /* ################################ Filmes ################################### */
@@ -52,6 +52,7 @@ function deletarFilme(id){
         method: 'DELETE',
         success: function (data){
             alert("Filme removido com sucesso")
+            carregarFilmes();
         },
         error: function (){
             console.log(this.error())
@@ -60,27 +61,23 @@ function deletarFilme(id){
 }
 
 //Atualizar Filme:
-function atualizarFilme(filme,id){
+function atualizarFilme(id, filme) {
     $.ajax({
-        url: 'http://localhost:8080/filme/atualizar/'+id,
+        url: 'http://localhost:8080/filme/atualizar/' + id,
         method: 'PUT',
         contentType: 'application/json',
-        data: JSON.stringify({
-            id: filme.id,
-            titulo: filme.titulo,
-            sinopse: filme.sinopse,
-            genero: filme.genero,
-            anoLancamento: filme.anoLancamento
-        }),
-        success: function (data){
+        data: JSON.stringify(filme),  // Use the entire 'filme' object as the request payload
+        success: function (data) {
             alert("Filme atualizado com sucesso");
+            carregarFilmes();
         },
-        error: function () {
+        error: function (data) {
             alert("Não foi possível atualizar o filme");
-            console.log(this.error())
+            console.log(data);
         }
-    })
+    });
 }
+
 
 //Listar filmes:
 function  carregarFilmes(){
@@ -88,6 +85,81 @@ function  carregarFilmes(){
         url: 'http://localhost:8080/filme/listar',
         method: 'GET',
         success:function (data){
+            $('#tabelaFilmes').empty();
+            // Adiciona cada tarefa à tabela
+            for (let i = 0; i < data.length; i++) {
+                let filme = data[i];
+
+                let id = $('<td>').text(filme.id);
+
+                let titulo = $('<td>').append(
+                    $('<input>').attr('type', 'text').val(filme.titulo)
+                        .addClass('form-control')
+                );
+
+                let sinopse = $('<td>').append(
+                    $('<input>').attr('type', 'text').val(filme.sinopse)
+                        .addClass('form-control')
+                );
+
+                let genero = $('<td>').append(
+                    $('<input>').attr('type', 'text').val(filme.genero)
+                        .addClass('form-control')
+                );
+
+                let anoLancamento = $('<td>').append(
+                    $('<input>').attr('type', 'text').val(filme.anoLancamento)
+                        .addClass('form-control')
+                );
+
+                let botaoDeletar = $('<button>')
+                    .text('Excluir')
+                    .addClass('btn btn-danger')
+                    .click(function () {
+                        deletarFilme($(this).parent().parent().attr('data-id'));
+                    });
+                let botaoAtualizar = $('<button>')
+                    .text('Atualizar')
+                    .addClass('btn btn-success')
+                    .click(function () {
+                        let updatedTitulo = $(this).parent().siblings("td:eq(1)").find("input").val();
+                        let updatedSinopse = $(this).parent().siblings("td:eq(2)").find("input").val();
+                        let updatedGenero = $(this).parent().siblings("td:eq(3)").find("input").val();
+                        let updatedAnoLancamento = $(this).parent().siblings("td:eq(4)").find("input").val();
+                        atualizarFilme($(this).parent().parent().attr('data-id'), {
+                            id: filme.id,
+                            titulo: updatedTitulo,
+                            sinopse: updatedSinopse,
+                            genero: updatedGenero,
+                            anoLancamento: updatedAnoLancamento,
+                        });
+                    });
+
+                let botaoAnalise = $('<button>')
+                    .text('Detalhes')
+                    .addClass('btn btn-info')
+                    .click(function () {
+                        console.log(filme.id);
+                        window.location.href = 'http://localhost:8080/exibirAnalise/' + filme.id;
+                    });
+
+                let excluir = $('<td>').append(botaoDeletar);
+                let atualizar = $('<td>').append(botaoAtualizar)
+                let analise = $('<td>').append(botaoAnalise)
+
+                let tr = $('<tr>')
+                    .attr('data-id', filme.id)
+                    .append(id)
+                    .append(titulo)
+                    .append(sinopse)
+                    .append(genero)
+                    .append(anoLancamento)
+                    .append(atualizar)
+                    .append(excluir)
+                    .append(analise);
+
+                $('#tabelaFilmes').append(tr);
+            }
 
         },
         error:function (){
@@ -172,17 +244,4 @@ function atualizarAnalise(analise,idAnalise,idFilme){
     })
 }
 
-//Listar Analises
-function  carregarAnalises(idFilme){
-    $.ajax({
-        url: 'http://localhost:8080/analise/buscar/'+idFilme,
-        method: 'GET',
-        success: function (data){
 
-        },
-        error: function (){
-            alert("Não foi possível carregar as análises, tente novamente mais tarde");
-            console.log(this.error())
-        }
-    })
-}
