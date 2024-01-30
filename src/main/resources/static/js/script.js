@@ -244,4 +244,3 @@ function atualizarAnalise(analise,idAnalise,idFilme){
     })
 }
 
-

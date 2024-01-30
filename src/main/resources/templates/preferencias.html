@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Preferências</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link th:href="@{/css/__${css}__.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <form th:action="@{/preferencias}" method="POST">
+         <p><label for="selEstilo">Seu esquema de cores favorito</label>
+        <select name="estilo" id="selEstilo">
+             <option value="light">Tema Claro</option>
+             <option value="dark">Tema Escuro</option>
+        </select></p>
+         <p><input type="submit" value="OK" id="setTheme"/></p>
+    </form>
+    <div th:insert="footerNav.html :: footer">
+    </div>
+</body>
+<script th:src="@{/js/jquery-3.7.1.js}"></script>
+<script th:src="@{/js/script.js}"></script>
+</html>
