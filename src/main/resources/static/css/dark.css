@@ -3,3 +3,10 @@ body {
     color: white;
     color-scheme: light dark;
 }
+table {
+    width: 100%; /* Define a largura da tabela como 100% da largura do contêiner pai */
+    background-color: #ACACAC; /* Define a cor de fundo da tabela */
+}
+input{
+    background-color: black;
+}
