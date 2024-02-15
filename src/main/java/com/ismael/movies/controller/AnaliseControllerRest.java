@@ -1,6 +1,7 @@
 package com.ismael.movies.controller;
 
 import com.ismael.movies.model.Analise;
+import com.ismael.movies.model.Filme;
 import com.ismael.movies.service.AnaliseService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,13 @@
 package com.ismael.movies.service;
 
+import com.ismael.movies.model.Analise;
 import com.ismael.movies.model.Filme;
 import com.ismael.movies.repository.FilmeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FilmeService {

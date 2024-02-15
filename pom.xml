@@ -62,6 +62,8 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>${artifactId}</finalName>
 	</build>
+	<packaging>war</packaging>
 
 </project>

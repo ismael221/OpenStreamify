@@ -1,7 +1,13 @@
 package com.ismael.movies.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -15,6 +21,9 @@ public class Filme {
     private String genero;
     private String anoLancamento;
 
+    @OneToMany(mappedBy = "filme", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    private List<Analise> analises;
     public Filme() {
     }
 
