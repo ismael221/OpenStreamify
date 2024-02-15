@@ -6,8 +6,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -20,52 +22,11 @@ public class Filme {
     private String sinopse;
     private String genero;
     private String anoLancamento;
-
+    @UuidGenerator
+    private UUID rid;
     @OneToMany(mappedBy = "filme", cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private List<Analise> analises;
     public Filme() {
-    }
-
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getSinopse() {
-        return sinopse;
-    }
-
-    public void setSinopse(String sinopse) {
-        this.sinopse = sinopse;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public String getAnoLancamento() {
-        return anoLancamento;
-    }
-
-    public void setAnoLancamento(String anoLancamento) {
-        this.anoLancamento = anoLancamento;
     }
 }

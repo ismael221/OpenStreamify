@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.UUID;
 
 @Data
 @Entity
@@ -17,12 +20,9 @@ public class Analise {
     @JoinColumn(name = "id_filme")
     @JsonBackReference
     private Filme filme;
-
     private String comment;
     private int nota;
-
-    public Analise() {
-    }
-
+    @UuidGenerator
+    private UUID rid;
 
 }
