@@ -51,6 +51,10 @@ public class FilmeControllerRest {
     @GetMapping("/rid/{rid}")
     public ResponseEntity<Filme> listarFilmePorRid(@PathVariable UUID rid){
         var filmeFound = filmeService.getFilmePorRid(rid);
-        return new ResponseEntity<>(filmeFound,HttpStatus.OK);
+       if (filmeFound != null){
+           return new ResponseEntity<>(filmeFound,HttpStatus.OK);
+       }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
     }
 }

@@ -180,6 +180,7 @@ function  adicionarAnalise(analise){
         success:function (data){
             alert("Analise adicionada com sucesso")
             console.log(data)
+            window.location = window.location.pathname;
         },
         error: function (){
             alert("Não foi possivel adicionar a analise")
