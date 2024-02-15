@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/filme")
@@ -47,5 +48,9 @@ public class FilmeControllerRest {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
+    @GetMapping("/rid/{rid}")
+    public ResponseEntity<Filme> listarFilmePorRid(@PathVariable UUID rid){
+        var filmeFound = filmeService.getFilmePorRid(rid);
+        return new ResponseEntity<>(filmeFound,HttpStatus.OK);
+    }
 }

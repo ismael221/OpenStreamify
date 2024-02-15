@@ -3,11 +3,12 @@ package com.ismael.movies.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Table;
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.*;
 
+import java.sql.Types;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,10 +24,9 @@ public class Filme {
     private String genero;
     private String anoLancamento;
     @UuidGenerator
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID rid;
     @OneToMany(mappedBy = "filme", cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private List<Analise> analises;
-    public Filme() {
-    }
 }
