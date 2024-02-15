@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/filme")
+@RequestMapping("api/v1/filme")
 public class FilmeControllerRest {
 
     @Autowired
