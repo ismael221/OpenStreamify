@@ -20,6 +20,7 @@ public class Filme {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String titulo;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String sinopse;
     private String genero;
     private String anoLancamento;

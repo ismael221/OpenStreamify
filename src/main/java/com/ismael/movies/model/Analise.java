@@ -25,6 +25,7 @@ public class Analise {
     @JoinColumn(name = "id_filme")
     @JsonBackReference
     private Filme filme;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String comment;
     private int nota;
     @UuidGenerator
