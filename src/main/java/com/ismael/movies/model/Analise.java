@@ -29,7 +29,7 @@ public class Analise {
     private String comment;
     private int nota;
     @UuidGenerator
-    @JdbcTypeCode(Types.VARCHAR)
+    //@JdbcTypeCode(Types.VARCHAR)
     private UUID rid;
 
 }

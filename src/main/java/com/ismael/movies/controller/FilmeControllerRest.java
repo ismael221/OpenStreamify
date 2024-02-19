@@ -1,10 +1,9 @@
 package com.ismael.movies.controller;
 
 import com.ismael.movies.model.Filme;
-import com.ismael.movies.service.FilmeService;
+import com.ismael.movies.services.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
