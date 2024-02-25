@@ -25,10 +25,15 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/v1/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/v1/filme/adicionar").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        /**
+                         *         .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
+                         *                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
+                         *                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/register").permitAll()
+                         *                         .requestMatchers(HttpMethod.POST,"/api/v1/filme/adicionar").hasRole("ADMIN")
+                         *
+                         *
+                         * **/
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

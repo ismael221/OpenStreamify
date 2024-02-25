@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<form  id="loginForm">
+    <label>Login:</label>
+    <input type="text"  name="login" id="login">
+  <label>Password:</label>
+  <input type="text" name="password" id="password">
+  <input type="submit" placeholder="Fazer login" id="merdaPreta" onclick="clicadoooo()">
+</form>
+</body>
+<script>
+ function clicadoooo() {
+      let data = {
+          login: "ismael221",
+          password: "ismael221"
+      }
+    let url = "http://localhost:8080/api/v1/auth/login"
+
+    var access_token;
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // Convert your data to JSON format if needed
+    })
+            .then(response => response.json())
+            .then(data => {
+              // Handle the response data
+              console.log(data.token);
+
+            })
+            .catch(error => {
+              // Handle errors
+              console.error('Error:', error);
+            });
+  }
+</script>
+</html>

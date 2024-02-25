@@ -18,12 +18,20 @@ import java.util.List;
 @Controller
 public class FilmeController {
         public String theme ="light";
-        @Autowired
+        final
         FilmeService filmeService;
 
         @Autowired
         AnaliseService analiseService;
 
+        public FilmeController(FilmeService filmeService) {
+                this.filmeService = filmeService;
+        }
+
+        @GetMapping("/auth/login")
+        public String loginPage(){
+                return "login";
+        }
         @GetMapping("/")
         public String homePage(@CookieValue(name="pref-nome", defaultValue="") String style, @CookieValue(name="pref-estilo", defaultValue="light")String tema, Model model){
                 theme = tema;
@@ -87,6 +95,9 @@ public class FilmeController {
 
         }
 
-
+        @GetMapping("/assistir")
+        public String assistirFilme(){
+                return "video";
+        }
 
 }

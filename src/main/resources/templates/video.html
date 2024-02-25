@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
+</head>
+<body>
+    <div>
+        <video
+                id="my-player"
+                class="video-js"
+                controls
+                preload="auto"
+                data-setup='{}'>
+            <source src="http://localhost:8080/api/v1/media/6c04a229-ffc1-43d3-b52f-e082a6c22ac3/play" type="video/mp4">
+            <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a
+                web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank">
+                    supports HTML5 video
+                </a>
+            </p>
+        </video>
+    </div>
+</body>
+</html>
