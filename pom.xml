@@ -60,6 +60,11 @@
 			<artifactId>java-jwt</artifactId>
 			<version>4.4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -79,6 +84,6 @@
 		</plugins>
 		<finalName>${artifactId}</finalName>
 	</build>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 </project>

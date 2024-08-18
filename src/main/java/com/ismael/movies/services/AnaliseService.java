@@ -10,8 +10,12 @@ import java.util.List;
 @Service
 public class AnaliseService {
 
-    @Autowired
+    final
     AnaliseRepository analiseRepository;
+
+    public AnaliseService(AnaliseRepository analiseRepository) {
+        this.analiseRepository = analiseRepository;
+    }
 
     public Analise adicionarAnalise(Analise analise){
             analiseRepository.save(analise);

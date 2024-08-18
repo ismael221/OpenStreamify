@@ -1,0 +1,27 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Free HLS Player Example</title>
+    <!-- Include hls.js from a CDN -->
+    <script src="https://cdn.tutorialjinni.com/hls.js/1.2.1/hls.min.js"></script>
+
+</head>
+<body>
+<!-- HTML5 Video Tag -->
+<video id="video"
+       width='480px' height='360px' controls autoplay
+       src="http://localhost:8080/hls/output.m3u8">
+</video>
+<!-- Invocation Script -->
+<script>
+    if (Hls.isSupported()) {
+      var video = document.getElementById('video');
+      var hls = new Hls();
+      hls.loadSource(video.src);
+      hls.attachMedia(video);
+    }else{
+        alert("Cannot stream HLS, use another video source");
+    }
+</script>
+</body>
+</html>

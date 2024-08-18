@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/filme")
+@CrossOrigin("*")
 public class FilmeControllerRest {
 
     @Autowired

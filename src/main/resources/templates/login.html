@@ -16,8 +16,8 @@
 <script>
  function clicadoooo() {
       let data = {
-          login: "ismael221",
-          password: "ismael221"
+          login: document.getElementById("login").value,
+          password: document.getElementById("password").value
       }
     let url = "http://localhost:8080/api/v1/auth/login"
 
@@ -33,8 +33,8 @@
             .then(response => response.json())
             .then(data => {
               // Handle the response data
-              console.log(data.token);
-
+             alert(data.token);
+                window.location.href = "http://localhost:8080/api/v1/filme/adicionar"
             })
             .catch(error => {
               // Handle errors

@@ -1,10 +1,10 @@
 package com.ismael.movies.controller;
 
 import com.ismael.movies.infra.security.TokenService;
-import com.ismael.movies.model.User.AuthenticationDTO;
-import com.ismael.movies.model.User.LoginResponseDTO;
-import com.ismael.movies.model.User.RegisterDTO;
-import com.ismael.movies.model.User.User;
+import com.ismael.movies.model.Users.AuthenticationDTO;
+import com.ismael.movies.model.Users.LoginResponseDTO;
+import com.ismael.movies.model.Users.RegisterDTO;
+import com.ismael.movies.model.Users.User;
 import com.ismael.movies.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

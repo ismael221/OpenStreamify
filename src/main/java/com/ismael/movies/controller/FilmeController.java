@@ -97,7 +97,7 @@ public class FilmeController {
 
         @GetMapping("/assistir")
         public String assistirFilme(){
-                return "video";
+                return "stream";
         }
 
 }

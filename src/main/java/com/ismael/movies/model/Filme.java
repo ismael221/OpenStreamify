@@ -25,7 +25,7 @@ public class Filme {
     private String genero;
     private String anoLancamento;
     @UuidGenerator
-    //@JdbcTypeCode(Types.VARCHAR)
+   // @JdbcTypeCode(Types.VARCHAR)
     private UUID rid;
     @OneToMany(mappedBy = "filme", cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
