@@ -1,25 +1,40 @@
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Simple Free HLS Player Example</title>
     <!-- Include hls.js from a CDN -->
     <script src="https://cdn.tutorialjinni.com/hls.js/1.2.1/hls.min.js"></script>
-
 </head>
 <body>
 <!-- HTML5 Video Tag -->
-<video id="video"
-       width='480px' height='360px' controls autoplay
-       src="http://localhost:8080/hls/output.m3u8">
+<video id="video" controls type="application/x-mpegURL" style="width:100%; height:auto;">
 </video>
+<!-- Play Button -->
+<button id="playButton">Play Video</button>
+
 <!-- Invocation Script -->
 <script>
     if (Hls.isSupported()) {
-      var video = document.getElementById('video');
-      var hls = new Hls();
-      hls.loadSource(video.src);
-      hls.attachMedia(video);
-    }else{
+        var video = document.getElementById('video');
+        var hls = new Hls();
+        var playButton = document.getElementById('playButton');
+
+        // Configure HLS.js
+        hls.loadSource('http://localhost:8080/hls/hod/hod.m3u8');
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+            // Enable the play button only after the manifest is parsed
+            playButton.disabled = false;
+        });
+
+        // Play video when button is clicked
+        playButton.addEventListener('click', function() {
+            video.play().catch(function(error) {
+                console.error('Play failed:', error);
+            });
+        });
+    } else {
         alert("Cannot stream HLS, use another video source");
     }
 </script>

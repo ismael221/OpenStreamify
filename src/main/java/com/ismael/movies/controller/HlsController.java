@@ -16,10 +16,10 @@ public class HlsController {
     @Autowired
     private HlsService hlsService;
 
-    @GetMapping("/{filename:.+}")
-    public ResponseEntity<Resource> getHlsFile(@PathVariable String filename) {
+    @GetMapping("/{folder}/{filename:.+}")
+    public ResponseEntity<Resource> getHlsFile(@PathVariable String folder ,@PathVariable String filename) {
         try {
-            Resource resource = hlsService.getHlsResource(filename);
+            Resource resource = hlsService.getHlsResource(folder,filename);
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl")
                     .body(resource);
