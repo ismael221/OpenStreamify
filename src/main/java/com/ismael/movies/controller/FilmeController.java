@@ -96,8 +96,7 @@ public class FilmeController {
         }
 
         @GetMapping("/assistir")
-        public String assistirFilme(@RequestParam String folder, @RequestParam String filme, Model model) {
-                model.addAttribute("folder", folder);
+        public String assistirFilme(@RequestParam String filme, Model model) {
                 model.addAttribute("filme", filme);
                 return "stream";  // Nome do template Thymeleaf
         }

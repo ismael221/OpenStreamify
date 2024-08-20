@@ -15,9 +15,9 @@ public class HlsService {
 
     private final Path baseLocation  = Paths.get("videos/hls");
 
-    public Resource getHlsResource(String movieFolder, String filename) throws MalformedURLException {
-        Path movieFolderPath = baseLocation.resolve(movieFolder).normalize();
-        Path filePath = movieFolderPath.resolve(filename).normalize();
+    public Resource getHlsResource(String filename) throws MalformedURLException {
+        //Path movieFolderPath = baseLocation.resolve(movieFolder).normalize();
+        Path filePath = baseLocation.resolve(filename).normalize();
         Resource resource = new UrlResource(filePath.toUri());
         if (resource.exists() && resource.isReadable()) {
             return resource;
