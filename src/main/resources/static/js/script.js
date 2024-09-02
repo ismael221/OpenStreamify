@@ -6,7 +6,7 @@ $(document).ready(function (){
 //Adicionar filme:
 function adicionarFilme(filme) {
     $.ajax({
-        url: 'http://localhost:8080/api/v1/filme/adicionar',
+        url: 'https://localhost:443/api/v1/filme/adicionar',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(filme),
@@ -48,7 +48,7 @@ $('#formCadastroFilme').submit(function (event) {
 //Deletar Filme:
 function deletarFilme(id){
     $.ajax({
-        url: 'http://localhost:8080/api/v1/filme/deletar/'+id,
+        url: 'https://localhost:443/api/v1/filme/deletar/'+id,
         method: 'DELETE',
         success: function (data){
             alert("Filme removido com sucesso")
@@ -63,7 +63,7 @@ function deletarFilme(id){
 //Atualizar Filme:
 function atualizarFilme(id, filme) {
     $.ajax({
-        url: 'http://localhost:8080/api/v1/filme/atualizar/' + id,
+        url: 'https://localhost:443/api/v1/filme/atualizar/' + id,
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(filme),  // Use the entire 'filme' object as the request payload
@@ -82,7 +82,7 @@ function atualizarFilme(id, filme) {
 //Listar filmes:
 function  carregarFilmes(){
     $.ajax({
-        url: 'http://localhost:8080/api/v1/filme/listar',
+        url: 'https://localhost:443/api/v1/filme/listar',
         method: 'GET',
         success:function (data){
             $('#tabelaFilmes').empty();
@@ -140,12 +140,20 @@ function  carregarFilmes(){
                     .addClass('btn btn-info')
                     .click(function () {
                         console.log(filme.id);
-                        window.location.href = 'http://localhost:8080/exibirAnalise/' + filme.id;
+                        window.location.href = 'https://localhost:443/exibirAnalise/' + filme.id;
                     });
+                let botaoAssistir = $('<button>')
+                                    .text('Assistir')
+                                    .addClass('btn btn-info')
+                                    .click(function () {
+                                        console.log(filme.rid);
+                                        window.location.href = 'https://localhost:443/assistir?filme=' + filme.rid;
+                                    });
 
                 let excluir = $('<td>').append(botaoDeletar);
                 let atualizar = $('<td>').append(botaoAtualizar)
                 let analise = $('<td>').append(botaoAnalise)
+                let assistir = $('<td>').append(botaoAssistir)
 
                 let tr = $('<tr>')
                     .attr('data-id', filme.id)
@@ -156,7 +164,8 @@ function  carregarFilmes(){
                     .append(anoLancamento)
                     .append(atualizar)
                     .append(excluir)
-                    .append(analise);
+                    .append(analise)
+                    .append(assistir);
 
                 $('#tabelaFilmes').append(tr);
             }
@@ -173,7 +182,7 @@ function  carregarFilmes(){
 //Adicionar Analise:
 function  adicionarAnalise(analise){
     $.ajax({
-        url: 'http://localhost:8080/api/v1/analise/adicionar',
+        url: 'https://localhost:443/api/v1/analise/adicionar',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(analise),
@@ -211,7 +220,7 @@ $('#formAdicionarAnalise').submit(function (event){
 //Deletar Analise:
 function deletarAnalise(id){
     $.ajax({
-        url: 'http://localhost:8080/analise/deletar/'+id,
+        url: 'https://localhost:443/analise/deletar/'+id,
         method: 'DELETE',
         success: function (data){
             alert("Analise removida com sucesso")
@@ -226,7 +235,7 @@ function deletarAnalise(id){
 //AtualizarAnalise
 function atualizarAnalise(analise,idAnalise,idFilme){
     $.ajax({
-        url: 'http://localhost:8080/analise/'+idAnalise,
+        url: 'https://localhost:443/analise/'+idAnalise,
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({

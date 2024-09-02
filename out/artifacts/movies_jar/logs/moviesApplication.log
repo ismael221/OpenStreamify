@@ -1,6 +1,0 @@
-2024-08-18 12:15:31 [http-nio-8080-exec-1] ERROR c.i.movies.services.FilmeService - Algo deu errado!
-2024-08-18 12:15:32 [http-nio-8080-exec-5] ERROR c.i.movies.services.FilmeService - Algo deu errado!
-2024-08-18 12:15:34 [http-nio-8080-exec-10] ERROR c.i.movies.services.FilmeService - Algo deu errado!
-2024-08-18 12:15:36 [http-nio-8080-exec-5] ERROR c.i.movies.services.FilmeService - Algo deu errado!
-2024-08-18 12:27:45 [http-nio-8080-exec-7] ERROR c.i.movies.services.FilmeService - Algo deu errado!
-2024-08-18 12:27:45 [http-nio-8080-exec-10] ERROR c.i.movies.services.FilmeService - Algo deu errado!

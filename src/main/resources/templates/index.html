@@ -8,10 +8,36 @@
     <link th:href="@{/css/__${css}__.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <h1>Filmes assistidos</h1>
     <header th:insert="navbar.html :: nav"></header>
-
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/86fe4aee-d51c-4fb0-b530-96532c516181/compose?format=webp&label=hero_carousel_300&width=2880" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/54bfdc63-2fbe-454f-aa75-33d4face67ec/compose?format=webp&label=hero_carousel_300&width=2880" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
 </body>
 <script th:src="@{/js/jquery-3.7.1.js}"></script>
 <script th:src="@{/js/script.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </html>

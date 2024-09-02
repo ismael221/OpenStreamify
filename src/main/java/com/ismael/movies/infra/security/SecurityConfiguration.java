@@ -26,10 +26,10 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
 
-                                .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/v1/auth/register").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/v1/filme/adicionar").hasRole("ADMIN")
+                               // .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
+                              //  .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
+                              //  .requestMatchers(HttpMethod.POST,"/api/v1/auth/register").permitAll()
+                                //.requestMatchers(HttpMethod.POST,"/api/v1/filme/adicionar").hasRole("ADMIN")
 
                                .anyRequest().permitAll()
                      //  .anyRequest().authenticated()

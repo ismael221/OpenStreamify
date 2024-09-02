@@ -1,3 +1,7 @@
 h1{
     text-align: center;
 }
+html{
+background: rgb(19,28,182);
+background: radial-gradient(circle, rgba(19,28,182,1) 0%, rgba(129,53,68,1) 100%);
+}

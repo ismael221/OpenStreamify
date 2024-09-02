@@ -21,7 +21,7 @@
         var playButton = document.getElementById('playButton');
 
         // Configure HLS.js
-        hls.loadSource('http://localhost:8080/hls/bd29ddf7-b1d6-4597-b7c4-27bb0017f4a9.m3u8');
+        hls.loadSource('https://localhost:443/api/v1/media/hls/bd29ddf7-b1d6-4597-b7c4-27bb0017f4a9.m3u8');
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, function() {
             // Enable the play button only after the manifest is parsed
