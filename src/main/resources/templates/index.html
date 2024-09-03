@@ -68,12 +68,11 @@
         margin-top: 50px;
       }
 
-  }
   </style>
 </head>
 <body>
 
-  <header th:insert="navbar.html :: nav"></header>
+  <header th:insert="navbar.html :: nav" class="sticky-top"></header>
 
 
 <!-- Carousel -->
@@ -99,7 +98,7 @@
     </button>
   </div>
 
-  <!-- Movies Section -->
+  <!-- Movie Section -->
   <div class="container mt-5">
     <h2 class="mb-4">Recomendados para Você</h2>
     <div class="row row-cols-2 row-cols-md-4 g-4">
@@ -132,34 +131,48 @@
       <div class="carousel-item active">
         <div class="row">
           <div class="col">
-            <a href="#">
+            <a th:href="@{/detalhes}">
                 <img src="https://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Filme 1">
             </a>
           </div>
           <div class="col">
-            <img src="https://via.placeholder.com/200x150/444/fff?text=Filme+2" class="d-block w-100" alt="Filme 2">
+            <a th:href="@{/detalhes}">
+              <img src="https://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Filme 2">
+            </a>
           </div>
           <div class="col">
-            <img src="https://via.placeholder.com/200x150/555/fff?text=Filme+3" class="d-block w-100" alt="Filme 3">
+            <a th:href="@{/detalhes}">
+              <img src="https://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Filme 3">
+            </a>
           </div>
           <div class="col">
-            <img src="https://via.placeholder.com/200x150/666/fff?text=Filme+4" class="d-block w-100" alt="Filme 4">
+            <a th:href="@{/detalhes}">
+              <img src="https://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Filme 4">
+            </a>
           </div>
         </div>
       </div>
       <div class="carousel-item">
         <div class="row">
           <div class="col">
-            <img src="https://via.placeholder.com/200x150/777/fff?text=Filme+5" class="d-block w-100" alt="Filme 5">
+            <a th:href="@{/detalhes}">
+              <img src="https://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Filme 5">
+            </a>
           </div>
           <div class="col">
-            <img src="https://via.placeholder.com/200x150/888/fff?text=Filme+6" class="d-block w-100" alt="Filme 6">
+            <a th:href="@{/detalhes}">
+              <img src="https://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Filme 6">
+            </a>
           </div>
           <div class="col">
-            <img src="https://via.placeholder.com/200x150/999/fff?text=Filme+7" class="d-block w-100" alt="Filme 7">
+            <a th:href="@{/detalhes}">
+              <img src="https://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Filme 7">
+            </a>
           </div>
           <div class="col">
-            <img src="https://via.placeholder.com/200x150/aaa/fff?text=Filme+8" class="d-block w-100" alt="Filme 8">
+            <a th:href="@{/detalhes}">
+              <img src="https://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Filme 8">
+            </a>
           </div>
         </div>
       </div>
@@ -175,7 +188,7 @@
   </div>
 
 
-  <footer th:insert="footer.html :: footer"></footer>
+  <footer th:insert="footer.html :: footer" class="rodape" style="margin-top:150px;"></footer>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -1,7 +1,7 @@
 package com.ismael.movies.controller;
 
-import com.ismael.movies.model.Analise;
-import com.ismael.movies.services.AnaliseService;
+import com.ismael.movies.model.Rating;
+import com.ismael.movies.services.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,32 +11,32 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/analise")
-public class AnaliseRestController {
+public class RatingRestController {
 
     @Autowired
-    AnaliseService analiseService;
+    RatingService ratingService;
 
     @PostMapping("/adicionar")
-    public ResponseEntity<Analise> addAnalise(@RequestBody Analise analise){
-            var novaAnalise = analiseService.adicionarAnalise(analise);
+    public ResponseEntity<Rating> addAnalise(@RequestBody Rating analise){
+            var novaAnalise = ratingService.addRating(analise);
             return  new ResponseEntity<>(novaAnalise, HttpStatus.CREATED);
     }
 
     @GetMapping("/buscar/{id}")
     public  ResponseEntity<List> getAnalisePorFilme(@PathVariable Integer id){
-        List<Analise> analises = analiseService.listarAnalises(id);
+        List<Rating> analises = ratingService.listRatingsByMovieId(id);
         return new ResponseEntity<>(analises,HttpStatus.OK);
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Analise> atualizarAnalise(@PathVariable Integer id,@RequestBody Analise analise){
-        var novaAnalise = analiseService.atualizarAnalise(id,analise);
+    public ResponseEntity<Rating> atualizarAnalise(@PathVariable Integer id, @RequestBody Rating analise){
+        var novaAnalise = ratingService.updateRating(id,analise);
         return new ResponseEntity<>(novaAnalise,HttpStatus.OK);
     }
 
     @DeleteMapping("/deletar/{id}")
     public  ResponseEntity<Boolean> deletarAnalise(@PathVariable Integer id){
-        analiseService.deleteAnalise(id);
+        ratingService.deleteRating(id);
         return new ResponseEntity<>(true,HttpStatus.OK);
     }
 }

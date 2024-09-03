@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ismael</groupId>
-	<artifactId>movies</artifactId>
+	<artifactId>movie</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>movies</name>
+	<name>movie</name>
 	<description>Projeto da atividade 1 senax</description>
 	<properties>
 		<java.version>17</java.version>

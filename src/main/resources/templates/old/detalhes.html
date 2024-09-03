@@ -12,7 +12,7 @@
 
         <h2>Enviar analise:</h2>
         <form method="POST" th:object="${feedback}" id="formAdicionarAnalise">
-            <input type="text" th:field="${filme.id}" hidden id="filmeId">
+            <input type="text" th:field="${movie.id}" hidden id="filmeId">
             <p>Analise: <input type="text" th:field="${feedback.comment}" id="comment" class="form-control"></p>
             <p>Nota: <input type="text" th:field="${feedback.nota}" id="nota" class="form-control"></p>
             <button type="submit" class="btn btn-info">Enviar</button>

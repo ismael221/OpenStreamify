@@ -22,5 +22,5 @@ public class Media {
     @OneToOne
     @JoinColumn(name = "id_filme")
     @JsonBackReference
-    private Filme filme;
+    private Movie movie;
 }

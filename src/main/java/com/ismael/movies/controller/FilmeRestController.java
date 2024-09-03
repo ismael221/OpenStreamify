@@ -1,7 +1,7 @@
 package com.ismael.movies.controller;
 
-import com.ismael.movies.model.Filme;
-import com.ismael.movies.services.FilmeService;
+import com.ismael.movies.model.Movie;
+import com.ismael.movies.services.MoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,41 +16,41 @@ import java.util.UUID;
 public class FilmeRestController {
 
     @Autowired
-    FilmeService filmeService;
+    MoviesService filmeService;
 
     @GetMapping("/listar")
     public  ResponseEntity<List> getAllFilmes(){
-        List<Filme> filmes = filmeService.listaFilmes();
-        return new ResponseEntity<>(filmes,HttpStatus.OK);
+        List<Movie> movies = filmeService.listAllMovies();
+        return new ResponseEntity<>(movies,HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Filme> getFilmePorId(@PathVariable Integer id){
-        Filme filmeEncontrado = filmeService.getFilmePorID(id);
-        return  new ResponseEntity<>(filmeEncontrado,HttpStatus.OK);
+    public ResponseEntity<Movie> getFilmePorId(@PathVariable Integer id){
+        Movie movieEncontrado = filmeService.getMovieById(id);
+        return  new ResponseEntity<>(movieEncontrado,HttpStatus.OK);
     }
 
     @PostMapping("/adicionar")
-    public ResponseEntity<Filme> addFilme(@RequestBody Filme filme){
-        var novoFilme = filmeService.cadastrarFilme(filme);
+    public ResponseEntity<Movie> addFilme(@RequestBody Movie movie){
+        var novoFilme = filmeService.addMovie(movie);
         return  new ResponseEntity<>(novoFilme, HttpStatus.CREATED);
     }
 
     @PutMapping("/atualizar/{id}")
-    public  ResponseEntity<Filme> atualizarFilme(@PathVariable Integer id,@RequestBody Filme filme){
-        var filmeAtualizado = filmeService.atualizarFilme(id,filme);
+    public  ResponseEntity<Movie> atualizarFilme(@PathVariable Integer id, @RequestBody Movie movie){
+        var filmeAtualizado = filmeService.updateMovie(id, movie);
         return  new ResponseEntity<>(filmeAtualizado,HttpStatus.OK);
     }
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity deletarFilme(@PathVariable Integer id){
-        filmeService.deletarFilme(id);
+        filmeService.deleteMovie(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/rid/{rid}")
-    public ResponseEntity<Filme> listarFilmePorRid(@PathVariable UUID rid){
-        var filmeFound = filmeService.getFilmePorRid(rid);
+    public ResponseEntity<Movie> listarFilmePorRid(@PathVariable UUID rid){
+        var filmeFound = filmeService.getMovieByRID(rid);
        if (filmeFound != null){
            return new ResponseEntity<>(filmeFound,HttpStatus.OK);
        }else {

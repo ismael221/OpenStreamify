@@ -17,7 +17,7 @@
       height: 100vh;
       background-size: cover;
       background-position: center;
-      background-image: url('https://via.placeholder.com/1920x1080/000/fff?text=Imagem+do+Filme'); /* Substitua pela URL da imagem do filme */
+      background-image: url('https://ingresso-a.akamaihd.net/b2b/production/uploads/article/image/2220/25acd5d2e3e9f7f4eb12c0bf102570b3.jpg'); /* Substitua pela URL da imagem do movie */
     }
     .movie-overlay {
       position: absolute;
@@ -47,12 +47,18 @@
       background-color: #007bff;
       margin-right: 5px;
     }
+      .navbar {
+    background-color: #000;
+    }
+  .navbar-brand img {
+    height: 40px;
+  }
   </style>
 </head>
 <body>
   <!-- NavBar-->
   <header th:insert="navbar.html :: nav"></header>
-  <!-- Seção de detalhes do filme -->
+  <!-- Seção de detalhes do movie -->
   <div class="movie-background">
     <div class="movie-overlay d-flex align-items-center">
       <div class="container movie-content">
@@ -64,15 +70,21 @@
               <span class="badge">Família</span>
             </p>
             <div class="movie-actions">
-              <button type="button" class="btn btn-primary btn-lg me-2">Assistir</button>
-              <button type="button" class="btn btn-outline-light btn-lg">Trailer</button>
+              <a th:href="@{/assistir}">
+              <button type="button" class="btn btn-primary btn-lg me-2" >Assistir</button>
+              </a>
+              <a href="https://youtu.be/U8FRkDYNkk4" target="_blank">
+                <button type="button" class="btn btn-outline-light btn-lg">Trailer</button>
+              </a>
             </div>
           </div>
         </div>
         <div class="row movie-description">
           <div class="col-md-8">
             <h3>Sinopse</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod consectetur nisi nisl euismod.</p>
+            <p>O diretor Wes Ball traz novos ares a franquia épica com este espetáculo de ação e aventura da 20th Century Studios. Definido várias gerações após o reinado de Cesar, os macacos vivem de forma harmoniosa como espécie dominante - já os humanos vivem escondidos nas sombras. Enquanto um um novo líder macaco tirânico constrói seu império, um jovem macaco passa por uma angustiante jornada que o fará questionar o que sabe sobre o passado e fazer escolhas que irão definir o futuro de macacos e humanos.
+
+              Contém sequências de luzes que podem afetar pessoas fotossensíveis.</p>
           </div>
         </div>
       </div>

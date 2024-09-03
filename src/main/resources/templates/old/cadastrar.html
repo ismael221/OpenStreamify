@@ -8,14 +8,14 @@
     <link th:href="@{/css/__${css}__.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <h1>Cadastre seu filme</h1>
+    <h1>Cadastre seu movie</h1>
 
     <div class="mb-3">
-        <form method="POST" th:object="${filme}" id="formCadastroFilme" >
-            <p>Titulo: <input type="text" th:field="${filme.titulo}" id="titulo" name="titulo"  class="form-control border border-primary"></p>
-            <p>Sinopse: <input type="text" th:field="${filme.sinopse}" id="sinopse" name="sinopse"  class="form-control border border-primary"></p>
-            <p>Genero: <input type="text" th:field="${filme.genero}" id="genero" name="genero"  class="form-control border border-primary"></p>
-            <p>Ano Lançamento: <input type="date" th:field="${filme.anoLancamento}" id="anoLancamento" name="anoLancamento"  class="form-control border border-primary"></p>
+        <form method="POST" th:object="${movie}" id="formCadastroFilme" >
+            <p>Titulo: <input type="text" th:field="${movie.titulo}" id="titulo" name="titulo"  class="form-control border border-primary"></p>
+            <p>Sinopse: <input type="text" th:field="${movie.sinopse}" id="sinopse" name="sinopse"  class="form-control border border-primary"></p>
+            <p>Genero: <input type="text" th:field="${movie.genero}" id="genero" name="genero"  class="form-control border border-primary"></p>
+            <p>Ano Lançamento: <input type="date" th:field="${movie.anoLancamento}" id="anoLancamento" name="anoLancamento"  class="form-control border border-primary"></p>
             <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
     </div>

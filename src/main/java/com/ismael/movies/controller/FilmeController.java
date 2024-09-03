@@ -1,10 +1,10 @@
 package com.ismael.movies.controller;
 
 import com.ismael.movies.cookies.model.Preferencia;
-import com.ismael.movies.model.Analise;
-import com.ismael.movies.model.Filme;
-import com.ismael.movies.services.AnaliseService;
-import com.ismael.movies.services.FilmeService;
+import com.ismael.movies.model.Movie;
+import com.ismael.movies.model.Rating;
+import com.ismael.movies.services.RatingService;
+import com.ismael.movies.services.MoviesService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ import java.util.List;
 public class FilmeController {
         public String theme ="light";
         final
-        FilmeService filmeService;
+        MoviesService filmeService;
 
         @Autowired
-        AnaliseService analiseService;
+        RatingService ratingService;
 
-        public FilmeController(FilmeService filmeService) {
+        public FilmeController(MoviesService filmeService) {
                 this.filmeService = filmeService;
         }
 
@@ -43,39 +43,39 @@ public class FilmeController {
         @GetMapping("/cadastrarFilme")
         public  String mostrarFormCadastro(Model model){
                 model.addAttribute("css",theme);
-                model.addAttribute("filme",new Filme());
+                model.addAttribute("filme",new Movie());
                 return "cadastrar";
         }
 
         @PostMapping("/cadastrarFilme")
-        public String cadastrarFilme(@ModelAttribute Filme filme) {
-                filmeService.cadastrarFilme(filme);
+        public String cadastrarFilme(@ModelAttribute Movie movie) {
+                filmeService.addMovie(movie);
                 return "redirect:/listarFilmes";
         }
 
         @GetMapping("/listarFilmes")
         public String listarFilmes(Model model){
                 model.addAttribute("css",theme);
-                model.addAttribute("filmes",filmeService.listaFilmes());
+                model.addAttribute("filmes",filmeService.listAllMovies());
                 return "filmes";
         }
 
         @GetMapping("/exibirAnalise/{id}")
         public String analisePorFilme(Model model, @PathVariable Integer id)
         {
-                Filme filmeEncontrado = filmeService.getFilmePorID(id);
-                List<Analise> analisesEcontradas = analiseService.listarAnalises(id);
-                model.addAttribute("filme",filmeEncontrado);
-                model.addAttribute("feedback", new Analise());
+                Movie movieEncontrado = filmeService.getMovieById(id);
+                List<Rating> analisesEcontradas = ratingService.listRatingsByMovieId(id);
+                model.addAttribute("filme", movieEncontrado);
+                model.addAttribute("feedback", new Rating());
                 model.addAttribute("analises", analisesEcontradas);
                 model.addAttribute("css",theme);
                 return  "detalhes";
         }
 
         @PostMapping("/cadastrarAnalise")
-        public String cadastrarAnalise(@ModelAttribute Analise analise,@ModelAttribute Filme filme,Model model) {
-                analise.setFilme(filme);
-                analiseService.adicionarAnalise(analise);
+        public String cadastrarAnalise(@ModelAttribute Rating analise, @ModelAttribute Movie movie, Model model) {
+                analise.setMovie(movie);
+                ratingService.addRating(analise);
                 return "redirect:/listarFilmes";
         }
 
@@ -98,6 +98,12 @@ public class FilmeController {
         @GetMapping("/assistir")
         public String assistirFilme(@RequestParam String filme, Model model) {
                 model.addAttribute("filme", filme);
-                return "stream";  // Nome do template Thymeleaf
+                return "assistir";  // Nome do template Thymeleaf
+        }
+        //TODO Adicionar o enpoint para redirecionar para os detalhes do filme com o botão de play antes de reproduzir diretamente.
+
+        @GetMapping("/detalhes")
+        public String detalhaFilme(){
+                return "detalhes";
         }
 }

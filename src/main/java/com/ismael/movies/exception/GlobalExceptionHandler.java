@@ -1,6 +1,5 @@
 package com.ismael.movies.exception;
 
-import com.ismael.movies.services.FilmeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
