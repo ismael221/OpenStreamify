@@ -1,7 +1,39 @@
-<nav class="navbar sticky-top bg-body-tertiary">
-    <div class="container-fluid">
-      <a th:href="@{/cadastrarFilme}" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Cadastrar Filme</a>
-      <a th:href="@{/listarFilmes}" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Listar Filmes</a>
-      <a th:href="@{/preferencias}" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Preferencias</a>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/512px-Disney%2B_logo.svg.png" alt="Disney+">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Filmes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Séries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Minha Lista</a>
+                </li>
+                <!-- User Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://via.placeholder.com/30" class="rounded-circle" alt="User Avatar">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#">Perfil</a></li>
+                        <li><a class="dropdown-item" href="#">Configurações</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Sair</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>

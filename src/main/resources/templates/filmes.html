@@ -1,43 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de filmes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link th:href="@{/css/__${css}__.css}" rel="stylesheet" type="text/css"/>
+    <title>Listagem de Filmes - Disney Plus</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilo Personalizado -->
+    <style>
+        body {
+            background-color: #0c0c0c;
+            color: #fff;
+        }
+        .movie-card {
+            background-color: #1f1f1f;
+            border: none;
+        }
+        .movie-poster {
+            width: 100%;
+            border-radius: 5px;
+        }
+        .movie-title {
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 10px;
+            color: #fff;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+        }
+    </style>
 </head>
 <body>
-  <h1>Lista de Filmes</h1>
-    <div>
-        <table  class="table table-dark">
-            <thead>
-                <th>ID</th>
-                <th>Titulo</th>
-                <th>Sinopse</th>
-                <th>Genero</th>
-                <th>Ano lançamento</th>
-            </thead>
-            <tbody id="tabelaFilmes">
-                <!--
-                <tr th:each="filme: ${filmes}">
-                    <td th:text="${filme.id}" />
-                    <td th:text="${filme.titulo}" />
-                    <td th:text="${filme.sinopse}" />
-                    <td th:text="${filme.genero}" />
-                    <td th:text="${filme.anoLancamento}" />
-                    <td>
-                        <a th:href="@{/exibirAnalise/{id}(id=${filme.id})}">Analises</a>
-                    </td>
-                </tr>
-                -->
-            <tbody/>
-        </table>
-    </div>
-    <div th:insert="footerNav.html :: footer">
+<!-- Barra de Navegação -->
+<header th:insert="navbar.html :: nav"></header>
 
+<!-- Cabeçalho -->
+<header class="container mt-5">
+    <h1 class="mb-4">Filmes</h1>
+</header>
+
+<!-- Grade de Filmes -->
+<div class="container">
+    <div class="row">
+        <!-- Cartão do Filme -->
+        <div class="col-md-3 mb-4">
+            <div class="card movie-card">
+                <img src="https://via.placeholder.com/300x450" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais filmes -->
+        <div class="col-md-3 mb-4">
+            <div class="card movie-card">
+                <img src="https://via.placeholder.com/300x450" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card movie-card">
+                <img src="https://via.placeholder.com/300x450" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card movie-card">
+                <img src="https://via.placeholder.com/300x450" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Adicione mais colunas para mais filmes -->
     </div>
-  <script th:src="@{/js/jquery-3.7.1.js}"></script>
-  <script th:src="@{/js/script.js}"></script>
+</div>
+
+<!-- Bootstrap JS e dependências -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

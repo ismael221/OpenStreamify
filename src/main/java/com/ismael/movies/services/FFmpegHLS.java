@@ -1,6 +1,8 @@
 package com.ismael.movies.services;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.UUID;
 
 @Service
 public class FFmpegHLS {
+
+    private  static  final Logger logger = LoggerFactory.getLogger(FFmpegHLS.class);
 
     private final Path baseLocation = Paths.get("videos/hls"); // Caminho relativo
 
@@ -57,6 +61,7 @@ public class FFmpegHLS {
             int exitCode = process.waitFor();
             System.out.println("Processo finalizado com código: " + exitCode);
         } catch (IOException | InterruptedException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
     }

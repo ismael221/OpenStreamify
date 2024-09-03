@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/analise")
-public class AnaliseControllerRest {
+public class AnaliseRestController {
 
     @Autowired
     AnaliseService analiseService;

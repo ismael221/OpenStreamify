@@ -6,9 +6,7 @@ import com.ismael.movies.services.ImagesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,7 +22,7 @@ import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/v1/media")
-public class MediaController {
+public class MediaRestController {
     @Autowired
     private HlsService hlsService;
 
@@ -73,7 +70,7 @@ public class MediaController {
 
     @Value("${server.url}")
     private String serverUrl;
-    public MediaController() throws IOException {
+    public MediaRestController() throws IOException {
         // Cria o diretório de upload se não existir
         Files.createDirectories(uploadDir);
     }

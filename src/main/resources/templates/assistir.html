@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disney Plus Fullscreen Video Player</title>
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/8.0.4/video-js.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <!-- Estilo personalizado -->
+    <style>
+        /* Resetando margens e preenchimentos */
+     * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+     }
+
+     html, body {
+         width: 100%;
+         height: 100%;
+         overflow: hidden; /* Remove barras de rolagem */
+         background-color: #141b29; /* Cor de fundo similar ao Disney Plus */
+     }
+
+     /* Player de vídeo ocupando toda a tela */
+     .video-js {
+         width: 100%;
+         height: 100vh; /* Altura total da viewport */
+         object-fit: cover; /* O vídeo deve cobrir todo o contêiner */
+     }
+
+     /* Customizações de estilo para o Video.js */
+     .video-js .vjs-control-bar {
+         background-color: rgba(0, 0, 0, 0.8); /* Barra de controle com fundo semi-transparente */
+     }
+
+     .video-js .vjs-big-play-button {
+         background-color: #1f80e0; /* Cor do botão de play grande */
+         border-radius: 50%; /* Botão redondo */
+         border: none;
+     }
+
+     .video-js .vjs-big-play-button:hover {
+         background-color: #1558b8; /* Cor do botão de play ao passar o mouse */
+     }
+
+     .video-js .vjs-play-progress,
+     .video-js .vjs-volume-level {
+         background-color: #1f80e0; /* Cor da barra de progresso e do nível de volume */
+     }
+
+     .video-js .vjs-slider-bar {
+         background-color: #ffffff; /* Cor da barra de fundo do slider */
+     }
+
+        .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+    color: #fff;
+    z-index: 1000; /* Certificar que o cabeçalho fique acima do vídeo */
+}
+
+.back-button {
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.movie-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="#" class="back-button"><i class="fas fa-arrow-left"></i></a>
+    <span class="movie-title">Nome do Filme</span>
+</div>
+<div class="video-container">
+    <video
+            id="my-video"
+            class="video-js vjs-big-play-centered"
+            controls
+            preload="auto"
+            poster="https://via.placeholder.com/640x264.png?text=Disney+"
+            data-setup="{}">
+        <source src="https://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" />
+        <p class="vjs-no-js">
+            To view this video please enable JavaScript, and consider upgrading to a
+            web browser that
+            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+        </p>
+    </video>
+</div>
+
+<!-- Video.js JS -->
+<script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script>
+<!-- Script para customizações adicionais -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Inicializando o Video.js
+    var player = videojs('my-video');
+
+    // Exemplo de ação para o botão de voltar
+    document.querySelector('.back-button').addEventListener('click', function(event) {
+        event.preventDefault();
+        window.history.back(); // Navega para a página anterior
+    });
+});
+
+</script>
+</body>
+</html>

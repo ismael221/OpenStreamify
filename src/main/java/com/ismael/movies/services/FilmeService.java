@@ -25,9 +25,9 @@ public class FilmeService {
     }
 
     public List<Filme> listaFilmes(){
-        logger.info("Informação básica");
-        logger.debug("Informação detalhada para debug");
-        logger.error("Algo deu errado!");
+        //logger.info("Informação básica");
+       // logger.debug("Informação detalhada para debug");
+        //logger.error("Algo deu errado!");
         return filmeRepository.findAll();
     }
 

@@ -1,5 +1,7 @@
 package com.ismael.movies.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -15,6 +17,9 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class ImagesService {
+
+    private  static  final Logger logger = LoggerFactory.getLogger(ImagesService.class);
+
     // Configuração do diretório de upload
     private final Path uploadDir = Paths.get("uploads");
 
@@ -44,6 +49,7 @@ public class ImagesService {
         if (resource.exists() && resource.isReadable()) {
             return resource;
         } else {
+            logger.error("Arquivo não encontrado "+filename);
             throw new RuntimeException("Arquivo não encontrado: " + filename);
         }
     }
