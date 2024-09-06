@@ -13,7 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/v1/filme")
 @CrossOrigin("*")
-public class FilmeRestController {
+public class MovieRestController {
 
     @Autowired
     MoviesService filmeService;
@@ -25,31 +25,31 @@ public class FilmeRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getFilmePorId(@PathVariable Integer id){
+    public ResponseEntity<Movie> getMovieById(@PathVariable Integer id){
         Movie movieEncontrado = filmeService.getMovieById(id);
         return  new ResponseEntity<>(movieEncontrado,HttpStatus.OK);
     }
 
     @PostMapping("/adicionar")
-    public ResponseEntity<Movie> addFilme(@RequestBody Movie movie){
+    public ResponseEntity<Movie> addMovie(@RequestBody Movie movie){
         var novoFilme = filmeService.addMovie(movie);
         return  new ResponseEntity<>(novoFilme, HttpStatus.CREATED);
     }
 
     @PutMapping("/atualizar/{id}")
-    public  ResponseEntity<Movie> atualizarFilme(@PathVariable Integer id, @RequestBody Movie movie){
+    public  ResponseEntity<Movie> updateMovie(@PathVariable Integer id, @RequestBody Movie movie){
         var filmeAtualizado = filmeService.updateMovie(id, movie);
         return  new ResponseEntity<>(filmeAtualizado,HttpStatus.OK);
     }
 
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity deletarFilme(@PathVariable Integer id){
+    public ResponseEntity deleteMovie(@PathVariable Integer id){
         filmeService.deleteMovie(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/rid/{rid}")
-    public ResponseEntity<Movie> listarFilmePorRid(@PathVariable UUID rid){
+    public ResponseEntity<Movie> getMovieByRID(@PathVariable UUID rid){
         var filmeFound = filmeService.getMovieByRID(rid);
        if (filmeFound != null){
            return new ResponseEntity<>(filmeFound,HttpStatus.OK);

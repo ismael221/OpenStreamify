@@ -19,7 +19,6 @@ public class Rating {
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
-    @JsonBackReference
     private Movie movie;
     @Column(columnDefinition = "MEDIUMTEXT")
     private String comment;

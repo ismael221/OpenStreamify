@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-public class FilmeController {
+public class MovieController {
         public String theme ="light";
         final
         MoviesService filmeService;
@@ -24,7 +24,7 @@ public class FilmeController {
         @Autowired
         RatingService ratingService;
 
-        public FilmeController(MoviesService filmeService) {
+        public MovieController(MoviesService filmeService) {
                 this.filmeService = filmeService;
         }
 

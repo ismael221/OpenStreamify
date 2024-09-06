@@ -41,6 +41,9 @@ public class MoviesService {
             movie.setTitle(movieRequest.getTitle());
             movie.setSynopsis(movieRequest.getSynopsis());
             movie.setReleased(movieRequest.getReleased());
+            movie.setBackgroundImgUrl(movieRequest.getBackgroundImgUrl());
+            movie.setCoverImgUrl(movieRequest.getCoverImgUrl());
+            movie.setTrailerUrl(movieRequest.getTrailerUrl());
             movieRepository.save(movie);
             return movie;
     }
