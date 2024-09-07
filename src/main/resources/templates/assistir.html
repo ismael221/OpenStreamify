@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
     <link href="https://vjs.zencdn.net/8.0.4/video-js.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
+    <link rel="icon" href="https://static-assets.bamgrid.com/product/disneyplus/favicons/favicon-aurora.9c40657cf520f9cfcf49dbb4f316aa7c.ico" type="image/png">
     <!-- Estilo personalizado -->
     <style>
         /* Resetando margens e preenchimentos */
@@ -80,14 +81,17 @@
     font-weight: bold;
 }
 
-
+.media-title{
+    text-decoration:none;
+    color:white;
+}
 
     </style>
 </head>
 <body>
 <div class="header">
     <a href="#" class="back-button"><i class="fas fa-arrow-left"></i></a>
-    <span class="movie-title">Nome do Filme</span>
+    <a class="media-title" th:href="@{'/detalhes/'+ ${media.rid}}"><span class="movie-title">[[${media.title}]]</span></a>
 </div>
 <div class="video-container">
     <video
@@ -95,9 +99,9 @@
             class="video-js vjs-big-play-centered"
             controls
             preload="auto"
-            poster="https://via.placeholder.com/640x264.png?text=Disney+"
+            th:poster="@{${media.coverImgUrl}}"
             data-setup="{}">
-        <source src="https://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" />
+        <source th:src="@{'http://localhost:443/api/v1/media/hls/' + ${media.rid} + '.m3u8'}" type="application/x-mpegURL" />
         <p class="vjs-no-js">
             To view this video please enable JavaScript, and consider upgrading to a
             web browser that
@@ -106,9 +110,10 @@
     </video>
 </div>
 
-<!-- Video.js JS -->
-<script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script>
-<!-- Script para customizações adicionais -->
+<!-- Video.js JavaScript -->
+<script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script>
+<!-- Video.js HLS Plugin (VHS) -->
+<script src="https://vjs.zencdn.net/7.18.1/videojs-http-streaming.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
     // Inicializando o Video.js

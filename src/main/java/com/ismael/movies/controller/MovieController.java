@@ -114,7 +114,8 @@ public class MovieController {
         @GetMapping("/play/{rid}")
         public String assistirFilme(@PathVariable("rid") String mediaRID, Model model) {
                 UUID uuid = UUID.fromString(mediaRID); // Verifica se é um UUID válido
-                model.addAttribute("media", uuid);
+                Movie media = moviesService.getMovieByRID(uuid);
+                model.addAttribute("media", media);
                 return "assistir";  // Nome do template Thymeleaf
         }
         //TODO Adicionar o enpoint para redirecionar para os detalhes do filme com o botão de play antes de reproduzir diretamente.
