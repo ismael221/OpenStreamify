@@ -95,8 +95,8 @@
     <div class="login-container">
         <div class="login-box">
             <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" alt="Disney Plus Logo" class="logo">
-            <form action="#" method="post">
-                <input type="email" name="email" placeholder="Email" required>
+            <form id="login-form">
+                <input type="email" name="login" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">Log In</button>
             </form>
@@ -106,5 +106,74 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function setAuthHeader() {
+               var token = localStorage.getItem('access_token');
+               if (token) {
+                   $.ajaxSetup({
+                       headers: {
+                           'Authorization': 'Bearer ' + token
+                       }
+                   });
+               }
+           }
+       function makeAuthenticatedRequest() {
+            var token = localStorage.getItem('access_token');
+            if (token) {
+                $.ajax({
+                    url: 'http://localhost:443/',
+                    type: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    success: function(response) {
+                        // Processa a resposta
+                    },
+                    error: function(xhr, status, error) {
+                        // Processa o erro
+                    }
+                });
+            } else {
+                alert('Usuário não está autenticado.');
+            }
+        }
+    $(document).ready(function() {
+        $('#login-form').on('submit', function(e) {
+            e.preventDefault(); // Evita o comportamento padrão de submit
+
+            // Obtém os dados do formulário
+            var email = $('input[name="login"]').val();
+            console.log(email)
+            var password = $('input[name="password"]').val();
+            console.log(password)
+            // Envia os dados via AJAX
+            $.ajax({
+                url: 'http://localhost:443/api/v1/auth/login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    login: email,
+                    password: password
+                }),
+                success: function(response) {
+                    // Sucesso no login
+                    localStorage.setItem('access_token', response.token);
+                    setAuthHeader();
+                    alert('Login bem-sucedido!');
+                    // Redirecionar ou processar resposta
+                    window.location.href = '/';
+                    //makeAuthenticatedRequest();
+                },
+                error: function(xhr, status, error) {
+                    // Erro no login
+                    alert('Erro ao fazer login: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+
+    </script>
 </body>
 </html>

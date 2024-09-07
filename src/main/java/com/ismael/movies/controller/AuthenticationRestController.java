@@ -6,6 +6,8 @@ import com.ismael.movies.model.Users.LoginResponseDTO;
 import com.ismael.movies.model.Users.RegisterDTO;
 import com.ismael.movies.model.Users.User;
 import com.ismael.movies.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,10 +29,15 @@ public class AuthenticationRestController {
     TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Validated AuthenticationDTO data){
+    public ResponseEntity<?> login(@RequestBody @Validated AuthenticationDTO data, HttpServletResponse response){
          var userNamePassword = new UsernamePasswordAuthenticationToken(data.login(),data.password());
          var auth = this.authenticationManager.authenticate(userNamePassword);
          var token = tokenService.generateToken((User) auth.getPrincipal());
+        Cookie cookie = new Cookie("access_token", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false); // Enviar apenas por HTTPS
+        cookie.setPath("/"); // Disponível para toda a aplicação
+        response.addCookie(cookie);
          return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 

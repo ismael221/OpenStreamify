@@ -25,16 +25,23 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-
-                               // .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
-                              //  .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
-                              //  .requestMatchers(HttpMethod.POST,"/api/v1/auth/register").permitAll()
-                                //.requestMatchers(HttpMethod.POST,"/api/v1/filme/adicionar").hasRole("ADMIN")
-
-                               .anyRequest().permitAll()
-                     //  .anyRequest().authenticated()
-
+                        .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/filme/adicionar").hasRole("ADMIN")
+                       // .anyRequest().permitAll()
+                      .anyRequest().authenticated()
                 )
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/", true)
+                                .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/signout").permitAll()
+                        .logoutSuccessUrl("/signout").permitAll()
+                    )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

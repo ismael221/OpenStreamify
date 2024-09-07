@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -38,8 +39,22 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     private String recoverToken(HttpServletRequest request){
+        // Tenta recuperar o token do cabeçalho Authorization
         var authHeader = request.getHeader("Authorization");
-        if (authHeader == null) return null;
-        return authHeader.replace("Bearer ","");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7); // Remove o prefixo "Bearer "
+        }
+
+        // Tenta recuperar o token do cookie
+        var cookies = request.getCookies();
+        if (cookies != null) {
+            var cookie = Arrays.stream(cookies)
+                    .filter(c -> "access_token".equals(c.getName()))
+                    .findFirst()
+                    .orElse(null);
+            return cookie != null ? cookie.getValue() : null;
+        }
+
+        return null;
     }
 }

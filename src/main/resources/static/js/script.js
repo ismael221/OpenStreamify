@@ -254,3 +254,24 @@ function atualizarAnalise(analise,idAnalise,idFilme){
     })
 }
 
+function makeAuthenticatedRequest() {
+                var token = localStorage.getItem('authToken');
+                if (token) {
+                    $.ajax({
+                        url: 'http://localhost:443/',
+                        type: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        },
+                        success: function(response) {
+                            // Processa a resposta
+                        },
+                        error: function(xhr, status, error) {
+                            // Processa o erro
+                        }
+                    });
+                } else {
+                    alert('Usuário não está autenticado.');
+                }
+            }
+        });

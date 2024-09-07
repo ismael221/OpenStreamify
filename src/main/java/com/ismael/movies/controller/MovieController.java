@@ -31,11 +31,11 @@ public class MovieController {
                 this.moviesService = moviesService;
         }
 
+        //TODO Add the logic to sign in the user
         @GetMapping("/auth/login")
         public String loginPage(){
                 return "login";
         }
-
 
         @GetMapping("/")
         public String homePage(Model model) {
@@ -128,5 +128,10 @@ public class MovieController {
                 return "detalhes";
         }
 
-        //TODO adicionar enpointe para listar as series,baseado no type da entity movies
+        @GetMapping("/logout")
+        public String signInPage(){
+                return "redirect:/auth/login";
+        }
+
+        //TODO adicionar enpoint para listar as series,baseado no type da entity movies
 }
