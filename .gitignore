@@ -6,7 +6,7 @@ target/
 /logs
 /videos
 /uploads
-/out/**
+/out
 
 ### STS ###
 .apt_generated

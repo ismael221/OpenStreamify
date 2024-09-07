@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//TODO Added the DTO class to fix the json infinite loop
 @Service
 public class MoviesService {
     @Autowired
@@ -44,12 +43,8 @@ public class MoviesService {
         return moviesListConverted;
     }
 
-    public Movie getMovieById(Integer movieId){
-        return movieRepository.findById(movieId).orElseThrow();
-    }
-
-    public Movie updateMovie(Integer filmeID, Movie movieRequest){
-            Movie movie = getMovieById(filmeID);
+    public Movie updateMovie(UUID filmeID, Movie movieRequest){
+            Movie movie = getMovieByRID(filmeID);
             movie.setGenre(movieRequest.getGenre());
             movie.setTitle(movieRequest.getTitle());
             movie.setSynopsis(movieRequest.getSynopsis());
@@ -61,8 +56,8 @@ public class MoviesService {
             return movie;
     }
 
-    public void deleteMovie(Integer filmeID){
-            Movie movie = getMovieById(filmeID);
+    public void deleteMovie(UUID filmeID){
+            Movie movie = getMovieByRID(filmeID);
             movieRepository.deleteById((int) movie.getId());
     }
 

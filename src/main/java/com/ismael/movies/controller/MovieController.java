@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class MovieController {
@@ -76,10 +77,10 @@ public class MovieController {
         }
 
         @GetMapping("/exibirAnalise/{id}")
-        public String analisePorFilme(Model model, @PathVariable Integer id)
+        public String analisePorFilme(Model model, @PathVariable UUID rid)
         {
-                Movie movieEncontrado = moviesService.getMovieById(id);
-                List<Rating> analisesEcontradas = ratingService.listRatingsByMovieId(id);
+                Movie movieEncontrado = moviesService.getMovieByRID(rid);
+                List<Rating> analisesEcontradas = ratingService.listRatingsByMovieRID(rid);
                 model.addAttribute("filme", movieEncontrado);
                 model.addAttribute("feedback", new Rating());
                 model.addAttribute("analises", analisesEcontradas);
@@ -110,15 +111,19 @@ public class MovieController {
 
         }
 
-        @GetMapping("/play")
-        public String assistirFilme(@RequestParam String movie, Model model) {
-                model.addAttribute("movie", movie);
+        @GetMapping("/play/{rid}")
+        public String assistirFilme(@PathVariable("rid") String mediaRID, Model model) {
+                UUID uuid = UUID.fromString(mediaRID); // Verifica se é um UUID válido
+                model.addAttribute("media", uuid);
                 return "assistir";  // Nome do template Thymeleaf
         }
         //TODO Adicionar o enpoint para redirecionar para os detalhes do filme com o botão de play antes de reproduzir diretamente.
 
-        @GetMapping("/detalhes")
-        public String detalhaFilme(){
+        @GetMapping("/detalhes/{rid}")
+        public String detalhaFilme(@PathVariable("rid") String movie_RID, Model model){
+                UUID uuid = UUID.fromString(movie_RID); // Verifica se é um UUID válido
+                Movie  movieDetails = moviesService.getMovieByRID(uuid);
+                model.addAttribute("details",movieDetails);
                 return "detalhes";
         }
 

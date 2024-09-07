@@ -8,9 +8,17 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="icon" href="https://static-assets.bamgrid.com/product/disneyplus/favicons/favicon-aurora.9c40657cf520f9cfcf49dbb4f316aa7c.ico" type="image/png">
 
-  <!-- Custom Styles
-    <link rel="stylesheet" href="./static/css/style.css">
-  <link th:href="@{/css/__${css}__.css}" rel="stylesheet" type="text/css"/>-->
+  <meta name="description" content="Assista a vídeos de alta qualidade em nosso site de streaming com uma vasta seleção de filmes, séries e documentários.">
+  <meta name="keywords" content="streaming, vídeos online, filmes, séries, documentários, alta qualidade, HLS, vídeos on demand">
+  <meta name="author" content="ismael221">
+
+  <meta property="og:title" content="Site de Streaming - Assista aos Melhores Vídeos">
+  <meta property="og:description" content="Aproveite a melhor experiência em streaming com conteúdo de alta qualidade, disponível em diversas plataformas.">
+  <meta property="og:image" content="URL-da-imagem-de-capa">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.seusite.com.br">
+
+
   <style>
     body {
     background-color: #1a1a1a;
@@ -133,7 +141,7 @@
         <div class="row">
           <!-- Itera sobre os filmes dentro de cada chunk -->
           <div class="col" th:each="m : ${movieChunk}">
-            <a th:href="@{/detalhes}">
+            <a th:href="@{'/detalhes/'+ ${m.rid}}">
               <img th:src="${m.coverImgUrl}" class="d-block w-100" th:alt="${m.title}">
             </a>
           </div>

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/analise")
@@ -23,8 +24,8 @@ public class RatingRestController {
     }
 
     @GetMapping("/buscar/{id}")
-    public  ResponseEntity<List> getAnalisePorFilme(@PathVariable Integer id){
-        List<Rating> analises = ratingService.listRatingsByMovieId(id);
+    public  ResponseEntity<List> getAnalisePorFilme(@PathVariable UUID rid){
+        List<Rating> analises = ratingService.listRatingsByMovieRID(rid);
         return new ResponseEntity<>(analises,HttpStatus.OK);
     }
 

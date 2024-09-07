@@ -25,9 +25,9 @@ public class MovieRestController {
         return new ResponseEntity<>(movies,HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable Integer id){
-        Movie movieEncontrado = moviesService.getMovieById(id);
+    @GetMapping("/{rid}")
+    public ResponseEntity<Movie> getMovieById(@PathVariable UUID rid){
+        Movie movieEncontrado = moviesService.getMovieByRID(rid);
         return  new ResponseEntity<>(movieEncontrado,HttpStatus.OK);
     }
 
@@ -37,15 +37,15 @@ public class MovieRestController {
         return  new ResponseEntity<>(novoFilme, HttpStatus.CREATED);
     }
 
-    @PutMapping("/atualizar/{id}")
-    public  ResponseEntity<Movie> updateMovie(@PathVariable Integer id, @RequestBody Movie movie){
-        var filmeAtualizado = moviesService.updateMovie(id, movie);
+    @PutMapping("/atualizar/{rid}")
+    public  ResponseEntity<Movie> updateMovie(@PathVariable UUID rid, @RequestBody Movie movie){
+        var filmeAtualizado = moviesService.updateMovie(rid, movie);
         return  new ResponseEntity<>(filmeAtualizado,HttpStatus.OK);
     }
 
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity deleteMovie(@PathVariable Integer id){
-        moviesService.deleteMovie(id);
+    public ResponseEntity deleteMovie(@PathVariable UUID rid){
+        moviesService.deleteMovie(rid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
