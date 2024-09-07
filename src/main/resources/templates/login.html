@@ -109,6 +109,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
+        const serverUrl = 'http://localhost:443';
+
         function setAuthHeader() {
                var token = localStorage.getItem('access_token');
                if (token) {
@@ -123,7 +125,7 @@
             var token = localStorage.getItem('access_token');
             if (token) {
                 $.ajax({
-                    url: 'http://localhost:443/',
+                    url: `${serverUrl}`,
                     type: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token
@@ -150,7 +152,7 @@
             console.log(password)
             // Envia os dados via AJAX
             $.ajax({
-                url: 'http://localhost:443/api/v1/auth/login',
+                url:  `${serverUrl}/api/v1/auth/login`,
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -159,7 +161,7 @@
                 }),
                 success: function(response) {
                     // Sucesso no login
-                    localStorage.setItem('access_token', response.token);
+                   // localStorage.setItem('access_token', response.token);
                     setAuthHeader();
                     alert('Login bem-sucedido!');
                     // Redirecionar ou processar resposta
