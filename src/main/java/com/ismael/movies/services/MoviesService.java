@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-
+//TODO Added the DTO class to fix the json infinite loop
 @Service
 public class MoviesService {
     @Autowired

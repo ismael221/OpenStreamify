@@ -5,7 +5,7 @@ import com.ismael.movies.repository.RatingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+//TODO Added the DTO class to fix the json infinite loop
 @Service
 public class RatingService {
 

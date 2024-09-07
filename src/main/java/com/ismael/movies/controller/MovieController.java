@@ -19,24 +19,26 @@ import java.util.List;
 public class MovieController {
         public String theme ="light";
         final
-        MoviesService filmeService;
+        MoviesService moviesService;
 
         @Autowired
         RatingService ratingService;
 
-        public MovieController(MoviesService filmeService) {
-                this.filmeService = filmeService;
+        public MovieController(MoviesService moviesService) {
+                this.moviesService = moviesService;
         }
 
         @GetMapping("/auth/login")
         public String loginPage(){
                 return "login";
         }
+
+
         @GetMapping("/")
-        public String homePage(@CookieValue(name="pref-nome", defaultValue="") String style, @CookieValue(name="pref-estilo", defaultValue="light")String tema, Model model){
-                theme = tema;
-                model.addAttribute("css", tema);
-                model.addAttribute("style", style);
+        public String homePage(Model model){
+                List<Movie> moviesList = moviesService.listAllMovies();
+                model.addAttribute("movies",moviesList);
+                System.out.println(moviesList);
                 return "index";
         }
 
@@ -49,21 +51,21 @@ public class MovieController {
 
         @PostMapping("/cadastrarFilme")
         public String cadastrarFilme(@ModelAttribute Movie movie) {
-                filmeService.addMovie(movie);
+                moviesService.addMovie(movie);
                 return "redirect:/listarFilmes";
         }
 
         @GetMapping("/listarFilmes")
         public String listarFilmes(Model model){
-                model.addAttribute("css",theme);
-                model.addAttribute("filmes",filmeService.listAllMovies());
+             //   model.addAttribute("css",theme);
+                model.addAttribute("filmes",moviesService.listAllMovies());
                 return "filmes";
         }
 
         @GetMapping("/exibirAnalise/{id}")
         public String analisePorFilme(Model model, @PathVariable Integer id)
         {
-                Movie movieEncontrado = filmeService.getMovieById(id);
+                Movie movieEncontrado = moviesService.getMovieById(id);
                 List<Rating> analisesEcontradas = ratingService.listRatingsByMovieId(id);
                 model.addAttribute("filme", movieEncontrado);
                 model.addAttribute("feedback", new Rating());
@@ -95,9 +97,9 @@ public class MovieController {
 
         }
 
-        @GetMapping("/assistir")
-        public String assistirFilme(@RequestParam String filme, Model model) {
-                model.addAttribute("filme", filme);
+        @GetMapping("/play")
+        public String assistirFilme(@RequestParam String movie, Model model) {
+                model.addAttribute("movie", movie);
                 return "assistir";  // Nome do template Thymeleaf
         }
         //TODO Adicionar o enpoint para redirecionar para os detalhes do filme com o botão de play antes de reproduzir diretamente.
@@ -106,4 +108,6 @@ public class MovieController {
         public String detalhaFilme(){
                 return "detalhes";
         }
+
+        //TODO adicionar enpointe para listar as series,baseado no type da entity movies
 }
