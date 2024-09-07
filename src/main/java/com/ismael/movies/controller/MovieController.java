@@ -7,6 +7,7 @@ import com.ismael.movies.model.Rating;
 import com.ismael.movies.services.RatingService;
 import com.ismael.movies.services.MoviesService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,23 @@ public class MovieController {
         @GetMapping("/auth/login")
         public String loginPage(){
                 return "login";
+        }
+
+        @GetMapping("/logout")
+        public String signInPage(HttpServletRequest request, HttpServletResponse response){
+                // Remove o cookie
+                var cookies = request.getCookies();
+                if (cookies != null) {
+                        for (var cookie : cookies) {
+                                if ("access_token".equals(cookie.getName())) {
+                                        cookie.setValue(null);
+                                        cookie.setMaxAge(0); // Define o tempo de vida do cookie para 0
+                                        cookie.setPath("/"); // Certifique-se de que o caminho está correto
+                                        response.addCookie(cookie);
+                                }
+                        }
+                }
+                return "redirect:/auth/login";
         }
 
         @GetMapping("/")
@@ -128,10 +146,7 @@ public class MovieController {
                 return "detalhes";
         }
 
-        @GetMapping("/logout")
-        public String signInPage(){
-                return "redirect:/auth/login";
-        }
+
 
         //TODO adicionar enpoint para listar as series,baseado no type da entity movies
 }

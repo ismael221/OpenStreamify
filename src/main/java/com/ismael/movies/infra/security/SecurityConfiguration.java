@@ -38,6 +38,12 @@ public class SecurityConfiguration {
                                 .defaultSuccessUrl("/", true)
                                 .permitAll()
                 )
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .authenticationEntryPoint((request, response, authException) -> {
+                                    response.sendRedirect("/auth/login"); // Redireciona para o login se não autenticado
+                                })
+                )
                 .logout(logout -> logout
                         .logoutUrl("/signout").permitAll()
                         .logoutSuccessUrl("/signout").permitAll()
