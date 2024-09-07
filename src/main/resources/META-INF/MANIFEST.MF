@@ -1,3 +1,3 @@
-Manifest-Version: 2.0
+Manifest-Version: 1.0
 Main-Class: com.ismael.movies.MoviesApplication
 

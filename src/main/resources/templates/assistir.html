@@ -101,7 +101,7 @@
             preload="auto"
             th:poster="@{${media.coverImgUrl}}"
             data-setup="{}">
-        <source th:src="@{'http://localhost:443/api/v1/media/hls/' + ${media.rid} + '.m3u8'}" type="application/x-mpegURL" />
+        <source th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" type="application/x-mpegURL" />
         <p class="vjs-no-js">
             To view this video please enable JavaScript, and consider upgrading to a
             web browser that

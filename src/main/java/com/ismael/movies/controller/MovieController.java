@@ -27,6 +27,8 @@ public class MovieController {
 
         @Autowired
         RatingService ratingService;
+        @Autowired
+        ConfigRestController config;
 
         public MovieController(MoviesService moviesService) {
                 this.moviesService = moviesService;
@@ -133,7 +135,9 @@ public class MovieController {
         public String assistirFilme(@PathVariable("rid") String mediaRID, Model model) {
                 UUID uuid = UUID.fromString(mediaRID); // Verifica se é um UUID válido
                 Movie media = moviesService.getMovieByRID(uuid);
+                String serverUrl = config.getServerUrl();
                 model.addAttribute("media", media);
+                model.addAttribute("config",serverUrl);
                 return "assistir";  // Nome do template Thymeleaf
         }
         //TODO Adicionar o enpoint para redirecionar para os detalhes do filme com o botão de play antes de reproduzir diretamente.
