@@ -1,5 +1,6 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.DTO.MovieDTO;
 import com.ismael.movies.cookies.model.Preferencia;
 import com.ismael.movies.model.Movie;
 import com.ismael.movies.model.Rating;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,11 +37,22 @@ public class MovieController {
 
 
         @GetMapping("/")
-        public String homePage(Model model){
-                List<Movie> moviesList = moviesService.listAllMovies();
-                model.addAttribute("movies",moviesList);
-                System.out.println(moviesList);
+        public String homePage(Model model) {
+                List<MovieDTO> moviesList = moviesService.listAllMovies();
+
+                // Particionar a lista de filmes manualmente
+                List<List<MovieDTO>> movieChunks = partitionList(moviesList, 4);
+                model.addAttribute("moviesChunks", movieChunks);
                 return "index";
+        }
+
+        // Método auxiliar para particionar a lista
+        private <T> List<List<T>> partitionList(List<T> list, int chunkSize) {
+                List<List<T>> partitions = new ArrayList<>();
+                for (int i = 0; i < list.size(); i += chunkSize) {
+                        partitions.add(list.subList(i, Math.min(i + chunkSize, list.size())));
+                }
+                return partitions;
         }
 
         @GetMapping("/cadastrarFilme")
@@ -50,7 +63,7 @@ public class MovieController {
         }
 
         @PostMapping("/cadastrarFilme")
-        public String cadastrarFilme(@ModelAttribute Movie movie) {
+        public String cadastrarFilme(@ModelAttribute MovieDTO movie) {
                 moviesService.addMovie(movie);
                 return "redirect:/listarFilmes";
         }

@@ -126,22 +126,21 @@
   </div>
 
     <!-- Carrossel de Filmes -->
-    <div id="slider" class="carousel slide slider" data-bs-ride="false">
-      <div class="carousel-inner">
-        <div th:each="movie, iterStat : ${movies}" class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active'">
-          <div class="row">
-            <!-- Exibe 4 filmes por linha -->
-            <div class="col" th:each="m : ${movie}">
-              <a th:href="@{/detalhes}">
-                <img th:src="${m.coverImgUrl}" class="d-block w-100" th:alt="${m.title}">
-              </a>
-            </div>
+  <div id="slider" class="carousel slide slider" data-bs-ride="false">
+    <div class="carousel-inner">
+      <!-- Itera sobre os chunks de filmes -->
+      <div th:each="movieChunk, iterStat : ${moviesChunks}" class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active'">
+        <div class="row">
+          <!-- Itera sobre os filmes dentro de cada chunk -->
+          <div class="col" th:each="m : ${movieChunk}">
+            <a th:href="@{/detalhes}">
+              <img th:src="${m.coverImgUrl}" class="d-block w-100" th:alt="${m.title}">
+            </a>
           </div>
         </div>
+      </div>
     </div>
-
-
-    <button class="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
+  <button class="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Anterior</span>
     </button>

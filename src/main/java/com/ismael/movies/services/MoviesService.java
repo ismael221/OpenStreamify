@@ -1,7 +1,9 @@
 package com.ismael.movies.services;
 
+import com.ismael.movies.DTO.MovieDTO;
 import com.ismael.movies.model.Movie;
 import com.ismael.movies.repository.MovieRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 //TODO Added the DTO class to fix the json infinite loop
 @Service
@@ -16,19 +19,29 @@ public class MoviesService {
     @Autowired
     MovieRepository movieRepository;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     private  static  final Logger logger = LoggerFactory.getLogger(MoviesService.class);
 
-    public Movie addMovie(Movie movie){
-        movieRepository.save(movie);
-
-        return movie;
+    public MovieDTO convertToDto(Movie movie){
+        return modelMapper.map(movie, MovieDTO.class);
     }
 
-    public List<Movie> listAllMovies(){
-        //logger.info("Informação básica");
-       // logger.debug("Informação detalhada para debug");
-        //logger.error("Algo deu errado!");
-        return movieRepository.findAll();
+    public Movie convertToEntity(MovieDTO movieDTO){
+        return  modelMapper.map(movieDTO, Movie.class);
+    }
+
+    public MovieDTO addMovie(MovieDTO movie){
+         Movie newMovie =  convertToEntity(movie);
+         MovieDTO movieFound = convertToDto(movieRepository.save(newMovie));
+        return movieFound;
+    }
+
+    public List<MovieDTO> listAllMovies(){
+        List<Movie>  moviesFoundList= movieRepository.findAll();
+        List<MovieDTO> moviesListConverted =  moviesFoundList.stream().map(this::convertToDto).collect(Collectors.toList());
+        return moviesListConverted;
     }
 
     public Movie getMovieById(Integer movieId){
