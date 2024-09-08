@@ -150,7 +150,10 @@ public class MovieController {
                 return "detalhes";
         }
 
-
+        @GetMapping("/auth/register")
+        public String registerUser(){
+                return "register";
+        }
 
         //TODO adicionar enpoint para listar as series,baseado no type da entity movies
 }

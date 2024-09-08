@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disney+ Signup</title>
+    <link rel="icon" href="https://static-assets.bamgrid.com/product/disneyplus/favicons/favicon-aurora.9c40657cf520f9cfcf49dbb4f316aa7c.ico" type="image/png">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #000;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 20px;
+      }
+
+      .signup-form {
+        background-color: #1a1a1a;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .logo {
+        width: 150px;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #b3b3b3;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        background-color: #333;
+        color: #fff;
+      }
+
+      input:focus {
+        outline: none;
+        border: 1px solid #3b5998;
+      }
+
+      .btn-signup {
+        background-color: #0063e5;
+        color: #fff;
+        padding: 15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 20px;
+        transition: background-color 0.3s;
+      }
+
+      .btn-signup:hover {
+        background-color: #0483ee;
+      }
+
+      .terms {
+        font-size: 12px;
+        color: #b3b3b3;
+        margin-top: 15px;
+      }
+
+      .terms a {
+        color: #0063e5;
+        text-decoration: none;
+      }
+
+      .terms a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="signup-form">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/1200px-Disney%2B_logo.svg.png"
+          alt="Disney+ Logo"
+          class="logo"
+        />
+        <h2>Create Your Disney+ Account</h2>
+        <form id="register-form">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              minlength="6"
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm-password"
+              required
+              minlength="6"
+            />
+          </div>
+          <button type="submit" class="btn-signup">Sign Up</button>
+        </form>
+        <p class="terms">
+          By signing up, you agree to the <a href="#">Terms of Service</a> and
+          <a href="#">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.querySelector("form").addEventListener("submit", function (e) {
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            const login = document.getElementById("email").value
+
+            if (password !== confirmPassword) {
+              alert("Passwords do not match!");
+              e.preventDefault(); // Impede o envio do formulário
+            } else {
+              e.preventDefault(); // Impede o envio do formulário até o AJAX terminar
+          
+              // Inicia a requisição para obter a serverUrl
+              $.ajax({
+                url: `/api/config`,
+                type: "GET",
+                success: function (response) {
+                  const serverUrl = response; // Define serverUrl
+          
+                  // Envia os dados via AJAX para registro
+                  $.ajax({
+                    url: `${serverUrl}/api/v1/auth/register`,
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                      login: login,
+                      password: password,
+                      role: "USER",
+                    }),
+                    success: function (response) {
+                      alert("Cadastro realizado com sucesso!");
+                      // Redireciona para a página de login após o sucesso
+                      window.location.href = "/auth/login";
+                    },
+                    error: function (xhr, status, error) {
+                      alert("Erro ao fazer cadastro: " + xhr.responseText);
+                    },
+                  });
+                },
+                error: function (xhr, status, error) {
+                  alert("Erro ao obter server URL: " + xhr.responseText);
+                },
+              });
+            }
+          });
+          
+    </script>
+  </body>
+</html>
