@@ -163,5 +163,14 @@ public class MovieController {
                 return "register";
         }
 
+        @GetMapping("/auth/reset")
+        public String resetPassword(){
+                return "reset";
+        }
+
+        @GetMapping("/auth/update")
+        public String successfullPasswordReset(){
+                return  "updatePassword";
+        }
         //TODO adicionar enpoint para listar as series,baseado no type da entity movies
 }
