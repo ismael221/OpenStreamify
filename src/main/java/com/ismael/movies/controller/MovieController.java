@@ -2,6 +2,7 @@ package com.ismael.movies.controller;
 
 import com.ismael.movies.DTO.MovieDTO;
 import com.ismael.movies.cookies.model.Preferencia;
+import com.ismael.movies.enums.MovieGenre;
 import com.ismael.movies.model.Movie;
 import com.ismael.movies.model.Rating;
 import com.ismael.movies.services.RatingService;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -146,6 +149,10 @@ public class MovieController {
         @GetMapping("/detalhes/{rid}")
         public String detalhaFilme(@PathVariable("rid") String movie_RID, Model model){
                 UUID uuid = UUID.fromString(movie_RID); // Verifica se é um UUID válido
+                List<String> genres = Arrays.stream(MovieGenre.values())
+                        .map(Enum::name)
+                        .collect(Collectors.toList());
+                model.addAttribute("genres", genres);
                 Movie  movieDetails = moviesService.getMovieByRID(uuid);
                 model.addAttribute("details",movieDetails);
                 return "detalhes";
