@@ -19,4 +19,13 @@ public class GenreController {
                 .map(Enum::name) // Obtém o nome de cada enum
                 .collect(Collectors.toList());
     }
+
+    //TODO corrigir para listar o genero somente do filme especificado
+    @GetMapping
+    public List<String> getMovieGenreEqualsTo(String genre) {
+        // Converte os valores do enum em uma lista de strings
+        return Arrays.stream(MovieGenre.values())
+                .map(Enum::name) // Obtém o nome de cada enum
+                .collect(Collectors.toList());
+    }
 }
