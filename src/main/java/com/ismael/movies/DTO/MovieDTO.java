@@ -1,12 +1,14 @@
 package com.ismael.movies.DTO;
 
 
+import com.ismael.movies.enums.MovieGenre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -16,7 +18,7 @@ import java.util.UUID;
 public class MovieDTO {
     private String title;
     private String synopsis;
-    private String genre;
+    private Set<MovieGenre> genres;
     private Date released;
     private UUID rid;
     private String backgroundImgUrl;

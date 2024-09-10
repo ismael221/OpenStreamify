@@ -1,6 +1,7 @@
 package com.ismael.movies.model;
 
 
+import com.ismael.movies.enums.MovieGenre;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.*;
 import java.sql.Types;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -22,7 +24,11 @@ public class Movie {
     private String title;
     @Column(columnDefinition = "MEDIUMTEXT")
     private String synopsis;
-    private String genre;
+    @ElementCollection(targetClass = MovieGenre.class) // Indica uma coleção de enumerações
+    @Enumerated(EnumType.STRING) // Armazena os enums como strings no banco
+    @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "genre")
+    private Set<MovieGenre> genres;
     private Date released;
     @UuidGenerator
     @JdbcTypeCode(Types.VARCHAR)

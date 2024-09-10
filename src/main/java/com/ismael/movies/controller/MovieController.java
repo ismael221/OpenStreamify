@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MovieController {
         public String theme ="light";
         final

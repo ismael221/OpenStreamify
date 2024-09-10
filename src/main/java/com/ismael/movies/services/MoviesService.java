@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,21 +32,24 @@ public class MoviesService {
         return  modelMapper.map(movieDTO, Movie.class);
     }
 
+    @Transactional
     public MovieDTO addMovie(MovieDTO movie){
          Movie newMovie =  convertToEntity(movie);
          MovieDTO movieFound = convertToDto(movieRepository.save(newMovie));
         return movieFound;
     }
 
+    @Transactional(readOnly = true)
     public List<MovieDTO> listAllMovies(){
         List<Movie>  moviesFoundList= movieRepository.findAll();
         List<MovieDTO> moviesListConverted =  moviesFoundList.stream().map(this::convertToDto).collect(Collectors.toList());
         return moviesListConverted;
     }
 
+    @Transactional
     public Movie updateMovie(UUID filmeID, Movie movieRequest){
             Movie movie = getMovieByRID(filmeID);
-            movie.setGenre(movieRequest.getGenre());
+            movie.setGenres(movieRequest.getGenres());
             movie.setTitle(movieRequest.getTitle());
             movie.setSynopsis(movieRequest.getSynopsis());
             movie.setReleased(movieRequest.getReleased());
@@ -56,11 +60,13 @@ public class MoviesService {
             return movie;
     }
 
+    @Transactional
     public void deleteMovie(UUID filmeID){
             Movie movie = getMovieByRID(filmeID);
             movieRepository.deleteById((int) movie.getId());
     }
 
+    @Transactional(readOnly = true)
     public Movie getMovieByRID(UUID rid){
         Movie movie = movieRepository.getMoviesByRidIs(rid);
         return movie;
