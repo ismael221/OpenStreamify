@@ -16,10 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -164,7 +161,8 @@ public class MovieController {
         }
 
         @GetMapping("/auth/reset")
-        public String resetPassword(){
+        public String resetPassword(HttpServletRequest request, HttpServletResponse response){
+
                 return "reset";
         }
 
