@@ -49,6 +49,8 @@ public class MovieController {
                         for (var cookie : cookies) {
                                 if ("access_token".equals(cookie.getName())) {
                                         cookie.setValue(null);
+                                        cookie.setHttpOnly(false);
+
                                         cookie.setMaxAge(0); // Define o tempo de vida do cookie para 0
                                         cookie.setPath("/"); // Certifique-se de que o caminho está correto
                                         response.addCookie(cookie);
