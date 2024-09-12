@@ -128,7 +128,7 @@ public class EmailController {
                                 <h1>Redefinição de Senha</h1>
                                 <p>Olá,</p>
                                 <p>Recebemos uma solicitação para redefinir a senha da sua conta. Clique no botão abaixo para redefinir sua senha:</p>
-                                <a href="%s/reset-password?token=%s" class="button">Redefinir Senha</a>
+                                <a href="%s/reset-password/%s" class="button">Redefinir Senha</a>
                                 <p>Se você não solicitou a redefinição de senha, ignore este email.</p>
                             </div>
                             <div class="footer">

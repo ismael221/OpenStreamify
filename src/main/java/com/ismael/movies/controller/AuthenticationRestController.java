@@ -51,4 +51,15 @@ public class AuthenticationRestController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/reset")
+    public ResponseEntity changePassword(@RequestBody @Validated RegisterDTO user){
+        if (this.userRepository.findByLogin(user.login()) != null) return ResponseEntity.badRequest().build();
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(user.password());
+        User newUser = new User(user.login(),encryptedPassword,user.role());
+        this.userRepository.save(newUser);
+
+        return ResponseEntity.ok().build();
+    }
 }

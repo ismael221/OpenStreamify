@@ -167,10 +167,15 @@ public class MovieController {
 
                 return "reset";
         }
-
+        //TODO Adicionar o enpoint rest que recebe o token para resetar a senha e redirecionar para essa página, exemplo abaixo, o sistema vai pegar e validar se o token é valido.
+        //Caso seja ele chama o auth/update para mudar a senha, enpoint esse que chama outro e salva a nova senha do usuário, caso ocorra tudo bem redireciona para a página inicial da aplicação
+        //https://example.com/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6ImlzbWFlbGRlbnVuZXNAZ21haWwuY29tIiwiZXhwIjoxNzI1OTk2NTQyfQ.GbWIQl30V84vbeEeBgapwy5w0eN_0ybgkXitrU3bZ0Q
         @GetMapping("/auth/update")
         public String successfullPasswordReset(){
+
                 return  "updatePassword";
         }
+
+
         //TODO adicionar enpoint para listar as series,baseado no type da entity movies
 }
