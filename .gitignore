@@ -7,7 +7,7 @@ target/
 /videos
 /uploads
 /out
-
+/temp
 ### STS ###
 .apt_generated
 .classpath

@@ -49,18 +49,27 @@ public class MediaRestController {
 
     @PostMapping("/hls/upload")
     public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam UUID rid) {
-        // Definindo o diretório de destino
-        String uploadDir = "C:\\Users\\Usuario\\Downloads\\resource\\";
 
-        // Criando o arquivo no sistema
-        File destFile = new File(uploadDir + file.getOriginalFilename());
+        String uploadDir = System.getProperty("user.dir") + File.separator + "temp";
+
+        File directory = new File(uploadDir);
+
+        if (!directory.exists()) {
+            boolean created = directory.mkdirs();
+            if (!created) {
+                return ResponseEntity.status(500).body("Failed to create the upload directory.");
+            }
+        }
+
+
+        File destFile = new File(uploadDir + File.separator + file.getOriginalFilename());
 
         try {
             // Transferindo o arquivo enviado para o destino
             file.transferTo(destFile);
 
             // Chamando o método para processar o vídeo com FFmpeg
-            fFmpegHLS.executeFFmpegCommand(destFile.getAbsolutePath(),rid);
+            fFmpegHLS.executeFFmpegCommand(destFile.getAbsolutePath(), rid);
 
             return ResponseEntity.ok("Video uploaded and processed successfully.");
         } catch (IOException e) {
