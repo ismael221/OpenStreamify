@@ -6,6 +6,7 @@ import com.ismael.movies.model.Users.LoginResponseDTO;
 import com.ismael.movies.model.Users.RegisterDTO;
 import com.ismael.movies.model.Users.User;
 import com.ismael.movies.repository.UserRepository;
+import com.ismael.movies.services.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class AuthenticationRestController {
 
     @Autowired
     TokenService tokenService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated AuthenticationDTO data, HttpServletResponse response){
@@ -55,22 +59,17 @@ public class AuthenticationRestController {
 
     @PostMapping("/update")
     public ResponseEntity changePassword(@RequestBody @Validated RegisterDTO user){
-        if (this.userRepository.findByLogin(user.login()) != null) return ResponseEntity.badRequest().build();
+        User user1 = userService.findUserByLogin(user.login());
+        if (user1.getLogin() != null) {
+            String encryptedPassword = new BCryptPasswordEncoder().encode(user.password());
+            user1.setPassword(encryptedPassword);
+            userService.updateUserLogin(user1);
+            return ResponseEntity.ok().build();
+        }
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(user.password());
-        User newUser = new User(user.login(),encryptedPassword,user.role());
-        this.userRepository.save(newUser);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/reset/{token}")
-    public ResponseEntity validateToken(@PathVariable String token){
-         String validated = tokenService.validateToken(token);
-         if (validated != ""){
-             return  ResponseEntity.ok(validated);
-         }
-         return ResponseEntity.unprocessableEntity().build();
-    }
+
 
 }

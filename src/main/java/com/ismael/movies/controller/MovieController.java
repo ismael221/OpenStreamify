@@ -216,6 +216,7 @@ public class MovieController {
                         newCookie.setPath("/");
                         response.addCookie(newCookie);
                         logger.info("Novo cookie 'access_token' adicionado.");
+                        request.getSession().setAttribute("email", usuario.getLogin());
                         return "redirect:/auth/update";
                 } else {
                         logger.warn("Usuário não encontrado para o token validado.");
@@ -226,7 +227,13 @@ public class MovieController {
         }
 
         @GetMapping("/auth/update")
-        public String updatePassword(){
+        public String updatePassword(HttpServletRequest request, Model model) {
+                String email = (String) request.getSession().getAttribute("email");
+
+                if (email == null) {
+                        return "redirect:/auth/reset";
+                }
+                model.addAttribute("email", email);
                 return "updatePassword";
         }
 
