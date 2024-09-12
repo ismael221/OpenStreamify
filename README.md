@@ -13,6 +13,7 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 - Controle de acesso com base em permissões de usuários.
 - Endpoints seguros usando autenticação JWT.
 - Páginas com Thymeleaf para interações de usuário.
+- Monitoramento da aplicação utilizando Grafana e Prometheus em containers Docker.
 
 ## Tecnologias Utilizadas
 
@@ -24,15 +25,17 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 - **HLS (HTTP Live Streaming)**: Para o streaming de vídeos.
 - **Thymeleaf**: Motor de templates para renderizar as páginas HTML.
 - **ModelMapper**: Para conversão de entidades e DTOs.
-- **Docker**: Para containerização da aplicação.
+- **Docker**: Para containerização da aplicação e serviços de monitoramento.
 - **MySQL**: Banco de dados usado para persistência dos dados de filmes e usuários.
+- **Grafana**: Plataforma de análise e monitoramento.
+- **Prometheus**: Sistema de monitoramento e alerta.
 
 ## Requisitos do Sistema
 
 - **JDK 17** ou superior
 - **Maven** 3.6+
 - **MySQL** ou qualquer outro banco de dados relacional
-- **Docker** (opcional para rodar a aplicação em containers)
+- **Docker** (opcional para rodar a aplicação e serviços de monitoramento)
 - **Postman** (para testar os endpoints da API)
 
 ## Configuração e Instalação
@@ -56,9 +59,26 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
    mvn spring-boot:run
    ```
 
-4. Acesse a aplicação no navegador:
+4. Para rodar o Grafana e o Prometheus em containers Docker, execute:
+   ```bash
+   docker-compose up -d
+   ```
+
+5. Acesse a aplicação no navegador:
    ```
    http://localhost:8080
+   ```
+
+6. Acesse o Grafana para monitoramento:
+   ```
+   http://localhost:3000
+   ```
+   - Usuário: `admin`
+   - Senha: `admin`
+
+7. Acesse o Prometheus para visualização dos dados coletados:
+   ```
+   http://localhost:9090
    ```
 
 ## Endpoints Principais
@@ -71,13 +91,13 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 ### Filmes
 
 - **GET** `/api/v1/filme/listar`: Lista todos os filmes.
-- **POST** `//api/v1/filme/adicionar`: Cadastra um novo filme.
+- **POST** `/api/v1/filme/adicionar`: Cadastra um novo filme.
 - **GET** `/api/v1/filme/rid/{rid_filme}`: Detalhes de um filme específico.
 - **POST** `/api/v1/analise/adicionar`: Adiciona uma análise para um filme.
 
 ### Streaming
 
-- **GET** `/api/v1/media/hls/{{filename}}.m3u8`: Faz o streaming do vídeo HLS baseado no nome do arquivo.
+- **GET** `/api/v1/media/hls/{filename}.m3u8`: Faz o streaming do vídeo HLS baseado no nome do arquivo.
 
 ### Exemplo de Requisição Autenticada com JWT
 
@@ -85,6 +105,13 @@ Todas as rotas, exceto o login e o registro, exigem um token JWT para autentica�
 
 ```http
 Authorization: Bearer <seu-jwt-token>
+```
+
+### Swagger UI
+
+Para verificar todos os endpoints disponíveis e suas descrições, acesse o Swagger UI:
+```
+http://localhost:8080/swagger-ui.html
 ```
 
 ## Estrutura do Projeto
