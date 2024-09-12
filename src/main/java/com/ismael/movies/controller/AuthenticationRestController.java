@@ -9,6 +9,7 @@ import com.ismael.movies.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.cloudfoundry.Token;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,7 +53,7 @@ public class AuthenticationRestController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/reset")
+    @PostMapping("/update")
     public ResponseEntity changePassword(@RequestBody @Validated RegisterDTO user){
         if (this.userRepository.findByLogin(user.login()) != null) return ResponseEntity.badRequest().build();
 
@@ -62,4 +63,14 @@ public class AuthenticationRestController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/reset/{token}")
+    public ResponseEntity validateToken(@PathVariable String token){
+         String validated = tokenService.validateToken(token);
+         if (validated != ""){
+             return  ResponseEntity.ok(validated);
+         }
+         return ResponseEntity.unprocessableEntity().build();
+    }
+
 }
