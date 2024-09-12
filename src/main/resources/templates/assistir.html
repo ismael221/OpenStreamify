@@ -4,88 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Disney Plus Fullscreen Video Player</title>
-    <!-- Video.js CSS -->
-    <link href="https://vjs.zencdn.net/8.0.4/video-js.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-
     <link rel="icon" href="https://static-assets.bamgrid.com/product/disneyplus/favicons/favicon-aurora.9c40657cf520f9cfcf49dbb4f316aa7c.ico" type="image/png">
-    <!-- Estilo personalizado -->
     <style>
-        /* Resetando margens e preenchimentos */
-     * {
-         margin: 0;
-         padding: 0;
-         box-sizing: border-box;
-     }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-     html, body {
-         width: 100%;
-         height: 100%;
-         overflow: hidden; /* Remove barras de rolagem */
-         background-color: #141b29; /* Cor de fundo similar ao Disney Plus */
-     }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #141b29;
+        }
 
-     /* Player de vídeo ocupando toda a tela */
-     .video-js {
-         width: 100%;
-         height: 100vh; /* Altura total da viewport */
-         object-fit: cover; /* O vídeo deve cobrir todo o contêiner */
-     }
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-     /* Customizações de estilo para o Video.js */
-     .video-js .vjs-control-bar {
-         background-color: rgba(0, 0, 0, 0.8); /* Barra de controle com fundo semi-transparente */
-     }
-
-     .video-js .vjs-big-play-button {
-         background-color: #1f80e0; /* Cor do botão de play grande */
-         border-radius: 50%; /* Botão redondo */
-         border: none;
-     }
-
-     .video-js .vjs-big-play-button:hover {
-         background-color: #1558b8; /* Cor do botão de play ao passar o mouse */
-     }
-
-     .video-js .vjs-play-progress,
-     .video-js .vjs-volume-level {
-         background-color: #1f80e0; /* Cor da barra de progresso e do nível de volume */
-     }
-
-     .video-js .vjs-slider-bar {
-         background-color: #ffffff; /* Cor da barra de fundo do slider */
-     }
+        video {
+            max-width: 100%;
+            max-height: 100%;
+            /* Mantém a proporção original do vídeo e ajusta dentro do player */
+        }
 
         .header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
-    color: #fff;
-    z-index: 1000; /* Certificar que o cabeçalho fique acima do vídeo */
-}
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            z-index: 1000;
+        }
 
-.back-button {
-    color: #fff;
-    text-decoration: none;
-    font-size: 24px;
-    margin-right: 15px;
-}
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+            margin-right: 10px;
+        }
 
-.movie-title {
-    font-size: 20px;
-    font-weight: bold;
-}
+        .movie-title {
+            font-size: 18px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-.media-title{
-    text-decoration:none;
-    color:white;
-}
+        .media-title {
+            text-decoration: none;
+            color: white;
+            max-width: 80%;
+        }
 
+        @media (max-width: 768px) {
+            .header {
+                padding: 10px;
+            }
+
+            .back-button {
+                font-size: 18px;
+            }
+
+            .movie-title {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 8px;
+            }
+
+            .back-button {
+                font-size: 16px;
+            }
+
+            .movie-title {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -94,52 +106,53 @@
     <a class="media-title" th:href="@{'/detalhes/'+ ${media.rid}}"><span class="movie-title">[[${media.title}]]</span></a>
 </div>
 <div class="video-container">
-    <video
-            id="my-video"
-            class="video-js vjs-big-play-centered"
-            controls
-            preload="auto"
-            th:poster="@{${media.coverImgUrl}}">
-        <source th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" type="application/x-mpegURL"  />
+    <video id="my-video" controls preload="auto" autoplay th:poster="@{${media.coverImgUrl}}">
+        <source th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" type="application/x-mpegURL" />
         <p class="vjs-no-js">
-            To view this video please enable JavaScript, and consider upgrading to a
-            web browser that
-            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+            Para ver este vídeo, por favor, habilite o JavaScript e considere usar um
+            navegador que <a href="https://videojs.com/html5-video-support/" target="_blank">suporte vídeo em HTML5</a>.
         </p>
     </video>
 </div>
 
-<!-- Video.js JavaScript -->
-<script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
-<!-- Video.js HLS Plugin (VHS) -->
-<script src="https://cdn.jsdelivr.net/npm/@videojs/http-streaming@3.10.0/+esm"></script>
+<!-- HLS.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // Inicializando o Video.js
-    var player = videojs('my-video');
+        var video = document.getElementById('my-video');
+        var videoSrc = video.querySelector('source').src;
 
-     // Adiciona middleware para customizar requisições HLS e adicionar o Bearer Token
-    videojs.Vhs.xhr.beforeRequest = function (options) {
-        // Adiciona o Bearer token ao cabeçalho Authorization
-        options.headers = options.headers || {};
-        options.headers.Authorization = 'Bearer ' + localStorage.getItem('access_token');
+        if (Hls.isSupported()) {
+            var hls = new Hls({
+                debug: true,
+                xhrSetup: function(xhr, url) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('access_token'));
+                }
+            });
 
-        return options;
-    };
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        }
 
-    player.ready(function () {
-        // Reproduz o vídeo quando o player estiver pronto
-        player.play();
+        document.querySelector('.back-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            window.history.back();
+        });
+
+        // Ajustar a altura do vídeo para garantir que ele ocupe toda a tela
+        window.addEventListener('resize', function() {
+            video.style.height = '100%';
+        });
+        window.dispatchEvent(new Event('resize')); // Força um ajuste na carga inicial
     });
-
-    // Exemplo de ação para o botão de voltar
-    document.querySelector('.back-button').addEventListener('click', function(event) {
-        event.preventDefault();
-        window.history.back(); // Navega para a página anterior
-    });
-
-});
-
 </script>
 </body>
 </html>
