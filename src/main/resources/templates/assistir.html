@@ -102,7 +102,7 @@
 </head>
 <body>
 <div class="header">
-    <a href="#" class="back-button"><i class="fas fa-arrow-left"></i></a>
+    <a th:href="@{'/detalhes/'+ ${media.rid}}" class="back-button"><i class="fas fa-arrow-left"></i></a>
     <a class="media-title" th:href="@{'/detalhes/'+ ${media.rid}}"><span class="movie-title">[[${media.title}]]</span></a>
 </div>
 <div class="video-container">
