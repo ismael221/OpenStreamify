@@ -32,14 +32,15 @@ public class FFmpegHLS {
             // Comando FFmpeg para gerar HLS
             String[] command = {
                     "ffmpeg",
-                    "-i", inputFilePath,
-                    "-c:v", "copy",
-                    "-c:a", "copy",
-                    "-start_number", "0",
-                    "-hls_time", "10",
-                    "-hls_list_size", "0",
-                    "-hls_segment_filename", segmentFilename.toString(),
-                    m3u8Filename.toString()
+                    "-i", inputFilePath,            // Caminho do arquivo de entrada
+                    "-c:v", "copy",                 // Copia o vídeo sem alterações
+                    "-c:a", "libmp3lame",             // Converte o áudio para MP3 usando libmp3lame
+                    "-b:a", "320k",                       // Define a taxa de bits do áudio (128 kbps)
+                    "-start_number", "0",           // Inicia a numeração dos segmentos em 0
+                    "-hls_time", "10",              // Duração dos segmentos em segundos
+                    "-hls_list_size", "0",          // Mantém todos os segmentos na lista
+                    "-hls_segment_filename", segmentFilename.toString(), // Nome dos segmentos
+                    m3u8Filename.toString()         // Nome d
             };
 
             // Criando o ProcessBuilder

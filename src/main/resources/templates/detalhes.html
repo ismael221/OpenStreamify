@@ -69,7 +69,7 @@
         <div class="row">
           <div class="col-md-6">
             <h1 class="movie-title">[[${details.title}]]</h1>
-            <p class="movie-genre" th:each="genre : ${genres}" style="display:inline-block">
+            <p class="movie-genre" th:each="genre : ${details.genres}" style="display:inline-block">
               <span class="badge" th:text="${genre}">Genre name</span>
             </p>
             <div class="movie-actions">

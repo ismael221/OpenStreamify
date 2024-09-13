@@ -14,4 +14,16 @@ public class UserService {
     public User findUserByLogin(String login){
         return userRepository.findByLogin(login);
     }
+
+    public User updateUserLogin(User user){
+        User user1 = findUserByLogin(user.getLogin());
+        if (user1 != null){
+            user1.setLogin(user.getLogin());
+            user1.setRole(user.getRole());
+            user1.setPassword(user.getPassword());
+            userRepository.saveAndFlush(user1);
+            return  userRepository.saveAndFlush(user1);
+        }
+        return null;
+    }
 }

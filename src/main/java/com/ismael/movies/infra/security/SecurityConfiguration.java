@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/reset").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/reset").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/user/{token}").permitAll() // Permitir acesso à rota de redefinição de senha
                         .requestMatchers(HttpMethod.POST,"/api/v1/email/send-reset-email").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/email/send-reset-email").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
@@ -38,8 +39,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST,"/api/v1/media/hls/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/v1/media/img/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/config").permitAll()
-                        .anyRequest().permitAll()
-                     // .anyRequest().authenticated()
+                      //  .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
                         formLogin
