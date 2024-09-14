@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.*;
 
+import java.io.Serializable;
 import java.sql.Types;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Table(name = "movies",uniqueConstraints = {
         @UniqueConstraint(columnNames = "RID")
 })
-public class Movie {
+public class Movie implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

@@ -7,6 +7,7 @@ import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.io.Serializable;
 import java.sql.Types;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Table(name = "ratings",uniqueConstraints = {
         @UniqueConstraint(columnNames = "RID")
 })
-public class Rating {
+public class Rating implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
