@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/api/v1/email/send-reset-email").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/v1/filme/adicionar").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/movies").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/v1/media/hls/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/v1/media/img/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/config").permitAll()

@@ -104,11 +104,11 @@ public class MovieController {
                 return "redirect:/listarFilmes";
         }
 
-        @GetMapping("/listarFilmes")
+        @GetMapping("/list")
         public String listarFilmes(Model model){
              //   model.addAttribute("css",theme);
                 model.addAttribute("filmes",moviesService.listAllMovies());
-                return "filmes";
+                return "movies";
         }
 
         @GetMapping("/exibirAnalise/{id}")
@@ -120,7 +120,7 @@ public class MovieController {
                 model.addAttribute("feedback", new Rating());
                 model.addAttribute("analises", analisesEcontradas);
                 model.addAttribute("css",theme);
-                return  "detalhes";
+                return  "details";
         }
 
         @PostMapping("/cadastrarAnalise")
@@ -157,7 +157,7 @@ public class MovieController {
         }
         //TODO Adicionar o enpoint para redirecionar para os detalhes do filme com o botão de play antes de reproduzir diretamente.
 
-        @GetMapping("/detalhes/{rid}")
+        @GetMapping("/details/{rid}")
         public String detalhaFilme(@PathVariable("rid") String movie_RID, Model model){
                 UUID uuid = UUID.fromString(movie_RID); // Verifica se é um UUID válido
                 List<String> genres = Arrays.stream(MovieGenre.values())
@@ -166,7 +166,7 @@ public class MovieController {
                 model.addAttribute("genres", genres);
                 Movie  movieDetails = moviesService.getMovieByRID(uuid);
                 model.addAttribute("details",movieDetails);
-                return "detalhes";
+                return "details";
         }
 
         @GetMapping("/auth/register")

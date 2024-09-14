@@ -87,7 +87,7 @@
   <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="http://localhost:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Banner 1">
+        <img src="http://ismael221.ddns.net:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Banner 1">
       </div>
       <div class="carousel-item">
         <img src="https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/2fbd16eb-7bc0-4f97-bbaa-1ec00fe85df1/compose?format=webp&width=1440" class="d-block w-100" alt="Banner 2">
@@ -141,7 +141,7 @@
         <div class="row">
           <!-- Itera sobre os filmes dentro de cada chunk -->
           <div class="col" th:each="m : ${movieChunk}">
-            <a th:href="@{'/detalhes/'+ ${m.rid}}">
+            <a th:href="@{'/details/'+ ${m.rid}}">
               <img th:src="${m.coverImgUrl}" class="d-block w-100" th:alt="${m.title}">
             </a>
           </div>

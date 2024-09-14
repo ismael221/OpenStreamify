@@ -39,8 +39,8 @@ public class MoviesService {
          MovieDTO movieFound = convertToDto(movieRepository.save(newMovie));
         return movieFound;
     }
-
-    @Cacheable("movies")
+    //TODO Set a time for the cache to be alive, because when you delete the data on the database it still on redis cache
+  //  @Cacheable("movies")
     @Transactional(readOnly = true)
     public List<MovieDTO> listAllMovies(){
         List<Movie>  moviesFoundList= movieRepository.findAll();
