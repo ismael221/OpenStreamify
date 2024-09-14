@@ -24,7 +24,7 @@ public class RatingRestController {
     }
 
     @GetMapping("/buscar/{id}")
-    public  ResponseEntity<List> getAnalisePorFilme(@PathVariable UUID rid){
+    public  ResponseEntity<List> getAnalisePorFilme(@PathVariable("id") UUID rid){
         List<Rating> analises = ratingService.listRatingsByMovieRID(rid);
         return new ResponseEntity<>(analises,HttpStatus.OK);
     }

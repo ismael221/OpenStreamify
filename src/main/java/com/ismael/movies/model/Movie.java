@@ -16,7 +16,9 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "movies")
+@Table(name = "movies",uniqueConstraints = {
+        @UniqueConstraint(columnNames = "RID")
+})
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +34,7 @@ public class Movie {
     private Date released;
     @UuidGenerator
     @JdbcTypeCode(Types.VARCHAR)
+    @Column(name = "rid",nullable = false)
     private UUID rid;
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)

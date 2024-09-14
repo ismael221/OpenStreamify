@@ -11,20 +11,22 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "ratings")
+@Table(name = "ratings",uniqueConstraints = {
+        @UniqueConstraint(columnNames = "RID")
+})
 public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     @ManyToOne
-    @JoinColumn(name = "movie_id")
+    @JoinColumn(name = "movie_rid",referencedColumnName = "rid")
     private Movie movie;
     @Column(columnDefinition = "MEDIUMTEXT")
     private String comment;
     private int rating;
     @UuidGenerator
     @JdbcTypeCode(Types.VARCHAR)
+    @Column(name = "rid",nullable = false)
     private UUID rid;
 
 }
