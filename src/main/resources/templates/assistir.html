@@ -102,8 +102,8 @@
 </head>
 <body>
 <div class="header">
-    <a th:href="@{'/detalhes/'+ ${media.rid}}" class="back-button"><i class="fas fa-arrow-left"></i></a>
-    <a class="media-title" th:href="@{'/detalhes/'+ ${media.rid}}"><span class="movie-title">[[${media.title}]]</span></a>
+    <a th:href="@{'/details/'+ ${media.rid}}" class="back-button"><i class="fas fa-arrow-left"></i></a>
+    <a class="media-title" th:href="@{'/details/'+ ${media.rid}}"><span class="movie-title">[[${media.title}]]</span></a>
 </div>
 <div class="video-container">
     <video id="my-video" controls preload="auto" autoplay th:poster="@{${media.coverImgUrl}}">

@@ -39,7 +39,18 @@
   .card img {
     height: 150px;
     object-fit: cover;
+    border-radius:5px
+    transition: transform 0.5s ease;
   }
+  .card img:hover{
+    height: 150px;
+    object-fit: cover;
+    outline: 3px solid #CCC;
+    border: 2px solid #333;
+    border-radius:5px;
+    transform: scale(1.1);
+  }
+
   .card {
     background-color: #333;
     border: none;
@@ -75,6 +86,10 @@
       .carousel {
         margin-top: 50px;
       }
+ .card-img-top{
+    outline: 3px solid #CCC;
+    border: 2px solid #333;
+    }
 
   </style>
 </head>
