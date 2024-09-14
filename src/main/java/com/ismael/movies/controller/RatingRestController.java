@@ -11,33 +11,40 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/analise")
+@RequestMapping("api/v1/ratings")
 public class RatingRestController {
 
     @Autowired
     RatingService ratingService;
 
-    @PostMapping("/adicionar")
-    public ResponseEntity<Rating> addAnalise(@RequestBody Rating analise){
+    @PostMapping
+    public ResponseEntity<Rating> newRating(@RequestBody Rating analise){
             var novaAnalise = ratingService.addRating(analise);
             return  new ResponseEntity<>(novaAnalise, HttpStatus.CREATED);
     }
 
-    @GetMapping("/buscar/{id}")
-    public  ResponseEntity<List> getAnalisePorFilme(@PathVariable("id") UUID rid){
-        List<Rating> analises = ratingService.listRatingsByMovieRID(rid);
+    @GetMapping
+    public  ResponseEntity<List> ratingsList(){
+        List<Rating> analises = ratingService.listRatings();
         return new ResponseEntity<>(analises,HttpStatus.OK);
     }
 
-    @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Rating> atualizarAnalise(@PathVariable Integer id, @RequestBody Rating analise){
-        var novaAnalise = ratingService.updateRating(id,analise);
+    @PutMapping("{rid}")
+    public ResponseEntity<Rating> updateRatings(@PathVariable("rid") UUID rid, @RequestBody Rating analise){
+        var novaAnalise = ratingService.updateRating(rid,analise);
         return new ResponseEntity<>(novaAnalise,HttpStatus.OK);
     }
 
-    @DeleteMapping("/deletar/{id}")
-    public  ResponseEntity<Boolean> deletarAnalise(@PathVariable Integer id){
+    @DeleteMapping("{rid}")
+    public  ResponseEntity<Boolean> deleteRating(@PathVariable("rid") UUID id){
         ratingService.deleteRating(id);
         return new ResponseEntity<>(true,HttpStatus.OK);
     }
+
+    @GetMapping("{rid}")
+    public ResponseEntity<Rating> retrieveRatingByRid(@PathVariable("rid") UUID rid){
+        var ratingFound = ratingService.getRatingByRid(rid);
+        return new ResponseEntity<>(ratingFound,HttpStatus.OK);
+    }
+
 }

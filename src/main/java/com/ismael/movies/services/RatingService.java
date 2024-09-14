@@ -3,6 +3,7 @@ package com.ismael.movies.services;
 import com.ismael.movies.model.Rating;
 import com.ismael.movies.repository.RatingRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,22 +19,32 @@ public class RatingService {
         this.ratingRepository = ratingRepository;
     }
 
+    @Transactional
     public Rating addRating(Rating rating){
             ratingRepository.save(rating);
             return rating;
     }
 
+    @Transactional
+    public List<Rating> listRatings(){
+        List<Rating> ratingsList = ratingRepository.findAll();
+        return ratingsList;
+    }
+
+    @Transactional
     public List<Rating> listRatingsByMovieRID(UUID movieId){
          List<Rating> ratings =  ratingRepository.findByMovie_rid(movieId);
          return ratings;
     }
 
-    public Rating getRatingById(Integer id){
-          return  ratingRepository.findById(id).orElseThrow();
+    @Transactional
+    public Rating getRatingByRid(UUID rid){
+          return  ratingRepository.findByRidEquals(rid).orElseThrow();
     }
 
-    public Rating updateRating(Integer id, Rating analise){
-            Rating a = getRatingById(id);
+    @Transactional
+    public Rating updateRating(UUID rid, Rating analise){
+            Rating a = getRatingByRid(rid);
             a.setMovie(analise.getMovie());
             a.setRating(analise.getRating());
             a.setComment(analise.getComment());
@@ -41,7 +52,8 @@ public class RatingService {
             return a;
     }
 
-    public void deleteRating(Integer id){
-        ratingRepository.deleteById(id);
+    @Transactional
+    public void deleteRating(UUID rid){
+        ratingRepository.deleteByRid(rid);
     }
 }
