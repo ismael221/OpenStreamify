@@ -23,13 +23,14 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(nullable = false)
     private String title;
-    @Column(columnDefinition = "MEDIUMTEXT")
+    @Column(nullable = false,columnDefinition = "MEDIUMTEXT")
     private String synopsis;
     @ElementCollection(targetClass = MovieGenre.class) // Indica uma coleção de enumerações
     @Enumerated(EnumType.STRING) // Armazena os enums como strings no banco
     @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
-    @Column(name = "genre")
+    @Column(nullable = false,name = "genre")
     private Set<MovieGenre> genres;
     private Date released;
     @UuidGenerator

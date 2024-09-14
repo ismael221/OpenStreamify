@@ -100,7 +100,7 @@ public class MovieController {
 
         @PostMapping("/cadastrarFilme")
         public String cadastrarFilme(@ModelAttribute MovieDTO movie) {
-                moviesService.addMovie(movie);
+                moviesService.newMovie(movie);
                 return "redirect:/listarFilmes";
         }
 

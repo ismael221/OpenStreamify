@@ -2,6 +2,7 @@ package com.ismael.movies.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
@@ -17,12 +18,14 @@ import java.util.UUID;
 public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
     private long id;
     @ManyToOne
-    @JoinColumn(name = "movie_rid",referencedColumnName = "rid")
+    @JoinColumn(name = "movie_rid",nullable = false,referencedColumnName = "rid")
     private Movie movie;
-    @Column(columnDefinition = "MEDIUMTEXT")
+    @Column(nullable = false,columnDefinition = "MEDIUMTEXT")
     private String comment;
+    @Column(nullable = false)
     private int rating;
     @UuidGenerator
     @JdbcTypeCode(Types.VARCHAR)

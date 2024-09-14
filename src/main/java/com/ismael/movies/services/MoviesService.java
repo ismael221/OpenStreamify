@@ -34,7 +34,7 @@ public class MoviesService {
     }
 
     @Transactional
-    public MovieDTO addMovie(MovieDTO movie){
+    public MovieDTO newMovie(MovieDTO movie){
          Movie newMovie =  convertToEntity(movie);
          MovieDTO movieFound = convertToDto(movieRepository.save(newMovie));
         return movieFound;
@@ -49,8 +49,8 @@ public class MoviesService {
     }
 
     @Transactional
-    public Movie updateMovie(UUID filmeID, Movie movieRequest){
-            Movie movie = getMovieByRID(filmeID);
+    public Movie updateMovie(UUID movieRid, Movie movieRequest){
+            Movie movie = getMovieByRID(movieRid);
             movie.setGenres(movieRequest.getGenres());
             movie.setTitle(movieRequest.getTitle());
             movie.setSynopsis(movieRequest.getSynopsis());
@@ -63,8 +63,8 @@ public class MoviesService {
     }
 
     @Transactional
-    public void deleteMovie(UUID filmeID){
-            Movie movie = getMovieByRID(filmeID);
+    public void deleteMovie(UUID movieRid){
+            Movie movie = getMovieByRID(movieRid);
             movieRepository.deleteById((int) movie.getId());
     }
 
