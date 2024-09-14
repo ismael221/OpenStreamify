@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@CacheConfig(cacheNames = "templates")
 public class MovieController {
         public String theme ="light";
         final
@@ -47,7 +50,7 @@ public class MovieController {
                 this.moviesService = moviesService;
         }
 
-        //TODO Add the logic to sign in the user
+        @Cacheable
         @GetMapping("/auth/login")
         public String loginPage(){
                 return "login";
@@ -72,6 +75,7 @@ public class MovieController {
                 return "redirect:/auth/login";
         }
 
+        @Cacheable
         @GetMapping("/")
         public String homePage(Model model) {
                 List<MovieDTO> moviesList = moviesService.listAllMovies();
@@ -103,7 +107,7 @@ public class MovieController {
                 moviesService.newMovie(movie);
                 return "redirect:/listarFilmes";
         }
-
+        @Cacheable
         @GetMapping("/list")
         public String listarFilmes(Model model){
              //   model.addAttribute("css",theme);
@@ -146,6 +150,7 @@ public class MovieController {
 
         }
 
+        @Cacheable
         @GetMapping("/play/{rid}")
         public String assistirFilme(@PathVariable("rid") String mediaRID, Model model) {
                 UUID uuid = UUID.fromString(mediaRID); // Verifica se é um UUID válido
@@ -155,8 +160,8 @@ public class MovieController {
                 model.addAttribute("config",serverUrl);
                 return "assistir";  // Nome do template Thymeleaf
         }
-        //TODO Adicionar o enpoint para redirecionar para os detalhes do filme com o botão de play antes de reproduzir diretamente.
 
+        @Cacheable
         @GetMapping("/details/{rid}")
         public String detalhaFilme(@PathVariable("rid") String movie_RID, Model model){
                 UUID uuid = UUID.fromString(movie_RID); // Verifica se é um UUID válido
@@ -168,12 +173,13 @@ public class MovieController {
                 model.addAttribute("details",movieDetails);
                 return "details";
         }
-
+        @Cacheable
         @GetMapping("/auth/register")
         public String registerUser(){
                 return "register";
         }
 
+        @Cacheable
         @GetMapping("/auth/reset")
         public String resetPassword(){
                 return "reset";
@@ -226,6 +232,7 @@ public class MovieController {
                 return "redirect:/auth/reset";
         }
 
+        @Cacheable
         @GetMapping("/auth/update")
         public String updatePassword(HttpServletRequest request, Model model) {
                 String email = (String) request.getSession().getAttribute("email");
