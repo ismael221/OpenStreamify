@@ -75,7 +75,6 @@ public class MoviesService {
             movieRepository.deleteById((int) movie.getId());
     }
 
-    //Todo fix issue with the cache on the second retrieve, probably need to converto to DTO
     @Transactional(readOnly = true)
     @Cacheable
     public Movie getMovieByRID(UUID rid){

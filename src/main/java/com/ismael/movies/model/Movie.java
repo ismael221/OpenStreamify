@@ -32,6 +32,7 @@ public class Movie implements Serializable {
     @Enumerated(EnumType.STRING) // Armazena os enums como strings no banco
     @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
     @Column(nullable = false,name = "genre")
+    @Fetch(FetchMode.JOIN)
     private Set<MovieGenre> genres;
     private Date released;
     @UuidGenerator
