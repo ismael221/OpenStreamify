@@ -38,7 +38,6 @@ public class MoviesService {
     }
 
     @Transactional
-    @CachePut
     public MovieDTO newMovie(MovieDTO movie){
          Movie newMovie =  convertToEntity(movie);
          MovieDTO movieFound = convertToDto(movieRepository.save(newMovie));
@@ -46,7 +45,6 @@ public class MoviesService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable
     public List<MovieDTO> listAllMovies(){
         List<Movie>  moviesFoundList= movieRepository.findAll();
         List<MovieDTO> moviesListConverted =  moviesFoundList.stream().map(this::convertToDto).collect(Collectors.toList());

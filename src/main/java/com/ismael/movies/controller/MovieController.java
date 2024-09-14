@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -87,6 +88,7 @@ public class MovieController {
         }
 
         // Método auxiliar para particionar a lista
+        @CachePut
         private <T> List<List<T>> partitionList(List<T> list, int chunkSize) {
                 List<List<T>> partitions = new ArrayList<>();
                 for (int i = 0; i < list.size(); i += chunkSize) {
