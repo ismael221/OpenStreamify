@@ -51,7 +51,7 @@ public class MovieController {
                 this.moviesService = moviesService;
         }
 
-        @Cacheable
+
         @GetMapping("/auth/login")
         public String loginPage(){
                 return "login";
@@ -76,7 +76,7 @@ public class MovieController {
                 return "redirect:/auth/login";
         }
 
-        @Cacheable
+
         @GetMapping("/")
         public String homePage(Model model) {
                 List<MovieDTO> moviesList = moviesService.listAllMovies();
@@ -109,7 +109,7 @@ public class MovieController {
                 moviesService.newMovie(movie);
                 return "redirect:/listarFilmes";
         }
-        @Cacheable
+
         @GetMapping("/list")
         public String listarFilmes(Model model){
              //   model.addAttribute("css",theme);
@@ -175,13 +175,13 @@ public class MovieController {
                 model.addAttribute("details",movieDetails);
                 return "details";
         }
-        @Cacheable
+
         @GetMapping("/auth/register")
         public String registerUser(){
                 return "register";
         }
 
-        @Cacheable
+
         @GetMapping("/auth/reset")
         public String resetPassword(){
                 return "reset";
