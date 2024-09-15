@@ -156,9 +156,9 @@
       <div th:each="movieChunk, iterStat : ${moviesChunks}" class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active'">
         <div class="row">
           <!-- Itera sobre os filmes dentro de cada chunk -->
-          <div class="col" th:each="m : ${movieChunk}" style="padding:10px;">
+          <div class="col" th:each="m : ${movieChunk}" style="padding:20px;margin:10px;">
             <a th:href="@{'/details/'+ ${m.rid}}">
-              <img th:src="${m.coverImgUrl}" class="d-block w-100" th:alt="${m.title}">
+              <img th:src="${m.coverImgUrl}" class="d-block w-100" th:alt="${m.title}" style="height:60vh">
             </a>
           </div>
         </div>

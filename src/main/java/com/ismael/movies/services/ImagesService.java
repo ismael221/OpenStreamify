@@ -38,7 +38,7 @@ public class ImagesService {
         Path filePath = uploadDir.resolve(filename);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        // Retorna a URL da imagem
+        // Retorna a URL da imagem  return serverUrl + "/api/v1/media/img/" + filename;
         return serverUrl + "/api/v1/media/img/" + filename;
     }
 
