@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Disney Plus Login</title>
     <link rel="icon" href="https://static-assets.bamgrid.com/product/disneyplus/favicons/favicon-aurora.9c40657cf520f9cfcf49dbb4f316aa7c.ico" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
     <style>
       * {
         margin: 0;
@@ -105,58 +107,74 @@
                 <p>New to Disney+? <a th:href="@{'/auth/register'}">Sign up</a></p>
             </div>
         </div>
+        <!-- Modal de sucesso -->
+        <div id="success-modal" class="modal">
+            <p style="color:green">Login bem-sucedido! Bem-vindo à Disney+.</p>
+        </div>
+
+        <!-- Modal de erro -->
+        <div id="error-modal" class="modal">
+            <p style="color:red;">Erro ao fazer login: Credenciais inválidas. Por favor, tente novamente.</p>
+        </div>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
         const serverUrl = '';
+        $(document).ready(function() {
+    let serverUrl = '';
 
-    $(document).ready(function() {
-       $.ajax({
-                    url: `/api/config`,
-                    type: 'GET',
-                    success: function(response) {
-                      // alert(response);
-                       serverUrl = response;
-                    },
-                    error: function(xhr, status, error) {
-                        // Processa o erro
-                    }
-                });
+    // Primeiro, busca a URL do servidor
+    $.ajax({
+        url: `/api/config`,
+        type: 'GET',
+        success: function(response) {
+            serverUrl = response;
+        },
+        error: function(xhr, status, error) {
+            console.error('Erro ao obter configuração: ', error);
+        }
+    });
 
-        $('#login-form').on('submit', function(e) {
-            e.preventDefault(); // Evita o comportamento padrão de submit
-            // Obtém os dados do formulário
-            var email = $('input[name="login"]').val();
-            var password = $('input[name="password"]').val();
-            // Envia os dados via AJAX
-            $.ajax({
-                url:  `${serverUrl}/api/v1/auth/login`,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    login: email,
-                    password: password
-                }),
-                success: function(response) {
-                    // Sucesso no login
-                   localStorage.setItem('access_token', response.token);
-                   // setAuthHeader();
-                    alert('Login bem-sucedido!');
-                    // Redirecionar ou processar resposta
+    // Envia o formulário de login
+    $('#login-form').on('submit', function(e) {
+        e.preventDefault(); // Evita o comportamento padrão de submit
+
+        // Obtém os dados do formulário
+        var email = $('input[name="login"]').val();
+        var password = $('input[name="password"]').val();
+
+        // Envia os dados via AJAX
+        $.ajax({
+            url: `${serverUrl}/api/v1/auth/login`,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                login: email,
+                password: password
+            }),
+            success: function(response) {
+                // Sucesso no login
+                localStorage.setItem('access_token', response.token);
+
+                // Exibe o modal de sucesso
+                $('#success-modal').modal();
+
+                // Redirecionar após alguns segundos ou logo após fechar o modal
+                setTimeout(function() {
                     window.location.href = '/';
-                    //makeAuthenticatedRequest();
-                },
-                error: function(xhr, status, error) {
-                    // Erro no login
-                    alert('Erro ao fazer login: ' + xhr.responseText);
-                }
-            });
+                }, 2000); // Exemplo: redireciona após 2 segundos
+            },
+            error: function(xhr, status, error) {
+                // Exibe o modal de erro
+                $('#error-modal').modal();
+            }
         });
-        });
-        
+    });
+});
 
 
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 </body>
 </html>

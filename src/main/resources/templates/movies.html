@@ -16,6 +16,13 @@
         .movie-card {
             background-color: #1f1f1f;
             border: none;
+             transition: transform 0.3s ease, border 0.3s ease;
+        }
+        .movie-card:hover{
+           outline: 3px solid #CCC;
+            border: 2px solid #333;
+            border-radius:5px;
+            transform: scale(1.05);
         }
         .movie-poster {
             width: 100%;
@@ -33,6 +40,28 @@
           .navbar-brand img {
             height: 40px;
           }
+        h1{
+            padding: 20px;
+            text-align: center;
+            margin: 20px;
+        }
+        @media only screen and (max-width: 768px) {
+        .row{
+        padding: 20px;
+        gap: 20px;
+        }
+
+        }
+        a{
+        text-decoration:none;
+        }
+        .card-body{
+        display:none;
+        }
+        .col-md-2{
+            display: flex;
+    align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -48,34 +77,512 @@
 <div class="container">
     <div class="row">
         <!-- Cartão do Movie -->
-        <div class="col-md-3 mb-4">
+        <div class="col-md-2 mb-4">
+            <a th:href="@{/}">
+                <div class="card movie-card">
+                    <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1" loading="lazy">
+                    <div class="card-body">
+                        <p class="movie-title">Filme 1</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
             <div class="card movie-card">
-                <img src="https://via.placeholder.com/300x450" class="card-img-top movie-poster" alt="Filme 1">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
                 <div class="card-body">
                     <p class="movie-title">Filme 1</p>
                 </div>
             </div>
         </div>
         <!-- Repita o bloco acima para mais movies -->
-        <div class="col-md-3 mb-4">
+        <div class="col-md-2 mb-4">
             <div class="card movie-card">
-                <img src="https://via.placeholder.com/300x450" class="card-img-top movie-poster" alt="Filme 2">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
                 <div class="card-body">
                     <p class="movie-title">Filme 2</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mb-4">
+        <div class="col-md-2 mb-4">
             <div class="card movie-card">
-                <img src="https://via.placeholder.com/300x450" class="card-img-top movie-poster" alt="Filme 3">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
                 <div class="card-body">
                     <p class="movie-title">Filme 3</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mb-4">
+        <div class="col-md-2 mb-4">
             <div class="card movie-card">
-                <img src="https://via.placeholder.com/300x450" class="card-img-top movie-poster" alt="Filme 4">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
+                <div class="card-body">
+                    <p class="movie-title">Filme 4</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cartão do Movie -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste.png" class="card-img-top movie-poster" alt="Filme 1">
+                <div class="card-body">
+                    <p class="movie-title">Filme 1</p>
+                </div>
+            </div>
+        </div>
+        <!-- Repita o bloco acima para mais movies -->
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste1.png" class="card-img-top movie-poster" alt="Filme 2">
+                <div class="card-body">
+                    <p class="movie-title">Filme 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste2.png" class="card-img-top movie-poster" alt="Filme 3">
+                <div class="card-body">
+                    <p class="movie-title">Filme 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="card movie-card">
+                <img src="http://localhost:8080/api/v1/media/img/teste4.png" class="card-img-top movie-poster" alt="Filme 4">
                 <div class="card-body">
                     <p class="movie-title">Filme 4</p>
                 </div>
