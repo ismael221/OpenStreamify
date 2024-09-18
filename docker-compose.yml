@@ -1,0 +1,92 @@
+version: '4.3'
+services:
+  # Container da aplicação Spring Boot
+  spring-app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+       mysql:
+        condition: service_healthy
+       redis:
+         condition: service_completed_successfully
+       prometheus:
+         condition: service_completed_successfully
+       grafana:
+         condition: service_completed_successfully
+
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - SERVER_URL=${SERVER_URL}
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/movies_dev
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=ismael
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: '2048M'
+
+  # Redis
+  redis:
+    image: redis:7.0
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: '1024M'
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:v2.44.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - app-network
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:9.5.2
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ismael
+      MYSQL_DATABASE: movies_dev
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: '1024M'
+
+networks:
+  app-network:
+    driver: bridge
