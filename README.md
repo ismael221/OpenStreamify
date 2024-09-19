@@ -1,4 +1,4 @@
-# Aplicação de Streaming de Filmes
+# OpenStreamify - Aplicação de Streaming de Filmes
 
 ## Descrição
 
@@ -90,10 +90,10 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 
 ### Filmes
 
-- **GET** `/api/v1/filme/listar`: Lista todos os filmes.
-- **POST** `/api/v1/filme/adicionar`: Cadastra um novo filme.
-- **GET** `/api/v1/filme/rid/{rid_filme}`: Detalhes de um filme específico.
-- **POST** `/api/v1/analise/adicionar`: Adiciona uma análise para um filme.
+- **GET** `/api/v1/movies`: Lista todos os filmes.
+- **POST** `/api/v1/movies`: Cadastra um novo filme.
+- **GET** `/api/v1/movies/{rid_filme}`: Detalhes de um filme específico.
+- **POST** `/api/v1/ratings`: Adiciona uma análise para um filme.
 
 ### Streaming
 
