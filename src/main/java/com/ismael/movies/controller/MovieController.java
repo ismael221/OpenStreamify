@@ -113,7 +113,7 @@ public class MovieController {
         @GetMapping("/list")
         public String listarFilmes(Model model){
              //   model.addAttribute("css",theme);
-                model.addAttribute("filmes",moviesService.listAllMovies());
+                model.addAttribute("moviesList",moviesService.listAllMovies());
                 return "movies";
         }
 
