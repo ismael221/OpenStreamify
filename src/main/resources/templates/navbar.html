@@ -21,6 +21,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Minha Lista</a>
                 </li>
+                <!-- Notifications Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="3 Notificações">
+                        <i class="bi bi-bell-fill"></i> <!-- Ícone de sino preenchido -->
+                        <span class="badge bg-danger">3</span> <!-- Contagem de notificações -->
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                        <li><a class="dropdown-item" href="#">Notificação 1</a></li>
+                        <li><a class="dropdown-item" href="#">Notificação 2</a></li>
+                        <li><a class="dropdown-item" href="#">Notificação 3</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Ver todas as notificações</a></li>
+                    </ul>
+                </li>
                 <!-- User Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,3 +51,13 @@
         </div>
     </div>
 </nav>
+
+<script>
+    // Inicializar tooltip
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+</script>
+</script>

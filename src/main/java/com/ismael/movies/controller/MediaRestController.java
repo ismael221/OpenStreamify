@@ -1,8 +1,7 @@
 package com.ismael.movies.controller;
 
-import com.ismael.movies.services.FFmpegHLS;
-import com.ismael.movies.services.HlsService;
-import com.ismael.movies.services.ImagesService;
+import com.ismael.movies.model.Movie;
+import com.ismael.movies.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
@@ -49,6 +48,12 @@ public class MediaRestController {
     @Autowired
     private FFmpegHLS fFmpegHLS;
 
+    @Autowired
+    NotificationService notificationService;
+
+    @Autowired
+    MoviesService moviesService;
+
     @PostMapping("/hls/upload")
     public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam UUID rid) {
 
@@ -72,7 +77,8 @@ public class MediaRestController {
 
             // Chamando o método para processar o vídeo com FFmpeg
             fFmpegHLS.executeFFmpegCommand(destFile.getAbsolutePath(), rid);
-
+            Movie newMovie = moviesService.getMovieByRID(rid);
+            notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle());
             return ResponseEntity.ok("Video uploaded and processed successfully.");
         } catch (IOException e) {
             e.printStackTrace();
