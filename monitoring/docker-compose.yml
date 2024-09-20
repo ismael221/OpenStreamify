@@ -3,7 +3,7 @@ version: '4.3'
 services:
   prometheus:
     image: prom/prometheus:v2.44.0
-    container_name: prometheus
+    container_name: prometheus_dev
     ports:
       - "9090:9090"
     volumes:
@@ -11,7 +11,7 @@ services:
 
   grafana:
     image: grafana/grafana:9.5.2
-    container_name: grafana
+    container_name: grafana_dev
     ports:
       - "3000:3000"
     restart: unless-stopped
