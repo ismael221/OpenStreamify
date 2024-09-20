@@ -1,6 +1,7 @@
 package com.ismael.movies.controller;
 
 import com.ismael.movies.model.Movie;
+import com.ismael.movies.model.Users.User;
 import com.ismael.movies.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.UUID;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,6 +56,9 @@ public class MediaRestController {
     @Autowired
     MoviesService moviesService;
 
+    @Autowired
+    UserService userService;
+
     @PostMapping("/hls/upload")
     public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam UUID rid) {
 
@@ -78,7 +83,8 @@ public class MediaRestController {
             // Chamando o método para processar o vídeo com FFmpeg
             fFmpegHLS.executeFFmpegCommand(destFile.getAbsolutePath(), rid);
             Movie newMovie = moviesService.getMovieByRID(rid);
-            notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle());
+            List<UUID> users = userService.findAllUsersId();
+            notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle(),users);
             return ResponseEntity.ok("Video uploaded and processed successfully.");
         } catch (IOException e) {
             e.printStackTrace();

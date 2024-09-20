@@ -1,8 +1,7 @@
 package com.ismael.movies.model.Users;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.ismael.movies.model.Notifications;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
@@ -13,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Types;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -21,6 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
+@Table(name = "user")
 public class User implements UserDetails {
     @Id
     @UuidGenerator
@@ -33,6 +34,13 @@ public class User implements UserDetails {
     private String password;
     @Column(nullable = false)
     private UserRole role;
+    @ManyToMany
+    @JoinTable(
+            name = "notifications_has_users",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "rid")
+    )
+    List<Notifications> notifications;
 
     public User(String login,String password,UserRole role){
         this.login = login;
