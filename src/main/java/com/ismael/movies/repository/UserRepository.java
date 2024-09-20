@@ -14,4 +14,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("select id from User")
     List<UUID> findAllUsersId();
+
 }
