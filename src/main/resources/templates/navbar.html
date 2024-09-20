@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container">
         <a class="navbar-brand" th:href="@{/}">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/512px-Disney%2B_logo.svg.png" alt="Disney+">
@@ -51,13 +51,33 @@
         </div>
     </div>
 </nav>
-
+<script th:src="@{/js/jquery-3.7.1.js}"></script>
 <script>
     // Inicializar tooltip
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.forEach(function (tooltipTriggerEl) {
         new bootstrap.Tooltip(tooltipTriggerEl);
     });
+
+    function retrieveNotifications(UserId){
+         $.ajax({
+        url: 'https://192.168.100.12:8080/ap1/v1/notice'+UserId,
+        method: 'GET',
+        contentType: 'application/json',
+        success: function (data){
+            alert("Filme atualizado com sucesso")
+            console.log(data);
+        },
+        error: function (){
+            alert("Não foi possivel atualizar o filme")
+        }
+    })
+    }
+    $(document).ready(function (){
+    var token = localStorage.getItem('user_id');
+    retrieveNotifications();
+    })
+
 
 </script>
 </script>

@@ -37,15 +37,24 @@
   .navbar-brand img {
     height: 40px;
   }
-  .carousel-item img {
-    width: 100%;
-    height: 400px;
+  .main-carrousel{
+   padding:30px;
+   }
+  .main-carrousel img {
+    height: 60vh;
     object-fit: cover;
+    transition: transform 0.5s ease;
   }
+  .main-carrousel img:hover{
+    outline: 4px solid #CCC;
+    border: 2px solid #333;
+    border-radius: 5px;
+    }
+
   .card img {
     height: 150px;
     object-fit: cover;
-    border-radius:5px;
+    border-radius:inherit;
     transition: transform 0.5s ease;
   }
   .card img:hover{
@@ -53,13 +62,15 @@
     object-fit: cover;
     outline: 3px solid #CCC;
     border: 2px solid #333;
-    border-radius:5px;
+    border-radius:inherit;
     transform: scale(1.1);
   }
 
   .card {
     background-color: #333;
     border: none;
+    border-radius:20px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   }
   .dropdown-menu {
     background-color: #333;
@@ -106,15 +117,15 @@
 
 
 <!-- Carousel -->
-  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+  <div id="carouselExample" class="carousel slide" data-bs-ride="false">
     <div class="carousel-inner">
-      <div class="carousel-item active">
+      <div class="carousel-item active main-carrousel">
         <img src="http://ismael221.ddns.net:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Banner 1">
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item main-carrousel">
         <img src="https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/2fbd16eb-7bc0-4f97-bbaa-1ec00fe85df1/compose?format=webp&width=1440" class="d-block w-100" alt="Banner 2">
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item main-carrousel">
         <img src="https://www.disneyplus.com/pt-br/browse/entity-99e15d53-926e-4074-b9f4-6524d10c8bed" class="d-block w-100" alt="Banner 3">
       </div>
     </div>
