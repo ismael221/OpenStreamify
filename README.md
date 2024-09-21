@@ -1,3 +1,6 @@
+
+---
+
 # OpenStreamify - Aplicação de Streaming de Filmes
 
 ## Descrição
@@ -14,6 +17,8 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 - Endpoints seguros usando autenticação JWT.
 - Páginas com Thymeleaf para interações de usuário.
 - Monitoramento da aplicação utilizando Grafana e Prometheus em containers Docker.
+- **Redis** para caching, melhorando a performance do sistema.
+- **RabbitMQ** para mensageria, auxiliando no processamento de alta escala.
 
 ## Tecnologias Utilizadas
 
@@ -27,6 +32,8 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 - **ModelMapper**: Para conversão de entidades e DTOs.
 - **Docker**: Para containerização da aplicação e serviços de monitoramento.
 - **MySQL**: Banco de dados usado para persistência dos dados de filmes e usuários.
+- **Redis**: Sistema de cache para otimização de consultas.
+- **RabbitMQ**: Sistema de mensageria para comunicação entre serviços.
 - **Grafana**: Plataforma de análise e monitoramento.
 - **Prometheus**: Sistema de monitoramento e alerta.
 
@@ -35,7 +42,8 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 - **JDK 17** ou superior
 - **Maven** 3.6+
 - **MySQL** ou qualquer outro banco de dados relacional
-- **Docker** (opcional para rodar a aplicação e serviços de monitoramento)
+- **Redis** (opcional, mas recomendado para caching)
+- **Docker** (para rodar RabbitMQ, Grafana, e Prometheus)
 - **Postman** (para testar os endpoints da API)
 
 ## Configuração e Instalação
@@ -43,7 +51,7 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 1. Clone o repositório:
    ```bash
    git clone https://github.com/ismael221/filmes
-
+   ```
 
 2. Configure o banco de dados no arquivo `application.properties`:
    ```properties
@@ -54,30 +62,40 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
    spring.jpa.show-sql=true
    ```
 
-3. Para rodar o projeto, utilize o seguinte comando no terminal na raiz do projeto:
+3. Inicie o Redis (se estiver utilizando Docker):
+   ```bash
+   docker run -d --name redis -p 6379:6379 redis
+   ```
+
+4. Inicie o RabbitMQ com o seguinte comando:
+   ```bash
+   docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+   ```
+
+5. Para rodar o projeto, utilize o seguinte comando no terminal na raiz do projeto:
    ```bash
    mvn spring-boot:run
    ```
 
-4. Para rodar o Grafana e o Prometheus em containers Docker, execute:
+6. Para rodar o Grafana e o Prometheus em containers Docker, execute:
    ```bash
    docker-compose up -d
    ```
 
-5. Acesse a aplicação no navegador:
-   ```
+7. Acesse a aplicação no navegador:
+   ```bash
    http://localhost:8080
    ```
 
-6. Acesse o Grafana para monitoramento:
-   ```
+8. Acesse o Grafana para monitoramento:
+   ```bash
    http://localhost:3000
    ```
    - Usuário: `admin`
    - Senha: `admin`
 
-7. Acesse o Prometheus para visualização dos dados coletados:
-   ```
+9. Acesse o Prometheus para visualização dos dados coletados:
+   ```bash
    http://localhost:9090
    ```
 
@@ -127,10 +145,10 @@ A aplicação utiliza **JWT tokens** para autenticação e autorização. Ao faz
 
 ## Melhorias Futuras
 
-- Integração com serviços de mensageria para processamento em alta escala.
-- Implementação de CDN para melhorar a performance do streaming em grande volume.
+- Integração com serviços de mensageria para processamento em alta escala com **RabbitMQ**.
+- Implementação de **CDN** para melhorar a performance do streaming em grande volume.
 - Suporte a múltiplas qualidades de vídeo no HLS.
-- Implementação de cache para otimização do sistema.
+- Implementação de cache com **Redis** para otimização do sistema.
 
 ## Contribuindo
 
@@ -139,3 +157,5 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir uma **issue** ou
 ## Licença
 
 Este projeto está licenciado sob os termos da licença MIT. Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
+
+---
