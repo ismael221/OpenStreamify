@@ -51,7 +51,7 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/ismael221/filmes
+   git clone https://github.com/ismael221/OpenStreamify
    ```
 
 2. Configure o banco de dados no arquivo `application.properties`:
