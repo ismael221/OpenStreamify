@@ -45,6 +45,7 @@ Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e
 - **Redis** (opcional, mas recomendado para caching)
 - **Docker** (para rodar RabbitMQ, Grafana, e Prometheus)
 - **Postman** (para testar os endpoints da API)
+- **FFmpeg** (Para transformar o video em seguimentos .m3u8 e .ts)
 
 ## Configuração e Instalação
 
