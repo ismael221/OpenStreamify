@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenStreamfy Login</title>
+    <title>OpenStreamify Login</title>
     <link rel="icon" href="/images/favicon.ico" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
@@ -28,7 +28,7 @@
         width: 100%;
         max-width: 400px;
         padding: 20px;
-        background-color: #1f2a48;
+        background-color: #2a2d3e;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         text-align: center;
@@ -90,13 +90,24 @@
     .signup-link a:hover {
         text-decoration: underline;
     }
-    
+    input{
+        background-color:#3b3e52;
+        color:white;
+    }
+    ::placeholder {
+      color: white;
+      opacity: 1; /* Firefox */
+    }
+
+    ::-ms-input-placeholder { /* Edge 12 -18 */
+      color: white;
+    }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-box">
-            <img th:src="@{/images/logo.png}" alt="OpenStreamfy Logo" class="logo">
+            <img th:src="@{/images/logo.png}" alt="OpenStreamify Logo" class="logo">
             <form id="login-form">
                 <input type="email" name="login" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
@@ -104,12 +115,12 @@
             </form>
             <a th:href="@{'/auth/reset'}" class="forgot-password">Forgot password?</a>
             <div class="signup-link">
-                <p>New to OpenStreamfy? <a th:href="@{'/auth/register'}">Sign up</a></p>
+                <p>New to OpenStreamify? <a th:href="@{'/auth/register'}">Sign up</a></p>
             </div>
         </div>
         <!-- Modal de sucesso -->
         <div id="success-modal" class="modal">
-            <p style="color:green">Login bem-sucedido! Bem-vindo à OpenStreamfy.</p>
+            <p style="color:green">Login bem-sucedido! Bem-vindo à OpenStreamify.</p>
         </div>
 
         <!-- Modal de erro -->
