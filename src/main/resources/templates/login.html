@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disney Plus Login</title>
-    <link rel="icon" href="https://static-assets.bamgrid.com/product/disneyplus/favicons/favicon-aurora.9c40657cf520f9cfcf49dbb4f316aa7c.ico" type="image/png">
+    <title>OpenStreamfy Login</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
     <style>
@@ -96,7 +96,7 @@
 <body>
     <div class="login-container">
         <div class="login-box">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" alt="Disney Plus Logo" class="logo">
+            <img th:src="@{/images/logo.png}" alt="OpenStreamfy Logo" class="logo">
             <form id="login-form">
                 <input type="email" name="login" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
@@ -104,12 +104,12 @@
             </form>
             <a th:href="@{'/auth/reset'}" class="forgot-password">Forgot password?</a>
             <div class="signup-link">
-                <p>New to Disney+? <a th:href="@{'/auth/register'}">Sign up</a></p>
+                <p>New to OpenStreamfy? <a th:href="@{'/auth/register'}">Sign up</a></p>
             </div>
         </div>
         <!-- Modal de sucesso -->
         <div id="success-modal" class="modal">
-            <p style="color:green">Login bem-sucedido! Bem-vindo à Disney+.</p>
+            <p style="color:green">Login bem-sucedido! Bem-vindo à OpenStreamfy.</p>
         </div>
 
         <!-- Modal de erro -->

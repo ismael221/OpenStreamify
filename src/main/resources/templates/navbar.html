@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container">
         <a class="navbar-brand" th:href="@{/}">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/512px-Disney%2B_logo.svg.png" alt="Disney+">
+            <img  th:src="@{/images/logo.png}" alt="OpenStreamfy" style="height: 60px;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -10,16 +10,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Início</a>
+                    <a class="nav-link" th:href="@{/}" style="font-size:20px">Início</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/list}">Filmes</a>
+                    <a class="nav-link" th:href="@{/list}" style="font-size:20px">Filmes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Séries</a>
+                    <a class="nav-link" href="#" style="font-size:20px">Séries</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Minha Lista</a>
+                    <a class="nav-link" href="#" style="font-size:20px">Minha Lista</a>
                 </li>
                 <!-- Notifications Dropdown -->
                 <li class="nav-item dropdown">

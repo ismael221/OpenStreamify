@@ -39,6 +39,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST,"/api/v1/media/hls/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/v1/media/img/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/config").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/images/logo.png").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/images/favicon.ico").permitAll()
                       //  .anyRequest().permitAll()
                         .anyRequest().authenticated()
                 )
