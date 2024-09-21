@@ -1,162 +1,162 @@
 
 ---
 
-# OpenStreamify - Aplicação de Streaming de Filmes
+# OpenStreamify - Movie Streaming Application
 
-## Descrição
+## Description
 
-Esta é uma aplicação web desenvolvida em **Spring Boot** para gerenciamento e streaming de filmes. A aplicação inclui funcionalidades de autenticação via **JWT tokens**, **Spring MVC** para manipulação de requisições HTTP e um sistema de controle de acesso baseado em permissões de usuários. Além disso, a aplicação suporta o streaming de filmes utilizando o **HLS (HTTP Live Streaming)**.
+This is a web application developed in **Spring Boot** for movie management and streaming. The application includes features like JWT-based authentication, **Spring MVC** for handling HTTP requests, and an access control system based on user permissions. Additionally, it supports movie streaming using **HLS (HTTP Live Streaming)**.
 
-### Funcionalidades
+### Features
 
-- Cadastro de filmes e usuários.
-- Sistema de login e registro com autenticação JWT.
-- Avaliação de filmes, com possibilidade de adicionar análises e notas.
-- Streaming de vídeos em formato HLS.
-- Controle de acesso com base em permissões de usuários.
-- Endpoints seguros usando autenticação JWT.
-- Páginas com Thymeleaf para interações de usuário.
-- Monitoramento da aplicação utilizando Grafana e Prometheus em containers Docker.
-- **Redis** para caching, melhorando a performance do sistema.
-- **RabbitMQ** para mensageria, auxiliando no processamento de alta escala.
+- Movie and user management.
+- User login and registration with JWT authentication.
+- Movie reviews with the ability to add ratings and comments.
+- Video streaming in HLS format.
+- Access control based on user permissions.
+- Secure endpoints using JWT authentication.
+- User interaction pages rendered using Thymeleaf.
+- Application monitoring with Grafana and Prometheus running in Docker containers.
+- **Redis** for caching to enhance system performance.
+- **RabbitMQ** for messaging, aiding in high-scale processing.
 
-## Tecnologias Utilizadas
+## Technologies Used
 
-- **Java**: Linguagem principal de desenvolvimento.
-- **Spring Boot**: Framework para desenvolvimento da aplicação.
-- **Spring Security**: Para autenticação e autorização utilizando JWT.
-- **JWT (JSON Web Token)**: Para autenticação segura de APIs.
-- **Spring MVC**: Para gerenciamento de requisições HTTP e controle de rotas.
-- **HLS (HTTP Live Streaming)**: Para o streaming de vídeos.
-- **Thymeleaf**: Motor de templates para renderizar as páginas HTML.
-- **ModelMapper**: Para conversão de entidades e DTOs.
-- **Docker**: Para containerização da aplicação e serviços de monitoramento.
-- **MySQL**: Banco de dados usado para persistência dos dados de filmes e usuários.
-- **Redis**: Sistema de cache para otimização de consultas.
-- **RabbitMQ**: Sistema de mensageria para comunicação entre serviços.
-- **Grafana**: Plataforma de análise e monitoramento.
-- **Prometheus**: Sistema de monitoramento e alerta.
+- **Java**: Main programming language.
+- **Spring Boot**: Framework used for developing the application.
+- **Spring Security**: For authentication and authorization using JWT.
+- **JWT (JSON Web Token)**: For secure API authentication.
+- **Spring MVC**: For managing HTTP requests and routing.
+- **HLS (HTTP Live Streaming)**: For video streaming.
+- **Thymeleaf**: Template engine to render HTML pages.
+- **ModelMapper**: For entity-to-DTO conversion.
+- **Docker**: For containerizing the application and monitoring services.
+- **MySQL**: Relational database used for storing movies and users data.
+- **Redis**: Caching system for optimizing queries.
+- **RabbitMQ**: Messaging system for inter-service communication.
+- **Grafana**: Monitoring and analytics platform.
+- **Prometheus**: Monitoring and alerting toolkit.
 
-## Requisitos do Sistema
+## System Requirements
 
-- **JDK 17** ou superior
+- **JDK 17** or later
 - **Maven** 3.6+
-- **MySQL** ou qualquer outro banco de dados relacional
-- **Redis** (opcional, mas recomendado para caching)
-- **Docker** (para rodar RabbitMQ, Grafana, e Prometheus)
-- **Postman** (para testar os endpoints da API)
-- **FFmpeg** (Para transformar o video em seguimentos .m3u8 e .ts)
+- **MySQL** or any other relational database
+- **Redis** (optional, but recommended for caching)
+- **Docker** (to run RabbitMQ, Grafana, and Prometheus)
+- **Postman** (to test the API endpoints)
+- **FFmpeg** (To convert videos into .m3u8 and .ts segments)
 
-## Configuração e Instalação
+## Setup and Installation
 
-1. Clone o repositório:
+1. Clone the repository:
    ```bash
    git clone https://github.com/ismael221/OpenStreamify
    ```
 
-2. Configure o banco de dados no arquivo `application.properties`:
+2. Configure the database in the `application.properties` file:
    ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/nome_do_banco
-   spring.datasource.username=seu_usuario
-   spring.datasource.password=sua_senha
+   spring.datasource.url=jdbc:mysql://localhost:3306/database_name
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
    spring.jpa.hibernate.ddl-auto=update
    spring.jpa.show-sql=true
    ```
 
-3. Inicie o Redis (se estiver utilizando Docker):
+3. Start Redis (if using Docker):
    ```bash
    docker run -d --name redis -p 6379:6379 redis
    ```
 
-4. Inicie o RabbitMQ com o seguinte comando:
+4. Start RabbitMQ with the following command:
    ```bash
    docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
    ```
 
-5. Para rodar o projeto, utilize o seguinte comando no terminal na raiz do projeto:
+5. Run the project with the following command in the root directory:
    ```bash
    mvn spring-boot:run
    ```
 
-6. Para rodar o Grafana e o Prometheus em containers Docker, execute:
+6. Start Grafana and Prometheus in Docker containers by running:
    ```bash
    docker-compose up -d
    ```
 
-7. Acesse a aplicação no navegador:
+7. Access the application in your browser:
    ```bash
    http://localhost:8080
    ```
 
-8. Acesse o Grafana para monitoramento:
+8. Access Grafana for monitoring:
    ```bash
    http://localhost:3000
    ```
-   - Usuário: `admin`
-   - Senha: `admin`
+   - Username: `admin`
+   - Password: `admin`
 
-9. Acesse o Prometheus para visualização dos dados coletados:
+9. Access Prometheus to view collected data:
    ```bash
    http://localhost:9090
    ```
 
-## Endpoints Principais
+## Main Endpoints
 
-### Autenticação
+### Authentication
 
-- **POST** `/auth/register`: Cadastro de usuários.
-- **POST** `/auth/login`: Autenticação de usuários e geração de JWT.
+- **POST** `/auth/register`: User registration.
+- **POST** `/auth/login`: User authentication and JWT generation.
 
-### Filmes
+### Movies
 
-- **GET** `/api/v1/movies`: Lista todos os filmes.
-- **POST** `/api/v1/movies`: Cadastra um novo filme.
-- **GET** `/api/v1/movies/{rid_filme}`: Detalhes de um filme específico.
-- **POST** `/api/v1/ratings`: Adiciona uma análise para um filme.
+- **GET** `/api/v1/movies`: Lists all movies.
+- **POST** `/api/v1/movies`: Adds a new movie.
+- **GET** `/api/v1/movies/{rid_movie}`: Retrieves details of a specific movie.
+- **POST** `/api/v1/ratings`: Adds a review for a movie.
 
 ### Streaming
 
-- **GET** `/api/v1/media/hls/{filename}.m3u8`: Faz o streaming do vídeo HLS baseado no nome do arquivo.
+- **GET** `/api/v1/media/hls/{filename}.m3u8`: Streams the video using HLS based on the file name.
 
-### Exemplo de Requisição Autenticada com JWT
+### Example of an Authenticated Request with JWT
 
-Todas as rotas, exceto o login e o registro, exigem um token JWT para autenticação. Para acessar as rotas protegidas, você precisa passar o token no header da requisição:
+All routes, except login and registration, require a JWT token for authentication. To access protected routes, pass the token in the request header:
 
 ```http
-Authorization: Bearer <seu-jwt-token>
+Authorization: Bearer <your-jwt-token>
 ```
 
 ### Swagger UI
 
-Para verificar todos os endpoints disponíveis e suas descrições, acesse o Swagger UI:
+To see all available endpoints and their descriptions, access Swagger UI:
 ```
 http://localhost:8080/swagger-ui.html
 ```
 
-## Estrutura do Projeto
+## Project Structure
 
-- `src/main/java/com/ismael/movies`: Contém as classes Java, incluindo os controladores, serviços, modelos e repositórios.
-- `src/main/resources/templates`: Contém as páginas HTML renderizadas pelo Thymeleaf.
-- `src/main/resources/static`: Contém arquivos estáticos, como CSS e JavaScript.
-- `src/main/resources/application.properties`: Configurações da aplicação.
+- `src/main/java/com/ismael/movies`: Contains the Java classes, including controllers, services, models, and repositories.
+- `src/main/resources/templates`: Contains HTML pages rendered by Thymeleaf.
+- `src/main/resources/static`: Contains static files like CSS and JavaScript.
+- `src/main/resources/application.properties`: Application configuration.
 
-## Segurança
+## Security
 
-A aplicação utiliza **JWT tokens** para autenticação e autorização. Ao fazer login, o usuário recebe um token que deve ser incluído no cabeçalho de todas as requisições subsequentes às rotas protegidas.
+The application uses **JWT tokens** for authentication and authorization. After logging in, the user receives a token that must be included in the header of all subsequent requests to protected routes.
 
-## Melhorias Futuras
+## Future Improvements
 
-- Integração com serviços de mensageria para processamento em alta escala com **RabbitMQ**.
-- Implementação de **CDN** para melhorar a performance do streaming em grande volume.
-- Suporte a múltiplas qualidades de vídeo no HLS.
-- Implementação de cache com **Redis** para otimização do sistema.
+- Integration with messaging services for high-scale processing using **RabbitMQ**.
+- Implementation of a **CDN** to enhance streaming performance at scale.
+- Support for multiple video qualities in HLS.
+- Implementation of **Redis** cache to optimize system performance.
 
-## Contribuindo
+## Contributing
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir uma **issue** ou enviar um **pull request**.
+Contributions are welcome! Feel free to open an **issue** or submit a **pull request**.
 
-## Licença
+## License
 
-Este projeto está licenciado sob os termos da licença MIT. Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
 
 ---
