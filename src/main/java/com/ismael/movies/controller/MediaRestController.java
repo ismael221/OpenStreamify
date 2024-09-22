@@ -1,17 +1,9 @@
 package com.ismael.movies.controller;
 
-import com.ismael.movies.config.MinioConfig;
 import com.ismael.movies.model.Movie;
-import com.ismael.movies.model.Users.User;
 import com.ismael.movies.services.*;
-import io.minio.GetObjectArgs;
-import io.minio.MinioClient;
-import io.minio.errors.MinioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.util.List;
@@ -35,12 +26,6 @@ import java.nio.file.Paths;
 public class MediaRestController {
     @Autowired
     private HlsService hlsService;
-
-    @Autowired
-    MinioClient minioClient;
-
-    @Autowired
-    MinioConfig minioConfig;
 
     @Autowired
     private FFmpegHLS fFmpegHLS;
@@ -62,32 +47,18 @@ public class MediaRestController {
     @GetMapping("/hls/{filename:.+}")
     public ResponseEntity<Resource> getHlsFile(@PathVariable String filename) {
         try {
-            // Defina o nome do bucket e o caminho do arquivo que você quer acessar no bucket
-            // Nome do bucket
-
-            //TODO Corrigir e colocar a logica de pegar o video no bucket dentro do service e adicionar a logica do REDIS para verificar em cache primeiro e depois no bucket se necessario
-            String objectName = "hls/" + filename; // Caminho do arquivo no bucket
-
-            // Usando MinIO para obter o objeto (arquivo)
-            InputStream stream = minioClient.getObject(
-                    GetObjectArgs.builder()
-                            .bucket(minioConfig.getStreamBucket())
-                            .object(objectName)
-                            .build()
-            );
-
-            // Retorna o arquivo como um recurso de fluxo de entrada
-            Resource resource = new InputStreamResource(stream);
+            // Tenta obter o arquivo do serviço
+            Resource resource = hlsService.getHlsResource(filename);
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl")
+                    .header(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl") // Define o content type adequado para HLS
                     .body(resource);
-
-        } catch (MinioException e) {
-            // Log de erro
-            System.err.println("Erro ao acessar o arquivo no MinIO: " + e.getMessage());
+        } catch (HlsService.ResourceNotFoundException e) {
+            // Caso o arquivo não seja encontrado
+            System.err.println("Erro: Arquivo não encontrado - " + e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
+
             // Log de erro genérico
             System.err.println("Erro desconhecido: " + e.getMessage());
             return ResponseEntity.status(500).build();
