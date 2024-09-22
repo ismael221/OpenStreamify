@@ -41,7 +41,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/api/config").permitAll()
                         .requestMatchers(HttpMethod.GET,"/images/logo.png").permitAll()
                         .requestMatchers(HttpMethod.GET,"/images/favicon.ico").permitAll()
-                      //  .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.GET,"/actuator/prometheus").permitAll()
+                      // .anyRequest().permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->

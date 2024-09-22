@@ -6,3 +6,9 @@ scrape_configs:
       - targets: ['host.docker.internal:8080']
         labels:
           application: 'Movies Application'
+  - job_name: minio-job
+    bearer_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9tZXRoZXVzIiwic3ViIjoiaXNtYWVsMjIxIiwiZXhwIjo0ODgwNjEzMDU2fQ.P_FaK8wsVl678y4KJYQd1yPBizkr-LZxHwT_ieBi71Q879BBR9n-O3Wa-xHx2T85iFgZeK74-wZR9DGDx3sKUg
+    metrics_path: /minio/v2/metrics/cluster
+    scheme: http
+    static_configs:
+      - targets: [ 192.168.100.10:9000]
