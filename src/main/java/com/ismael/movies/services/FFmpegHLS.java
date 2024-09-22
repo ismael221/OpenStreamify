@@ -1,5 +1,6 @@
 package com.ismael.movies.services;
 
+import io.minio.MinioClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,12 @@ import java.util.concurrent.Future;
 
 @Service
 public class FFmpegHLS {
+    //Using MinIO to store the files
+    MinioClient minioClient =
+            MinioClient.builder()
+                    .endpoint("https://192.168.100.10:9000")
+                    .credentials("ismael221", "Ub3rl@nd1@")
+                    .build();
 
     private static final Logger logger = LoggerFactory.getLogger(FFmpegHLS.class);
     private final Path baseLocation = Paths.get("videos/hls"); // Caminho relativo
