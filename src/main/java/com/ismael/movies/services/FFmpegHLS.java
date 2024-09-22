@@ -1,33 +1,51 @@
 package com.ismael.movies.services;
 
+import com.ismael.movies.config.MinioConfig;
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class FFmpegHLS {
-    //Using MinIO to store the files
-    MinioClient minioClient =
-            MinioClient.builder()
-                    .endpoint("https://192.168.100.10:9000")
-                    .credentials("ismael221", "Ub3rl@nd1@")
-                    .build();
+
+    @Autowired
+    MinioClient minioClient;
+    @Autowired
+    MinioConfig minioConfig;
 
     private static final Logger logger = LoggerFactory.getLogger(FFmpegHLS.class);
     private final Path baseLocation = Paths.get("videos/hls"); // Caminho relativo
 
     // Pool de threads para processar os comandos em paralelo
     private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+    public FFmpegHLS(){
+    }
+
 
     public Future<Integer> executeFFmpegCommand(String inputFilePath, UUID ridFilme) {
         return executorService.submit(() -> {
@@ -70,6 +88,11 @@ public class FFmpegHLS {
                 // Esperando o processo terminar
                 int exitCode = process.waitFor();
                 logger.info("Processo FFmpeg finalizado com código: {}", exitCode);
+                if (exitCode == 0) {
+                    // Arquivos gerados com sucesso, agora faça upload para o MinIO
+                    uploadToMinIO(ridFilme, absoluteBaseLocation);
+                }
+
                 return exitCode; // Retorna o código de saída
 
             } catch (IOException | InterruptedException e) {
@@ -77,6 +100,52 @@ public class FFmpegHLS {
                 return -1; // Retorna um código de erro em caso de exceção
             }
         });
+    }
+    private void uploadToMinIO(UUID ridFilme, Path baseLocation) throws IOException {
+        //String bucketName = "openstreamify";  // Nome do bucket no MinIO
+        Path m3u8File = baseLocation.resolve(ridFilme + ".m3u8");
+        Path tsFilePattern = baseLocation.resolve(ridFilme + "_%03d.ts");
+
+        try {
+
+            // Continue com o upload dos arquivos
+            // Fazer upload do arquivo .m3u8
+            minioClient.putObject(
+                    PutObjectArgs.builder()
+                            .bucket(minioConfig.getStreamBucket())
+                            //.object("hls/" + ridFilme + "/" + ridFilme + ".m3u8")  // Caminho no MinIO
+                            .object("hls/"+ ridFilme + ".m3u8")
+                            .stream(Files.newInputStream(m3u8File), Files.size(m3u8File), -1)
+                            .contentType("application/x-mpegURL")
+                            .build()
+            );
+
+            // Fazer upload de todos os arquivos .ts gerados (usando padrão %03d)
+            int i = 0;
+            while (true) {
+                Path tsFile = baseLocation.resolve(String.format(ridFilme + "_%03d.ts", i));
+                if (!Files.exists(tsFile)) {
+                    break;  // Sai do loop se não houver mais arquivos
+                }
+
+                minioClient.putObject(
+                        PutObjectArgs.builder()
+                                .bucket(minioConfig.getStreamBucket())
+                               // .object("hls/" + ridFilme + "/" + tsFile.getFileName())
+                                .object("hls/" + tsFile.getFileName())  // Caminho no MinIO
+                                .stream(Files.newInputStream(tsFile), Files.size(tsFile), -1)
+                                .contentType("video/MP2T")
+                                .build()
+                );
+                i++;
+            }
+
+            logger.info("Arquivos HLS carregados com sucesso no MinIO!");
+
+        } catch (Exception e) {
+            logger.error("Erro ao fazer upload para o MinIO: {}", e.getMessage());
+            throw new IOException("Falha ao carregar arquivos para o MinIO", e);
+        }
     }
 
     // Método para encerrar o pool de threads quando não for mais necessário
