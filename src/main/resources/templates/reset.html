@@ -115,8 +115,9 @@
         event.preventDefault(); // Impede o envio do formulário de forma tradicional
 
         const email = document.querySelector('#email').value;
+        //TODO Create a function that gets the serverUrl
 
-        fetch('http://ismael221.ddns.net:443/api/v1/email/send-reset-email?email=' + encodeURIComponent(email), {
+        fetch('http://192.168.100.12:8080/api/v1/email/send-reset-email?email=' + encodeURIComponent(email), {
             method: 'POST',
         })
         .then(response => {
