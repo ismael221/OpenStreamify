@@ -246,6 +246,11 @@ public class MovieController {
                 return "updatePassword";
         }
 
+        @GetMapping("/live")
+        public String retrieveLiveStreaming(){
+                return "live";
+        }
+
 
         //TODO adicionar enpoint para listar as series,baseado no type da entity movies
 }
