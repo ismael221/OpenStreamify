@@ -41,10 +41,4 @@ public class HlsService {
         return new InputStreamResource(stream);
     }
 
-    // Exceção personalizada para o caso de recursos não encontrados
-    public static class ResourceNotFoundException extends RuntimeException {
-        public ResourceNotFoundException(String message) {
-            super(message);
-        }
-    }
 }

@@ -1,5 +1,6 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.model.Exceptions.ResourceNotFoundException;
 import com.ismael.movies.model.Movie;
 import com.ismael.movies.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class MediaRestController {
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl") // Define o content type adequado para HLS
                     .body(resource);
-        } catch (HlsService.ResourceNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             // Caso o arquivo não seja encontrado
             System.err.println("Erro: Arquivo não encontrado - " + e.getMessage());
             return ResponseEntity.notFound().build();
