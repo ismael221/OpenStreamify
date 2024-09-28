@@ -95,7 +95,7 @@
     </div>
 
     <!-- Movie Section -->
-    <div class="container mt-5">
+    <div class="container mt-5 recommended-section">
       <h2 class="mb-4" th:text="#{recommend}">Recommended For You</h2>
       <div class="row row-cols-2 row-cols-md-4 g-4">
         <div class="col">
@@ -199,19 +199,7 @@
     <script src="https://cdn.jsdelivr.net/sockjs/1.0.2/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
-    <script>
-      var socket = new SockJS("/ws");
-      var stompClient = Stomp.over(socket);
-      var messagesList = [""];
-
-      stompClient.connect({}, function (frame) {
-        console.log("Connected: " + frame);
-        stompClient.subscribe("/topic/notifications", function (message) {
-          alert(message.body);
-          messagesList.push(message.body);
-          console.log(messagesList);
-        });
-      });
-    </script>
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:src="@{/js/notification.js}"></script>
   </body>
 </html>

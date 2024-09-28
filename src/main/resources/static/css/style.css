@@ -82,6 +82,9 @@ body {
     border: 2px solid #333;
   }
 }
+.recommended-section{
+  margin-top: 0 !important;
+}
 /** details.html **/
 
 .movie-background {

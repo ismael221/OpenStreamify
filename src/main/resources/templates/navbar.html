@@ -1,5 +1,6 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top" xmlns:th="http://www.w3.org/1999/xhtml" style="background-color:#2a2d3e;">
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" xmlns:th="http://www.w3.org/1999/xhtml"
+     style="background-color:#2a2d3e;" >
     <div class="container">
         <a class="navbar-brand" th:href="@{/}">
             <img  th:src="@{/images/logo.png}" alt="OpenStreamify" style="height: 80px; margin: -12px;">
@@ -28,12 +29,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="3 Notificações">
                         <i class="bi bi-bell-fill"></i> <!-- Ícone de sino preenchido -->
-                        <span class="badge bg-danger">3</span> <!-- Contagem de notificações -->
+                        <span class="badge bg-danger" id="countNot">0</span> <!-- Contagem de notificações -->
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
-                        <li><a class="dropdown-item" href="#">Notificação 1</a></li>
-                        <li><a class="dropdown-item" href="#">Notificação 2</a></li>
-                        <li><a class="dropdown-item" href="#">Notificação 3</a></li>
+                    <ul id="notify" class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                       <!-- <li><a class="dropdown-item" href="#">Notificação 1</a></li> -->
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#" th:text="#{notifications}" >See all Notifications</a></li>
                     </ul>
@@ -55,32 +54,13 @@
     </div>
 </nav>
 <script th:src="@{/js/jquery-3.7.1.js}"></script>
+<script th:src="@{/js/script.js}"></script>
 <script>
     // Inicializar tooltip
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.forEach(function (tooltipTriggerEl) {
         new bootstrap.Tooltip(tooltipTriggerEl);
     });
-
-    function retrieveNotifications(UserId){
-         $.ajax({
-        url: 'https://192.168.100.12:8080/ap1/v1/notice'+UserId,
-        method: 'GET',
-        contentType: 'application/json',
-        success: function (data){
-            alert("Filme atualizado com sucesso")
-            console.log(data);
-        },
-        error: function (){
-            alert("Não foi possivel atualizar o filme")
-        }
-    })
-    }
-    $(document).ready(function (){
-    var token = localStorage.getItem('user_id');
-    retrieveNotifications();
-    })
-
 
 </script>
 </script>
