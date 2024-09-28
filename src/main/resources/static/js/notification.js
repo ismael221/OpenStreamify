@@ -49,6 +49,21 @@ $(document).ready(function () {
     retrieveNotifications(this.user_id);
 })
 
+ $(document).ready(function() {
+            // Alternar a visibilidade do menu de notificações quando o botão for clicado
+            $('#notifyButton').click(function(event) {
+                $('#notify').toggle();   // Alterna entre mostrar e esconder
+            });
+
+            // Fechar o menu ao clicar fora dele
+            $(document).click(function(event) {
+                // Verifica se o clique foi fora do botão de notificações e do menu
+                if (!$(event.target).closest('#notifyButton, #notify').length) {
+                    $('#notify').hide();  // Esconde o menu
+                }
+            });
+        });
+
 var socket = new SockJS("/ws");
       var stompClient = Stomp.over(socket);
       var audio = new Audio('http://192.168.100.12:8080/audio/notificationSound.mp3')
