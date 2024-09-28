@@ -11,7 +11,13 @@ function retrieveNotifications(user_id) {
            'Authorization': 'Bearer ' + token
          },
         success: function (data) {
+           $('#notify').empty();
            notificationList = [];
+               if(data.length <= 0){
+                       $("#countNot").hide();
+                   }else{
+                       $("#countNot").show();
+                       }
            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             for (let i = 0; i < data.length; i++) {
                 let notification = data[i];
@@ -38,6 +44,7 @@ function retrieveNotifications(user_id) {
             alert("Não foi carregar as notificações")
         }
     })
+
 }
 
 function updateNotificationsAmount(){
