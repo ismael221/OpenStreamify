@@ -1,0 +1,367 @@
+* {
+  font-family: "Manrope", sans-serif;
+}
+/** index.html**/
+body {
+  background-color: #1a1d29;
+  color: #fff;
+  scroll-behavior: smooth;
+}
+.main-carrousel {
+  padding: 30px;
+  margin-bottom: 30px;
+}
+.main-carrousel img {
+  height: 60vh;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  box-shadow:
+    rgba(0, 0, 0, 0.69) 0px 26px 30px -10px,
+    rgba(0, 0, 0, 0.73) 0px 16px 10px -10px;
+}
+.main-carrousel img:hover {
+  outline: solid #ccc;
+  border-radius: 5px;
+}
+
+.recommended-card img {
+  height: 150px;
+  object-fit: cover;
+  border-radius: inherit;
+  transition: transform 0.5s ease;
+}
+.recommended-card img:hover {
+  height: 150px;
+  object-fit: cover;
+  outline: 3px solid #ccc;
+  border: 2px solid #333;
+  border-radius: inherit;
+  transform: scale(1.1);
+}
+
+.recommended-card {
+  background-color: #333;
+  border: none;
+  border-radius: 20px;
+  box-shadow:
+    rgba(0, 0, 0, 0.69) 0px 26px 30px -10px,
+    rgba(0, 0, 0, 0.73) 0px 16px 10px -10px;
+}
+.dropdown-menu {
+  background-color: #333;
+}
+.dropdown-item {
+  color: #fff;
+}
+.dropdown-item:hover {
+  background-color: #555;
+}
+#slider {
+  padding: 20px;
+  margin-top: 40px;
+  .carousel-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition:
+      transform 0.3s ease,
+      border 0.3s ease;
+    border-radius: 5px;
+  }
+  .carousel-item img:hover {
+    outline: 3px solid #ccc;
+    border: 2px solid #333;
+    border-radius: 5px;
+    transform: scale(1.05);
+  }
+  .carousel {
+    margin-top: 50px;
+  }
+  .card-img-top {
+    outline: 3px solid #ccc;
+    border: 2px solid #333;
+  }
+}
+/** details.html **/
+
+.movie-background {
+  position: relative;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  /*  //background-image: url('https://ingresso-a.akamaihd.net/b2b/production/uploads/article/image/2220/25acd5d2e3e9f7f4eb12c0bf102570b3.jpg');  Substitua pela URL da imagem do movie */
+}
+.movie-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Overlay escura */
+}
+.movie-content {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+}
+.movie-details-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+.movie-actions {
+  margin-top: 20px;
+}
+.movie-description {
+  margin-top: 30px;
+}
+.badge {
+  background-color: #007bff;
+  margin-right: 5px;
+}
+.navbar {
+  background-color: #000;
+}
+.navbar-brand img {
+  height: 40px;
+}
+
+/** movies.html **/
+
+body {
+  background-color: #1a1d29;
+  color: #fff;
+  scroll-behavior: smooth;
+}
+.movie-list-card {
+  background-color: #1f1f1f;
+  border: none;
+  transition: transform 0.5s ease;
+  box-shadow:
+    rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+.movie-list-card:hover {
+  outline: 3px solid #ccc;
+  border: 2px solid #333;
+  border-radius: 5px;
+  transform: scale(1.05);
+}
+.movie-list-poster {
+  width: 100%;
+  border-radius: 5px;
+}
+.movie-list-title {
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 10px;
+  color: #fff;
+}
+.navbar {
+  background-color: #000;
+}
+.navbar-brand img {
+  height: 40px;
+}
+.movies-list-h1 {
+  padding: 20px;
+  text-align: center;
+  margin: 20px;
+}
+@media only screen and (max-width: 768px) {
+  .movies-grid {
+    padding: 20px;
+    gap: 20px;
+  }
+}
+a {
+  text-decoration: none;
+}
+.card-body {
+  display: none;
+}
+.col-md-2 {
+  display: flex;
+  align-items: center;
+}
+
+/** Assistir.html **/
+
+.watch-card {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #141b29;
+}
+
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+video {
+  max-width: 100%;
+  max-height: 100%;
+  /* Mantém a proporção original do vídeo e ajusta dentro do player */
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  z-index: 1000;
+}
+
+.back-button {
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.span-media-title {
+  font-size: 18px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.span-media-title {
+  text-decoration: none;
+  color: white;
+  max-width: 80%;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 10px;
+  }
+
+  .back-button {
+    font-size: 18px;
+  }
+
+  .span-media-title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 8px;
+  }
+
+  .back-button {
+    font-size: 16px;
+  }
+
+  .span-media-title {
+    font-size: 14px;
+  }
+}
+
+/* footer.html */
+
+.footer {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 40px 0;
+}
+.footer .footer-links a {
+  color: #a7a7a7;
+  text-decoration: none;
+}
+.footer .footer-links a:hover {
+  color: #fff;
+}
+.footer .social-icons a {
+  color: #a7a7a7;
+  font-size: 1.5rem;
+  margin-right: 15px;
+}
+.footer .social-icons a:hover {
+  color: #fff;
+}
+.footer-bottom {
+  border-top: 1px solid #333;
+  padding-top: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* updatePassword.html */
+.card {
+  background-color: #2a2d3e;
+  border: none;
+  border-radius: 10px;
+}
+
+.form-control {
+  background-color: #3b3e52;
+  border: none;
+  color: white;
+}
+
+.form-control:focus {
+  background-color: #3b3e52;
+  border-color: #007bff;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.openstreamyfy-logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  text-align: center;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card-footer {
+  text-align: center;
+  padding-top: 0;
+  padding-bottom: 1.5rem;
+}
+
+.footer-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+.main-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

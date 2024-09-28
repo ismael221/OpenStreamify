@@ -1,99 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Filmes - OpenStreamify</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" href="/images/favicon.ico" type="image/png">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+  />
     <!-- Estilo Personalizado -->
-    <style>
-        body {
-            background-color: #1a1d29;
-            color: #fff;
-            scroll-behavior:smooth;
-        }
-        .movie-card {
-            background-color: #1f1f1f;
-            border: none;
-            transition: transform 0.5s ease;
-            box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-        }
-        .movie-card:hover{
-           outline: 3px solid #CCC;
-            border: 2px solid #333;
-            border-radius:5px;
-            transform: scale(1.05);
-        }
-        .movie-poster {
-            width: 100%;
-            border-radius: 5px;
-        }
-        .movie-title {
-            font-size: 1rem;
-            text-align: center;
-            margin-top: 10px;
-            color: #fff;
-        }
-          .navbar {
-            background-color: #000;
-          }
-          .navbar-brand img {
-            height: 40px;
-          }
-        h1{
-            padding: 20px;
-            text-align: center;
-            margin: 20px;
-        }
-        @media only screen and (max-width: 768px) {
-        .row{
-        padding: 20px;
-        gap: 20px;
-        }
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <!-- Barra de Navegação -->
+    <header th:insert="navbar.html :: nav" class="sticky-top"></header>
 
-        }
-        a{
-        text-decoration:none;
-        }
-        .card-body{
-        display:none;
-        }
-        .col-md-2{
-            display: flex;
-    align-items: center;
-        }
-    </style>
-</head>
-<body>
-<!-- Barra de Navegação -->
-<header th:insert="navbar.html :: nav" class="sticky-top"></header>
+    <!-- Cabeçalho -->
+    <header class="container mt-5">
+      <h1 class="mb-4 movies-list-h1" th:text="#{movies}">Movies</h1>
+    </header>
 
-<!-- Cabeçalho -->
-<header class="container mt-5">
-    <h1 class="mb-4" th:text="#{movies}">Movies</h1>
-</header>
-
-<!-- Grade de Filmes -->
-<div class="container">
-    <div class="row">
+    <!-- Grade de Filmes -->
+    <div class="container">
+      <div class="row movies-grid">
         <!-- Cartão do Movie -->
         <div class="col-md-2 mb-4" th:each="m : ${moviesList}">
-            <a th:href="@{'/details/'+ ${m.rid}}">
-                <div class="card movie-card">
-                    <img th:src="${m.coverImgUrl}" class="card-img-top movie-poster" alt="Filme 1" loading="lazy">
-                    <div class="card-body">
-                        <p class="movie-title">Filme 1</p>
-                    </div>
-                </div>
-            </a>
+          <a th:href="@{'/details/'+ ${m.rid}}">
+            <div class="card movie-list-card">
+              <img
+                th:src="${m.coverImgUrl}"
+                class="card-img-top movie-list-poster"
+                alt="Filme 1"
+                loading="lazy"
+              />
+              <div class="card-body">
+                <p class="movie-list-title">Filme 1</p>
+              </div>
+            </div>
+          </a>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- Bootstrap JS e dependências -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-</body>
+    <!-- Bootstrap JS e dependências -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  </body>
 </html>
