@@ -10,19 +10,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}" style="font-size:20px">Início</a>
+                    <a class="nav-link" th:href="@{/}" style="font-size:20px" th:text="#{home}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/list}" style="font-size:20px">Filmes</a>
+                    <a class="nav-link" th:href="@{/list}" style="font-size:20px" th:text="#{movies}">Movies</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:20px">Séries</a>
+                    <a class="nav-link" href="#" style="font-size:20px" th:text="#{series}">Series</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/live}" style="font-size:20px">Lives</a>
+                    <a class="nav-link" th:href="@{/live}" style="font-size:20px" th:text="#{lives}">Lives</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:20px">Minha Lista</a>
+                    <a class="nav-link" href="#" style="font-size:20px" th:text="#{myList}">WatchList</a>
                 </li>
                 <!-- Notifications Dropdown -->
                 <li class="nav-item dropdown">
@@ -35,7 +35,7 @@
                         <li><a class="dropdown-item" href="#">Notificação 2</a></li>
                         <li><a class="dropdown-item" href="#">Notificação 3</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Ver todas as notificações</a></li>
+                        <li><a class="dropdown-item" href="#" th:text="#{notifications}" >See all Notifications</a></li>
                     </ul>
                 </li>
                 <!-- User Dropdown Menu -->
@@ -44,10 +44,10 @@
                         <img src="https://via.placeholder.com/30" class="rounded-circle" alt="User Avatar">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="#">Perfil</a></li>
-                        <li><a class="dropdown-item" href="#">Configurações</a></li>
+                        <li><a class="dropdown-item" href="#" th:text="#{profile}">Profile</a></li>
+                        <li><a class="dropdown-item" href="#" th:text="#{settings}">Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}" th:text="#{logout}">Log out</a></li>
                     </ul>
                 </li>
             </ul>

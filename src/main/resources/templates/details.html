@@ -79,17 +79,17 @@ height: 40px;
             </p>
             <div class="movie-actions">
               <a th:href="@{'/play/'+ ${details.rid}}">
-              <button type="button" class="btn btn-primary btn-lg me-2" >Assistir</button>
+              <button type="button" class="btn btn-primary btn-lg me-2" th:text="#{play}">Play</button>
               </a>
               <a th:href="@{${details.trailerUrl}}" target="_blank">
-                <button type="button" class="btn btn-outline-light btn-lg">Trailer</button>
+                <button type="button" class="btn btn-outline-light btn-lg" th:text="#{trailer}">Trailer</button>
               </a>
             </div>
           </div>
         </div>
         <div class="row movie-description">
           <div class="col-md-8">
-            <h3>Sinopse</h3>
+            <h3 th:text="#{synopsis}">Synopsis</h3>
             <p>[[${details.synopsis}]]</p>
           </div>
         </div>
