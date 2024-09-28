@@ -368,3 +368,21 @@ video {
   justify-content: center;
   align-items: center;
 }
+
+#notify{
+height: 20rem;
+overflow-y: auto;
+overflow-x: hidden;
+}
+
+.notify-date{
+    color: #8b8b8b;
+    text-align: left;
+    padding-left: 15px;
+    font-size: small;
+}
+#countNot{
+    padding: 8px;
+    border-radius: 50px;
+    width: 30px;
+}

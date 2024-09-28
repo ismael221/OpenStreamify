@@ -17,11 +17,16 @@ function retrieveNotifications(user_id) {
                 let notification = data[i];
                 notificationList.push(notification);
                 const date = new Date(notification.createdAt);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                const day = String(date.getDate()).padStart(2, '0');
+                console.log(`${day}/${month}/${year}`); // Outputs: 28/09/2024
+
                 console.log(notification)
-                $("#notify").prepend('<li>' +
+                $("#notify").prepend('<li><hr class="dropdown-divider"></li>').prepend('<li>' +
                 '<a class="dropdown-item">'+ notification.message +'</a>'
                 +
-                '<p>'+months[date.getMonth()]+'<p>'
+                '<p class="notify-date">'+`${day}/${month}/${year}`+'<p>'
                 +
                  '</li>')
             }
@@ -46,13 +51,16 @@ $(document).ready(function () {
 
 var socket = new SockJS("/ws");
       var stompClient = Stomp.over(socket);
+      var audio = new Audio('http://192.168.100.12:8080/audio/notificationSound.mp3')
 
       stompClient.connect({}, function (frame) {
         console.log("Connected: " + frame);
         stompClient.subscribe("/topic/notifications", function (message) {
           console.log(message.body);
+
            setTimeout(function() {
              retrieveNotifications(user_id);
+             audio.play();
            }, 3000);
         });
       });
