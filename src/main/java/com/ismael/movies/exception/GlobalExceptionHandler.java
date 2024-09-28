@@ -1,5 +1,6 @@
 package com.ismael.movies.exception;
 
+import com.ismael.movies.model.Exceptions.BadRequestException;
 import com.ismael.movies.model.Exceptions.ProblemDetails;
 import com.ismael.movies.model.Exceptions.ResourceNotFoundException;
 import com.ismael.movies.services.HlsService;
@@ -40,6 +41,18 @@ public class GlobalExceptionHandler {
                 request.getDescription(false)
         );
         return new ResponseEntity<>(problemDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ProblemDetails> handleBadRequestException(Exception ex, WebRequest request) {
+        ProblemDetails problemDetails = new ProblemDetails(
+                URI.create("https://example.com/bad-request-error").toString(),
+                "Bad Request Error",
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                    request.getDescription(false)
+        );
+        return new ResponseEntity<>(problemDetails, HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -89,22 +89,22 @@
     <div class="card col-md-4 col-sm-12">
         <div class="card-header">
             <img th:src="@{/images/logo.png}" alt="OpenStreamify Logo" class="openstreamyfy-logo">
-            <h4>Reset your password</h4>
+            <h4 th:text="#{passwordReset}">Reset your password</h4>
         </div>
         <div class="card-body">
-            <p class="text-center">Enter the email address associated with your account, and we'll send you a link to reset your password.</p>
+            <p class="text-center" th:text="#{resetPwdText}">Enter the email address associated with your account, and we'll send you a link to reset your password.</p>
             <form>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    <label for="email" class="form-label" th:text="#{emailAdress}">Email Address</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required th:placeholder="#{enterYourEmail}">
                 </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Send Email</button>
+                    <button type="submit" class="btn btn-primary" th:text="#{sendEmail}">Send Email</button>
                 </div>
             </form>
         </div>
         <div class="card-footer">
-            <a th:href="@{'/auth/login'}" class="footer-link">Back to Login</a>
+            <a th:href="@{'/auth/login'}" class="footer-link" th:text="#{backLogin}">Back to Login</a>
         </div>
     </div>
 </div>

@@ -124,14 +124,14 @@
           alt="OpenStreamify Logo"
           class="logo"
         />
-        <h2>Create Your OpenStreamify Account</h2>
+        <h2 th:text="#{createAccount}">Create Your OpenStreamify Account</h2>
         <form id="register-form">
           <div class="form-group">
-            <label for="email">Email Address</label>
+            <label for="email" th:text="#{emailAdress}">Email Address</label>
             <input type="email" id="email" name="email" required />
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password" th:text="#{password}">Password</label>
             <input
               type="password"
               id="password"
@@ -141,7 +141,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="confirm-password">Confirm Password</label>
+            <label for="confirm-password" th:text="#{confirmPassword}">Confirm Password</label>
             <input
               type="password"
               id="confirm-password"
@@ -150,7 +150,7 @@
               minlength="6"
             />
           </div>
-          <button type="submit" class="btn-signup">Sign Up</button>
+          <button type="submit" class="btn-signup" th:text="#{signUp}">Sign Up</button>
         </form>
         <p class="terms">
           By signing up, you agree to the <a href="#">Terms of Service</a> and

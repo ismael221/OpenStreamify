@@ -109,13 +109,18 @@
         <div class="login-box">
             <img th:src="@{/images/logo.png}" alt="OpenStreamify Logo" class="logo">
             <form id="login-form">
-                <input type="email" name="login" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Log In</button>
+                <input type="email" name="login" placeholder="Email" required  th:placeholder="#{email}">
+                <input type="password" name="password" placeholder="Password" required th:placeholder="#{password}">
+                <button type="submit" th:text="#{login}">Log In</button>
             </form>
-            <a th:href="@{'/auth/reset'}" class="forgot-password">Forgot password?</a>
+            <a th:href="@{'/auth/reset'}" class="forgot-password" th:text="#{forgot}">Forgot password?</a>
             <div class="signup-link">
-                <p>New to OpenStreamify? <a th:href="@{'/auth/register'}">Sign up</a></p>
+                <p th:text="#{newTo}" style="padding:5px">
+                    New to OpenStreamify?
+                </p>
+                <a th:href="@{'/auth/register'}" th:text="#{signUp}">
+                    Sign up
+                </a>
             </div>
         </div>
         <!-- Modal de sucesso -->
