@@ -22,17 +22,22 @@ function retrieveNotifications(user_id) {
             for (let i = 0; i < data.length; i++) {
                 let notification = data[i];
                 notificationList.push(notification);
+                 if(notificationList.length > 0){
+                     showAndRideNotifications();
+                    }
                 const date = new Date(notification.createdAt);
                 const year = date.getFullYear();
                 const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
                 const day = String(date.getDate()).padStart(2, '0');
-                console.log(`${day}/${month}/${year}`); // Outputs: 28/09/2024
+                const hours = date.getHours();
+                const minutes = date.getMinutes();
+                console.log(`${day}/${month}/${year} - ${hours}:${minutes}`); // Outputs: 28/09/2024
 
                 console.log(notification)
                 $("#notify").prepend('<li><hr class="dropdown-divider"></li>').prepend('<li>' +
                 '<a class="dropdown-item">'+ notification.message +'</a>'
                 +
-                '<p class="notify-date">'+`${day}/${month}/${year}`+'<p>'
+                '<p class="notify-date">'+`${day}/${month}/${year} - ${hours}:${minutes}`+'<p>'
                 +
                  '</li>')
             }
@@ -50,14 +55,8 @@ function retrieveNotifications(user_id) {
 function updateNotificationsAmount(){
     $('#countNot').text(notificationList.length);
 }
-
-$(document).ready(function () {
-    var token = localStorage.getItem('user_id');
-    retrieveNotifications(this.user_id);
-})
-
- $(document).ready(function() {
-            // Alternar a visibilidade do menu de notificações quando o botão for clicado
+function showAndRideNotifications(){
+       // Alternar a visibilidade do menu de notificações quando o botão for clicado
             $('#notifyButton').click(function(event) {
                 $('#notify').toggle();   // Alterna entre mostrar e esconder
             });
@@ -69,7 +68,12 @@ $(document).ready(function () {
                     $('#notify').hide();  // Esconde o menu
                 }
             });
-        });
+}
+
+$(document).ready(function () {
+    var token = localStorage.getItem('user_id');
+    retrieveNotifications(this.user_id);
+})
 
 var socket = new SockJS("/ws");
       var stompClient = Stomp.over(socket);
