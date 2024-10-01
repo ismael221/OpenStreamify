@@ -41,6 +41,7 @@ function retrieveNotifications(user_id) {
                 +
                  '</li>')
             }
+             $("#notify").append('<li><a class="dropdown-item" href="#" th:text="#{notifications}" id="deleteNots">See all Notifications</a></li>')
             console.log(notificationList.length)
             updateNotificationsAmount()
             

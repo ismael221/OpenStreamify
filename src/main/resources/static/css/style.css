@@ -418,3 +418,9 @@ video {
       margin-top: 11px;
       margin-left: 2px;
 }
+#deleteNots{
+    text-align: center;
+    text-decoration: solid;
+    color: #f33737;
+    font-size: unset;
+}
