@@ -19,6 +19,7 @@ This is a web application developed in **Spring Boot** for movie management and 
 - Application monitoring with Grafana and Prometheus running in Docker containers.
 - **Redis** for caching to enhance system performance.
 - **RabbitMQ** for messaging, aiding in high-scale processing.
+- **minIO** for storing video files.
 
 ## Technologies Used
 
@@ -36,6 +37,7 @@ This is a web application developed in **Spring Boot** for movie management and 
 - **RabbitMQ**: Messaging system for inter-service communication.
 - **Grafana**: Monitoring and analytics platform.
 - **Prometheus**: Monitoring and alerting toolkit.
+- **minIO**: Object storage used to store movie files.
 
 ## System Requirements
 
@@ -46,6 +48,7 @@ This is a web application developed in **Spring Boot** for movie management and 
 - **Docker** (to run RabbitMQ, Grafana, and Prometheus)
 - **Postman** (to test the API endpoints)
 - **FFmpeg** (To convert videos into .m3u8 and .ts segments)
+- **minIO** (to store video files)
 
 ## Setup and Installation
 
@@ -73,29 +76,37 @@ This is a web application developed in **Spring Boot** for movie management and 
    docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
    ```
 
-5. Run the project with the following command in the root directory:
+5. Configure **minIO** for storing video files. You can follow [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-minio-object-storage-server-in-standalone-mode-on-ubuntu-20-04) to set up **minIO** on Ubuntu. For example, to start **minIO** on Docker:
+   ```bash
+   docker run -d -p 9000:9000 --name minio \
+   -e "MINIO_ACCESS_KEY=your_access_key" \
+   -e "MINIO_SECRET_KEY=your_secret_key" \
+   minio/minio server /data
+   ```
+
+6. Run the project with the following command in the root directory:
    ```bash
    mvn spring-boot:run
    ```
 
-6. Start Grafana and Prometheus in Docker containers by running:
+7. Start Grafana and Prometheus in Docker containers by running:
    ```bash
    docker-compose up -d
    ```
 
-7. Access the application in your browser:
+8. Access the application in your browser:
    ```bash
    http://localhost:8080
    ```
 
-8. Access Grafana for monitoring:
+9. Access Grafana for monitoring:
    ```bash
    http://localhost:3000
    ```
    - Username: `admin`
    - Password: `admin`
 
-9. Access Prometheus to view collected data:
+10. Access Prometheus to view collected data:
    ```bash
    http://localhost:9090
    ```
