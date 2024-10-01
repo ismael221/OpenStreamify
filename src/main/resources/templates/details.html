@@ -1,105 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detalhes do Filme</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="icon" href="/images/favicon.ico" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
-  <!-- Custom Styles -->
-  <style>
-    *{
-      font-family: "Manrope", sans-serif;
-    }
-body {
-  background-color: #1a1a1a;
-  color: #fff;
-}
-.movie-background {
-  position: relative;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  //background-image: url('https://ingresso-a.akamaihd.net/b2b/production/uploads/article/image/2220/25acd5d2e3e9f7f4eb12c0bf102570b3.jpg'); /* Substitua pela URL da imagem do movie */
-}
-.movie-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Overlay escura */
-}
-.movie-content {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 20px;
-}
-.movie-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-}
-.movie-actions {
-  margin-top: 20px;
-}
-.movie-description {
-  margin-top: 30px;
-}
-.badge {
-  background-color: #007bff;
-  margin-right: 5px;
-}
-  .navbar {
-background-color: #000;
-}
-.navbar-brand img {
-height: 40px;
-}
-
-
-  </style>
-</head>
-<body>
-  <!-- NavBar-->
-  <header th:insert="navbar.html :: nav" class="sticky-top"></header>
-  <!-- Seção de detalhes do movie -->
-  <div class="movie-background" th:style="'background-image: url(' + ${details.backgroundImgUrl} + ');'">
-    <div class="movie-overlay d-flex align-items-center">
-      <div class="container movie-content">
-        <div class="row">
-          <div class="col-md-6">
-            <h1 class="movie-title">[[${details.title}]]</h1>
-            <p class="movie-genre" th:each="genre : ${details.genres}" style="display:inline-block">
-              <span class="badge" th:text="${genre}">Genre name</span>
-            </p>
-            <div class="movie-actions">
-              <a th:href="@{'/play/'+ ${details.rid}}">
-              <button type="button" class="btn btn-primary btn-lg me-2" >Assistir</button>
-              </a>
-              <a th:href="@{${details.trailerUrl}}" target="_blank">
-                <button type="button" class="btn btn-outline-light btn-lg">Trailer</button>
-              </a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalhes do Filme</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom Styles -->
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <!-- NavBar-->
+    <header th:insert="navbar.html :: nav" class="sticky-top"></header>
+    <!-- Seção de detalhes do movie -->
+    <div
+      class="movie-background"
+      th:style="'background-image: url(' + ${details.backgroundImgUrl} + ');'"
+    >
+      <div class="movie-overlay d-flex align-items-center">
+        <div class="container movie-content">
+          <div class="row">
+            <div class="col-md-6">
+              <h1 class="movie-details-title">[[${details.title}]]</h1>
+              <p
+                class="movie-genre"
+                th:each="genre : ${details.genres}"
+                style="display: inline-block"
+              >
+                <span class="badge" th:text="${genre}">Genre name</span>
+              </p>
+              <div class="movie-actions">
+                <a th:href="@{'/play/'+ ${details.rid}}">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-lg me-2"
+                    th:text="#{play}"
+                  >
+                    Play
+                  </button>
+                </a>
+                <a th:href="@{${details.trailerUrl}}" target="_blank">
+                  <button
+                    type="button"
+                    class="btn btn-outline-light btn-lg"
+                    th:text="#{trailer}"
+                  >
+                    Trailer
+                  </button>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row movie-description">
-          <div class="col-md-8">
-            <h3>Sinopse</h3>
-            <p>[[${details.synopsis}]]</p>
+          <div class="row movie-description">
+            <div class="col-md-8">
+              <h3 th:text="#{synopsis}">Synopsis</h3>
+              <p>[[${details.synopsis}]]</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <footer th:insert="footer.html :: footer" class="rodape" style="margin-top:150px;"></footer>
+    <footer
+      th:insert="footer.html :: footer"
+      class="rodape"
+      style="margin-top: 150px"
+    ></footer>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>

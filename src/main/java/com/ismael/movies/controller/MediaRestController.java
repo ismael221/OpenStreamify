@@ -1,12 +1,10 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.model.Exceptions.ResourceNotFoundException;
 import com.ismael.movies.model.Movie;
-import com.ismael.movies.model.Users.User;
 import com.ismael.movies.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -30,23 +28,6 @@ public class MediaRestController {
     @Autowired
     private HlsService hlsService;
 
-    private final Path uploadDir = Paths.get("uploads");
-
-    @Autowired
-    private ImagesService imagesService;
-
-    @GetMapping("/hls/{filename:.+}")
-    public ResponseEntity<Resource> getHlsFile(@PathVariable String filename) {
-        try {
-            Resource resource = hlsService.getHlsResource(filename);
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl")
-                    .body(resource);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @Autowired
     private FFmpegHLS fFmpegHLS;
 
@@ -58,6 +39,33 @@ public class MediaRestController {
 
     @Autowired
     UserService userService;
+
+    private final Path uploadDir = Paths.get("uploads");
+
+    @Autowired
+    private ImagesService imagesService;
+
+    @GetMapping("/hls/{filename:.+}")
+    public ResponseEntity<Resource> getHlsFile(@PathVariable String filename) {
+        try {
+            // Tenta obter o arquivo do serviço
+            Resource resource = hlsService.getHlsResource(filename);
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl") // Define o content type adequado para HLS
+                    .body(resource);
+        } catch (ResourceNotFoundException e) {
+            // Caso o arquivo não seja encontrado
+            System.err.println("Erro: Arquivo não encontrado - " + e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+
+            // Log de erro genérico
+            System.err.println("Erro desconhecido: " + e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
+    }
+
 
     @PostMapping("/hls/upload")
     public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam UUID rid) {

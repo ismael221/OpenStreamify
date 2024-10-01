@@ -1,30 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OpenStreamify Login</title>
-    <link rel="icon" href="/images/favicon.ico" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-
+    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
-    
-    body {
+        font-family: "Manrope", sans-serif;
+      }
+
+      body {
         background-color: #141b29;
         color: #ffffff;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
-    }
-    
-    .login-container {
+      }
+
+      .login-container {
         width: 100%;
         max-width: 400px;
         padding: 20px;
@@ -32,28 +38,28 @@
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         text-align: center;
-    }
-    
-    .login-box .logo {
+      }
+
+      .login-box .logo {
         width: 150px;
         margin-bottom: 20px;
-    }
-    
-    .login-box form {
+      }
+
+      .login-box form {
         display: flex;
         flex-direction: column;
-    }
-    
-    .login-box input[type="email"],
-    .login-box input[type="password"] {
+      }
+
+      .login-box input[type="email"],
+      .login-box input[type="password"] {
         padding: 15px;
         margin-bottom: 20px;
         border: none;
         border-radius: 4px;
         font-size: 16px;
-    }
-    
-    .login-box button {
+      }
+
+      .login-box button {
         padding: 15px;
         background-color: #1a73e8;
         color: white;
@@ -62,130 +68,155 @@
         border-radius: 4px;
         cursor: pointer;
         margin-bottom: 20px;
-    }
-    
-    .login-box button:hover {
+      }
+
+      .login-box button:hover {
         background-color: #1558b8;
-    }
-    
-    .forgot-password {
+      }
+
+      .forgot-password {
         color: #1a73e8;
         font-size: 14px;
         text-decoration: none;
-    }
-    
-    .forgot-password:hover {
+      }
+
+      .forgot-password:hover {
         text-decoration: underline;
-    }
-    
-    .signup-link {
+      }
+
+      .signup-link {
         margin-top: 20px;
-    }
-    
-    .signup-link a {
+      }
+
+      .signup-link a {
         color: #1a73e8;
         text-decoration: none;
-    }
-    
-    .signup-link a:hover {
+      }
+
+      .signup-link a:hover {
         text-decoration: underline;
-    }
-    input{
-        background-color:#3b3e52;
-        color:white;
-    }
-    ::placeholder {
-      color: white;
-      opacity: 1; /* Firefox */
-    }
+      }
+      input {
+        background-color: #3b3e52;
+        color: white;
+      }
+      ::placeholder {
+        color: white;
+        opacity: 1; /* Firefox */
+      }
 
-    ::-ms-input-placeholder { /* Edge 12 -18 */
-      color: white;
-    }
+      ::-ms-input-placeholder {
+        /* Edge 12 -18 */
+        color: white;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="login-container">
-        <div class="login-box">
-            <img th:src="@{/images/logo.png}" alt="OpenStreamify Logo" class="logo">
-            <form id="login-form">
-                <input type="email" name="login" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Log In</button>
-            </form>
-            <a th:href="@{'/auth/reset'}" class="forgot-password">Forgot password?</a>
-            <div class="signup-link">
-                <p>New to OpenStreamify? <a th:href="@{'/auth/register'}">Sign up</a></p>
-            </div>
+      <div class="login-box">
+        <img
+          th:src="@{/images/logo.png}"
+          alt="OpenStreamify Logo"
+          class="logo"
+        />
+        <form id="login-form">
+          <input
+            type="email"
+            name="login"
+            placeholder="Email"
+            required
+            th:placeholder="#{email}"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            th:placeholder="#{password}"
+          />
+          <button type="submit" th:text="#{login}">Log In</button>
+        </form>
+        <a
+          th:href="@{'/auth/reset'}"
+          class="forgot-password"
+          th:text="#{forgot}"
+          >Forgot password?</a
+        >
+        <div class="signup-link">
+          <p th:text="#{newTo}" style="padding: 5px">New to OpenStreamify?</p>
+          <a th:href="@{'/auth/register'}" th:text="#{signUp}"> Sign up </a>
         </div>
-        <!-- Modal de sucesso -->
-        <div id="success-modal" class="modal">
-            <p style="color:green">Login bem-sucedido! Bem-vindo à OpenStreamify.</p>
-        </div>
+      </div>
+      <!-- Modal de sucesso -->
+      <div id="success-modal" class="modal">
+        <p style="color: green">
+          Login bem-sucedido! Bem-vindo à OpenStreamify.
+        </p>
+      </div>
 
-        <!-- Modal de erro -->
-        <div id="error-modal" class="modal">
-            <p style="color:red;">Erro ao fazer login: Credenciais inválidas. Por favor, tente novamente.</p>
-        </div>
-
+      <!-- Modal de erro -->
+      <div id="error-modal" class="modal">
+        <p style="color: red">
+          Erro ao fazer login: Credenciais inválidas. Por favor, tente
+          novamente.
+        </p>
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        const serverUrl = '';
-        $(document).ready(function() {
-    let serverUrl = '';
+      const serverUrl = "";
+      $(document).ready(function () {
+        let serverUrl = "";
 
-    // Primeiro, busca a URL do servidor
-    $.ajax({
-        url: `/api/config`,
-        type: 'GET',
-        success: function(response) {
-            serverUrl = response;
-        },
-        error: function(xhr, status, error) {
-            console.error('Erro ao obter configuração: ', error);
-        }
-    });
-
-    // Envia o formulário de login
-    $('#login-form').on('submit', function(e) {
-        e.preventDefault(); // Evita o comportamento padrão de submit
-
-        // Obtém os dados do formulário
-        var email = $('input[name="login"]').val();
-        var password = $('input[name="password"]').val();
-
-        // Envia os dados via AJAX
+        // Primeiro, busca a URL do servidor
         $.ajax({
-            url: `${serverUrl}/api/v1/auth/login`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                login: email,
-                password: password
-            }),
-            success: function(response) {
-                // Sucesso no login
-                localStorage.setItem('access_token', response.token);
-
-                // Exibe o modal de sucesso
-                $('#success-modal').modal();
-
-                // Redirecionar após alguns segundos ou logo após fechar o modal
-                setTimeout(function() {
-                    window.location.href = '/';
-                }, 2000); // Exemplo: redireciona após 2 segundos
-            },
-            error: function(xhr, status, error) {
-                // Exibe o modal de erro
-                $('#error-modal').modal();
-            }
+          url: `/api/config`,
+          type: "GET",
+          success: function (response) {
+            serverUrl = response;
+          },
+          error: function (xhr, status, error) {
+            console.error("Erro ao obter configuração: ", error);
+          },
         });
-    });
-});
 
+        // Envia o formulário de login
+        $("#login-form").on("submit", function (e) {
+          e.preventDefault(); // Evita o comportamento padrão de submit
 
+          // Obtém os dados do formulário
+          var email = $('input[name="login"]').val();
+          var password = $('input[name="password"]').val();
+
+          // Envia os dados via AJAX
+          $.ajax({
+            url: `${serverUrl}/api/v1/auth/login`,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+              login: email,
+              password: password,
+            }),
+            success: function (response) {
+              // Sucesso no login
+              localStorage.setItem("access_token", response.token);
+
+              // Exibe o modal de sucesso
+              $("#success-modal").modal();
+
+              // Redirecionar após alguns segundos ou logo após fechar o modal
+              setTimeout(function () {
+                window.location.href = "/";
+              }, 2000); // Exemplo: redireciona após 2 segundos
+            },
+            error: function (xhr, status, error) {
+              // Exibe o modal de erro
+              $("#error-modal").modal();
+            },
+          });
+        });
+      });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-</body>
+  </body>
 </html>

@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OpenStreamfy Signup</title>
-    <link rel="icon" href="/images/favicon.ico" type="image/png">
+    <link rel="icon" href="/images/favicon.ico" type="image/png" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -17,7 +17,7 @@
       }
 
       body {
-        font-family: "Roboto", sans-serif;
+        font-family: "Manrope", sans-serif;
         background-color: #1a1d29;
         color: #fff;
         display: flex;
@@ -120,18 +120,19 @@
   <body>
     <div class="container">
       <div class="signup-form">
-        <img th:src="@{/images/logo.png}"
+        <img
+          th:src="@{/images/logo.png}"
           alt="OpenStreamify Logo"
           class="logo"
         />
-        <h2>Create Your OpenStreamify Account</h2>
+        <h2 th:text="#{createAccount}">Create Your OpenStreamify Account</h2>
         <form id="register-form">
           <div class="form-group">
-            <label for="email">Email Address</label>
+            <label for="email" th:text="#{emailAdress}">Email Address</label>
             <input type="email" id="email" name="email" required />
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password" th:text="#{password}">Password</label>
             <input
               type="password"
               id="password"
@@ -141,7 +142,9 @@
             />
           </div>
           <div class="form-group">
-            <label for="confirm-password">Confirm Password</label>
+            <label for="confirm-password" th:text="#{confirmPassword}"
+              >Confirm Password</label
+            >
             <input
               type="password"
               id="confirm-password"
@@ -150,7 +153,9 @@
               minlength="6"
             />
           </div>
-          <button type="submit" class="btn-signup">Sign Up</button>
+          <button type="submit" class="btn-signup" th:text="#{signUp}">
+            Sign Up
+          </button>
         </form>
         <p class="terms">
           By signing up, you agree to the <a href="#">Terms of Service</a> and
@@ -160,51 +165,51 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.querySelector("form").addEventListener("submit", function (e) {
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirm-password").value;
-            const login = document.getElementById("email").value
+      document.querySelector("form").addEventListener("submit", function (e) {
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirm-password").value;
+        const login = document.getElementById("email").value;
 
-            if (password !== confirmPassword) {
-              alert("Passwords do not match!");
-              e.preventDefault(); // Impede o envio do formulário
-            } else {
-              e.preventDefault(); // Impede o envio do formulário até o AJAX terminar
-          
-              // Inicia a requisição para obter a serverUrl
+        if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          e.preventDefault(); // Impede o envio do formulário
+        } else {
+          e.preventDefault(); // Impede o envio do formulário até o AJAX terminar
+
+          // Inicia a requisição para obter a serverUrl
+          $.ajax({
+            url: `/api/config`,
+            type: "GET",
+            success: function (response) {
+              const serverUrl = response; // Define serverUrl
+
+              // Envia os dados via AJAX para registro
               $.ajax({
-                url: `/api/config`,
-                type: "GET",
+                url: `${serverUrl}/api/v1/auth/register`,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                  login: login,
+                  password: password,
+                  role: "USER",
+                }),
                 success: function (response) {
-                  const serverUrl = response; // Define serverUrl
-          
-                  // Envia os dados via AJAX para registro
-                  $.ajax({
-                    url: `${serverUrl}/api/v1/auth/register`,
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                      login: login,
-                      password: password,
-                      role: "USER",
-                    }),
-                    success: function (response) {
-                      alert("Cadastro realizado com sucesso!");
-                      // Redireciona para a página de login após o sucesso
-                      window.location.href = "/auth/login";
-                    },
-                    error: function (xhr, status, error) {
-                      alert("Erro ao fazer cadastro: " + xhr.responseText);
-                    },
-                  });
+                  alert("Cadastro realizado com sucesso!");
+                  // Redireciona para a página de login após o sucesso
+                  window.location.href = "/auth/login";
                 },
                 error: function (xhr, status, error) {
-                  alert("Erro ao obter server URL: " + xhr.responseText);
+                  alert("Erro ao fazer cadastro: " + xhr.responseText);
                 },
               });
-            }
+            },
+            error: function (xhr, status, error) {
+              alert("Erro ao obter server URL: " + xhr.responseText);
+            },
           });
-          
+        }
+      });
     </script>
   </body>
 </html>

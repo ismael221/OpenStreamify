@@ -1,185 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OpenStreamify Fullscreen Video Player</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link rel="icon" href="/images/favicon.ico" type="image/png">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #141b29;
-        }
-
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        video {
-            max-width: 100%;
-            max-height: 100%;
-            /* Mantém a proporção original do vídeo e ajusta dentro do player */
-        }
-
-        .header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            z-index: 1000;
-        }
-
-        .back-button {
-            color: #fff;
-            text-decoration: none;
-            font-size: 20px;
-            margin-right: 10px;
-        }
-
-        .movie-title {
-            font-size: 18px;
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .media-title {
-            text-decoration: none;
-            color: white;
-            max-width: 80%;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 10px;
-            }
-
-            .back-button {
-                font-size: 18px;
-            }
-
-            .movie-title {
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header {
-                padding: 8px;
-            }
-
-            .back-button {
-                font-size: 16px;
-            }
-
-            .movie-title {
-                font-size: 14px;
-            }
-        }
-    </style>
-</head>
-<body>
-<div class="header">
-    <a th:href="@{'/details/'+ ${media.rid}}" class="back-button"><i class="fas fa-arrow-left"></i></a>
-    <a class="media-title" th:href="@{'/details/'+ ${media.rid}}"><span class="movie-title">[[${media.title}]]</span></a>
-</div>
-<div class="video-container">
-    <video id="my-video" controls preload="auto" autoplay th:poster="@{${media.coverImgUrl}}">
-        <source th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" type="application/x-mpegURL" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+  </head>
+  <body class="watch-card">
+    <div class="header">
+      <a th:href="@{'/details/'+ ${media.rid}}" class="back-button"
+        ><i class="fas fa-arrow-left"></i
+      ></a>
+      <a class="media-title" th:href="@{'/details/'+ ${media.rid}}"
+        ><span class="span-media-title">[[${media.title}]]</span></a
+      >
+    </div>
+    <div class="video-container">
+      <video
+        id="my-video"
+        controls
+        preload="auto"
+        autoplay
+        th:poster="@{${media.coverImgUrl}}"
+      >
+        <source
+          th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}"
+          type="application/x-mpegURL"
+        />
         <p class="vjs-no-js">
-            Para ver este vídeo, por favor, habilite o JavaScript e considere usar um
-            navegador que <a href="https://videojs.com/html5-video-support/" target="_blank">suporte vídeo em HTML5</a>.
+          Para ver este vídeo, por favor, habilite o JavaScript e considere usar
+          um navegador que
+          <a href="https://videojs.com/html5-video-support/" target="_blank"
+            >suporte vídeo em HTML5</a
+          >.
         </p>
-    </video>
-</div>
+      </video>
+    </div>
 
-<!-- HLS.js JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-     var video = document.getElementById('my-video');
-     var videoSrc = video.querySelector('source').src;
+    <!-- HLS.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var video = document.getElementById("my-video");
+        var videoSrc = video.querySelector("source").src;
 
-     // Função para salvar o tempo atual do vídeo no LocalStorage
-     function saveCurrentTime() {
-         // Verifica se o vídeo está carregado e salva o tempo atual
-         if (video.currentTime > 0 && !video.paused && !video.ended) {
-             localStorage.setItem('currentTime_' + videoSrc, video.currentTime);
-         }
-     }
+        // Função para salvar o tempo atual do vídeo no LocalStorage
+        function saveCurrentTime() {
+          // Verifica se o vídeo está carregado e salva o tempo atual
+          if (video.currentTime > 0 && !video.paused && !video.ended) {
+            localStorage.setItem("currentTime_" + videoSrc, video.currentTime);
+          }
+        }
 
-     // Verifica se há um tempo salvo no LocalStorage para o vídeo
-     function loadSavedTime() {
-         var savedTime = localStorage.getItem('currentTime_' + videoSrc);
-         if (savedTime) {
-             video.currentTime = parseFloat(savedTime);
-         }
-     }
+        // Verifica se há um tempo salvo no LocalStorage para o vídeo
+        function loadSavedTime() {
+          var savedTime = localStorage.getItem("currentTime_" + videoSrc);
+          if (savedTime) {
+            video.currentTime = parseFloat(savedTime);
+          }
+        }
 
-     // Carregar a origem do vídeo e aplicar o tempo salvo
-     if (Hls.isSupported()) {
-         var hls = new Hls({
-             debug: true,
-             xhrSetup: function(xhr, url) {
-                 xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('access_token'));
-             }
-         });
+        // Carregar a origem do vídeo e aplicar o tempo salvo
+        if (Hls.isSupported()) {
+          var hls = new Hls({
+            debug: true,
+            xhrSetup: function (xhr, url) {
+              xhr.setRequestHeader(
+                "Authorization",
+                "Bearer " + localStorage.getItem("access_token")
+              );
+            },
+          });
 
-         hls.loadSource(videoSrc);
-         hls.attachMedia(video);
-         hls.on(Hls.Events.MANIFEST_PARSED, function() {
-             loadSavedTime();  // Carrega o tempo salvo
-             video.play();
-         });
-     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-         video.src = videoSrc;
-         video.addEventListener('loadedmetadata', function() {
-             loadSavedTime();  // Carrega o tempo salvo
-             video.play();
-         });
-     }
+          hls.loadSource(videoSrc);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, function () {
+            loadSavedTime(); // Carrega o tempo salvo
+            video.play();
+          });
+        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+          video.src = videoSrc;
+          video.addEventListener("loadedmetadata", function () {
+            loadSavedTime(); // Carrega o tempo salvo
+            video.play();
+          });
+        }
 
-     // Salva o tempo atual do vídeo sempre que o usuário pausar, sair da página ou o tempo mudar
-     video.addEventListener('pause', saveCurrentTime); // Salva quando o vídeo é pausado
-     video.addEventListener('timeupdate', saveCurrentTime); // Salva enquanto o vídeo é reproduzido
-     window.addEventListener('beforeunload', saveCurrentTime); // Salva ao sair da página
+        // Salva o tempo atual do vídeo sempre que o usuário pausar, sair da página ou o tempo mudar
+        video.addEventListener("pause", saveCurrentTime); // Salva quando o vídeo é pausado
+        video.addEventListener("timeupdate", saveCurrentTime); // Salva enquanto o vídeo é reproduzido
+        window.addEventListener("beforeunload", saveCurrentTime); // Salva ao sair da página
 
-     document.querySelector('.back-button').addEventListener('click', function(event) {
-         event.preventDefault();
-         saveCurrentTime();  // Salva o tempo atual antes de voltar
-         window.history.back();
-     });
+        document
+          .querySelector(".back-button")
+          .addEventListener("click", function (event) {
+            event.preventDefault();
+            saveCurrentTime(); // Salva o tempo atual antes de voltar
+            window.history.back();
+          });
 
-     // Ajustar a altura do vídeo para garantir que ele ocupe toda a tela
-     window.addEventListener('resize', function() {
-         video.style.height = '100%';
-     });
-     window.dispatchEvent(new Event('resize')); // Força um ajuste na carga inicial
- });
-
-
-</script>
-</body>
+        // Ajustar a altura do vídeo para garantir que ele ocupe toda a tela
+        window.addEventListener("resize", function () {
+          video.style.height = "100%";
+        });
+        window.dispatchEvent(new Event("resize")); // Força um ajuste na carga inicial
+      });
+    </script>
+  </body>
 </html>
