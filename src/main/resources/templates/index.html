@@ -1,209 +1,205 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - OpenStreamify</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="icon" href="/images/favicon.ico" type="image/png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - OpenStreamify</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/images/favicon.ico" type="image/png" />
 
-  <meta name="description" content="Assista a vídeos de alta qualidade em nosso site de streaming com uma vasta seleção de filmes, séries e documentários.">
-  <meta name="keywords" content="streaming, vídeos online, filmes, séries, documentários, alta qualidade, HLS, vídeos on demand">
-  <meta name="author" content="ismael221">
+    <meta
+      name="description"
+      content="Assista a vídeos de alta qualidade em nosso site de streaming com uma vasta seleção de filmes, séries e documentários."
+    />
+    <meta
+      name="keywords"
+      content="streaming, vídeos online, filmes, séries, documentários, alta qualidade, HLS, vídeos on demand"
+    />
+    <meta name="author" content="ismael221" />
 
-  <meta property="og:title" content="Site de Streaming - Assista aos Melhores Vídeos">
-  <meta property="og:description" content="Aproveite a melhor experiência em streaming com conteúdo de alta qualidade, disponível em diversas plataformas.">
-  <meta property="og:image" content="http://192.168.100.12:8080/images/background.png">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="http://192.168.100.12:8080/">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-
-  <style>
-    *{
-      font-family: "Manrope", sans-serif;
-}
-    body {
-    background-color: #1a1d29;
-    color: #fff;
-    scroll-behavior:smooth;
-  }
-  .main-carrousel{
-   padding:30px;
-   margin-bottom:30px;
-   }
-  .main-carrousel img {
-    height: 60vh;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-    box-shadow: rgba(0, 0, 0, 0.69) 0px 26px 30px -10px, rgba(0, 0, 0, 0.73) 0px 16px 10px -10px;
-  }
-  .main-carrousel img:hover{
-    outline: solid #CCC;
-    border-radius: 5px;
-    }
-
-  .card img {
-    height: 150px;
-    object-fit: cover;
-    border-radius:inherit;
-    transition: transform 0.5s ease;
-  }
-  .card img:hover{
-    height: 150px;
-    object-fit: cover;
-    outline: 3px solid #CCC;
-    border: 2px solid #333;
-    border-radius:inherit;
-    transform: scale(1.1);
-  }
-
-  .card {
-    background-color: #333;
-    border: none;
-    border-radius:20px;
-    box-shadow: rgba(0, 0, 0, 0.69) 0px 26px 30px -10px, rgba(0, 0, 0, 0.73) 0px 16px 10px -10px;
-  }
-  .dropdown-menu {
-    background-color: #333;
-  }
-  .dropdown-item {
-    color: #fff;
-  }
-  .dropdown-item:hover {
-    background-color: #555;
-  }
-  #slider{
-    padding: 20px;
-    margin-top: 40px;
-    .carousel-item img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        transition: transform 0.3s ease, border 0.3s ease;
-        border-radius: 5px;
-      }
-      .carousel-item img:hover {
-        outline: 3px solid #CCC;
-        border: 2px solid #333;
-        border-radius:5px;
-        transform: scale(1.05);
-      }
-      .carousel {
-        margin-top: 50px;
-      }
- .card-img-top{
-    outline: 3px solid #CCC;
-    border: 2px solid #333;
-    }
-
-  </style>
-</head>
-<body>
-
-  <header th:insert="navbar.html :: nav" class="sticky-top"></header>
-
-
-<!-- Carousel -->
-  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active main-carrousel">
-        <img src="http://ismael221.ddns.net:443/api/v1/media/img/1725314661122-compose.webp" class="d-block w-100" alt="Banner 1">
+    <meta
+      property="og:title"
+      content="Site de Streaming - Assista aos Melhores Vídeos"
+    />
+    <meta
+      property="og:description"
+      content="Aproveite a melhor experiência em streaming com conteúdo de alta qualidade, disponível em diversas plataformas."
+    />
+    <meta
+      property="og:image"
+      content="http://192.168.100.12:8080/images/background.png"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://192.168.100.12:8080/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+  </head>
+  <body>
+    <header th:insert="navbar.html :: nav" class="sticky-top"></header>
+    <!-- Carousel -->
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active main-carrousel">
+          <img
+            src="http://192.168.100.12:8080/api/v1/media/img/cover1.webp"
+            class="d-block w-100"
+            alt="Banner 1"
+          />
+        </div>
+        <div class="carousel-item main-carrousel">
+          <img
+            src="http://192.168.100.12:8080/api/v1/media/img/cover2.jpg"
+            class="d-block w-100"
+            alt="Banner 2"
+          />
+        </div>
+        <div class="carousel-item main-carrousel">
+          <img
+            src="http://192.168.100.12:8080/api/v1/media/img/cover3.jpg"
+            class="d-block w-100"
+            alt="Banner 3"
+          />
+        </div>
       </div>
-      <div class="carousel-item main-carrousel">
-        <img src="https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/2fbd16eb-7bc0-4f97-bbaa-1ec00fe85df1/compose?format=webp&width=1440" class="d-block w-100" alt="Banner 2">
-      </div>
-      <div class="carousel-item main-carrousel">
-        <img src="https://www.disneyplus.com/pt-br/browse/entity-99e15d53-926e-4074-b9f4-6524d10c8bed" class="d-block w-100" alt="Banner 3">
-      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExample"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExample"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Próximo</span>
+      </button>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Anterior</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Próximo</span>
-    </button>
-  </div>
 
-  <!-- Movie Section -->
-  <div class="container mt-5">
-    <h2 class="mb-4">Recomendados para Você</h2>
-    <div class="row row-cols-2 row-cols-md-4 g-4">
-      <div class="col">
-        <div class="card">
-          <img src="https://via.placeholder.com/200x150/333/fff?text=Movie+1" class="card-img-top" alt="Movie 1">
+    <!-- Movie Section -->
+    <div class="container mt-5 recommended-section">
+      <h2 class="mb-4" th:text="#{recommend}">Recommended For You</h2>
+      <div class="row row-cols-2 row-cols-md-4 g-4">
+        <div class="col">
+          <div class="recommended-card">
+            <img
+              src="https://via.placeholder.com/200x150/333/fff?text=Movie+1"
+              class="card-img-top"
+              alt="Movie 1"
+            />
+          </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="https://via.placeholder.com/200x150/444/fff?text=Movie+2" class="card-img-top" alt="Movie 2">
+        <div class="col">
+          <div class="recommended-card">
+            <img
+              src="https://via.placeholder.com/200x150/444/fff?text=Movie+2"
+              class="card-img-top"
+              alt="Movie 2"
+            />
+          </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="https://via.placeholder.com/200x150/555/fff?text=Movie+3" class="card-img-top" alt="Movie 3">
+        <div class="col">
+          <div class="recommended-card">
+            <img
+              src="https://via.placeholder.com/200x150/555/fff?text=Movie+3"
+              class="card-img-top"
+              alt="Movie 3"
+            />
+          </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="https://via.placeholder.com/200x150/666/fff?text=Movie+4" class="card-img-top" alt="Movie 4">
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <!-- Carrossel de Filmes -->
-  <div id="slider" class="carousel slide slider" data-bs-ride="false" th:if="${moviesChunks != null and #lists.size(moviesChunks) > 0}">
-    <div class="carousel-inner">
-      <!-- Itera sobre os chunks de filmes -->
-      <div th:each="movieChunk, iterStat : ${moviesChunks}" class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active'">
-        <div class="row">
-          <!-- Itera sobre os filmes dentro de cada chunk -->
-          <div class="col" th:each="m : ${movieChunk}" style="padding:20px;margin:10px;">
-            <a th:href="@{'/details/'+ ${m.rid}}">
-              <img th:src="${m.coverImgUrl}" class="d-block w-100" th:alt="${m.title}" style="height:60vh">
-            </a>
+        <div class="col">
+          <div class="recommended-card">
+            <img
+              src="https://via.placeholder.com/200x150/666/fff?text=Movie+4"
+              class="card-img-top"
+              alt="Movie 4"
+            />
           </div>
         </div>
       </div>
     </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Anterior</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#slider" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Próximo</span>
-    </button>
-  </div>
 
+    <!-- Carrossel de Filmes -->
+    <div
+      id="slider"
+      class="carousel slide slider"
+      data-bs-ride="false"
+      th:if="${moviesChunks != null and #lists.size(moviesChunks) > 0}"
+    >
+      <div class="carousel-inner">
+        <!-- Itera sobre os chunks de filmes -->
+        <div
+          th:each="movieChunk, iterStat : ${moviesChunks}"
+          class="carousel-item"
+          th:classappend="${iterStat.index == 0} ? 'active'"
+        >
+          <div class="row">
+            <!-- Itera sobre os filmes dentro de cada chunk -->
+            <div
+              class="col"
+              th:each="m : ${movieChunk}"
+              style="padding: 20px; margin: 10px"
+            >
+              <a th:href="@{'/details/'+ ${m.rid}}">
+                <img
+                  th:src="${m.coverImgUrl}"
+                  class="d-block w-100"
+                  th:alt="${m.title}"
+                  style="height: 60vh"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#slider"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#slider"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Próximo</span>
+      </button>
+    </div>
 
+    <footer
+      th:insert="footer.html :: footer"
+      class="rodape"
+      style="margin-top: 150px"
+    ></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/sockjs/1.0.2/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
-  <footer th:insert="footer.html :: footer" class="rodape" style="margin-top:150px;"></footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/sockjs/1.0.2/sockjs.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-
-  <script>
-    var socket = new SockJS('/ws');
-    var stompClient = Stomp.over(socket);
-    var messagesList = [''];
-
-    stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/notifications', function (message) {
-             alert(message.body);
-            messagesList.push(message.body);
-            console.log(messagesList)
-        });
-    });
-
-  </script>
-
-</body>
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:src="@{/js/notification.js}"></script>
+  </body>
 </html>

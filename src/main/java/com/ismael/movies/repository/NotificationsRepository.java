@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface NotificationsRepository extends JpaRepository<Notifications, UUID> {
 
-    @Query("SELECT n FROM Notifications n JOIN n.users u WHERE u.id = :userId")
+    @Query("SELECT n FROM Notifications n JOIN n.users u WHERE u.id = :userId and n.visualized = false")
     List<Notifications> findByUserId(UUID userId);
 }

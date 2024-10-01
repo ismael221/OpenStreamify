@@ -48,12 +48,7 @@ public class AuthenticationRestController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Validated RegisterDTO data){
-        if (this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
-
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(),encryptedPassword,data.role());
-        this.userRepository.save(newUser);
-
+        userService.createNewUser(data);
         return ResponseEntity.ok().build();
     }
 

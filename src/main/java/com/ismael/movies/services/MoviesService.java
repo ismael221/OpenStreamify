@@ -1,6 +1,7 @@
 package com.ismael.movies.services;
 
 import com.ismael.movies.DTO.MovieDTO;
+import com.ismael.movies.model.Exceptions.ResourceNotFoundException;
 import com.ismael.movies.model.Movie;
 import com.ismael.movies.repository.MovieRepository;
 import org.modelmapper.ModelMapper;
@@ -76,7 +77,7 @@ public class MoviesService {
     @Transactional(readOnly = true)
     @Cacheable
     public Movie getMovieByRID(UUID rid){
-        Movie movie = movieRepository.getMoviesByRidIs(rid);
+        Movie movie = movieRepository.getMoviesByRidIs(rid).orElseThrow(() -> new ResourceNotFoundException("Movie with " + rid +" not found"));
         return movie;
     }
 

@@ -1,4 +1,4 @@
-$(document).ready(function (){
+$(document).ready(function () {
     carregarFilmes();
 })
 
@@ -46,15 +46,15 @@ $('#formCadastroFilme').submit(function (event) {
 });
 
 //Deletar Filme:
-function deletarFilme(id){
+function deletarFilme(id) {
     $.ajax({
-        url: 'https://localhost:443/api/v1/filme/deletar/'+id,
+        url: 'https://localhost:443/api/v1/filme/deletar/' + id,
         method: 'DELETE',
-        success: function (data){
+        success: function (data) {
             alert("Filme removido com sucesso")
             carregarFilmes();
         },
-        error: function (){
+        error: function () {
             console.log(this.error())
         }
     })
@@ -80,11 +80,11 @@ function atualizarFilme(id, filme) {
 
 
 //Listar filmes:
-function  carregarFilmes(){
+function carregarFilmes() {
     $.ajax({
         url: 'https://localhost:443/api/v1/filme/listar',
         method: 'GET',
-        success:function (data){
+        success: function (data) {
             $('#tabelaFilmes').empty();
             // Adiciona cada tarefa à tabela
             for (let i = 0; i < data.length; i++) {
@@ -143,12 +143,12 @@ function  carregarFilmes(){
                         window.location.href = 'https://localhost:443/exibirAnalise/' + filme.id;
                     });
                 let botaoAssistir = $('<button>')
-                                    .text('Assistir')
-                                    .addClass('btn btn-info')
-                                    .click(function () {
-                                        console.log(filme.rid);
-                                        window.location.href = 'https://localhost:443/assistir?filme=' + filme.rid;
-                                    });
+                    .text('Assistir')
+                    .addClass('btn btn-info')
+                    .click(function () {
+                        console.log(filme.rid);
+                        window.location.href = 'https://localhost:443/assistir?filme=' + filme.rid;
+                    });
 
                 let excluir = $('<td>').append(botaoDeletar);
                 let atualizar = $('<td>').append(botaoAtualizar)
@@ -171,7 +171,7 @@ function  carregarFilmes(){
             }
 
         },
-        error:function (){
+        error: function () {
             alert("Não foi possivel carregar os filmes, tenta novamente mais tarde");
             console.log(this.error())
         }
@@ -180,52 +180,52 @@ function  carregarFilmes(){
 
 /* ################################ Analises ################################### */
 //Adicionar Analise:
-function  adicionarAnalise(analise){
+function adicionarAnalise(analise) {
     $.ajax({
         url: 'https://localhost:443/api/v1/analise/adicionar',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(analise),
-        success:function (data){
+        success: function (data) {
             alert("Analise adicionada com sucesso")
             console.log(data)
             window.location = window.location.pathname;
         },
-        error: function (){
+        error: function () {
             alert("Não foi possivel adicionar a analise")
             console.log(this.error)
         }
     })
 }
-$('#formAdicionarAnalise').submit(function (event){
+$('#formAdicionarAnalise').submit(function (event) {
     event.preventDefault();
     let idFilme = $("#filmeId").val();
     let comment = $("#comment").val();
     let nota = $("#nota").val();
 
-    if (!idFilme || !comment || !nota){
+    if (!idFilme || !comment || !nota) {
         alert("Favor preencher todos os campos")
         return;
     }
     let analise = {
-        filme : {
+        filme: {
             id: idFilme
         },
         comment: comment,
-        nota:nota
+        nota: nota
     }
     adicionarAnalise(analise);
 })
 
 //Deletar Analise:
-function deletarAnalise(id){
+function deletarAnalise(id) {
     $.ajax({
-        url: 'https://localhost:443/analise/deletar/'+id,
+        url: 'https://localhost:443/analise/deletar/' + id,
         method: 'DELETE',
-        success: function (data){
+        success: function (data) {
             alert("Analise removida com sucesso")
         },
-        error: function (){
+        error: function () {
             alert("Erro ao deletar analise");
             console.log(this.error())
         }
@@ -233,45 +233,46 @@ function deletarAnalise(id){
 }
 
 //AtualizarAnalise
-function atualizarAnalise(analise,idAnalise,idFilme){
+function atualizarAnalise(analise, idAnalise, idFilme) {
     $.ajax({
-        url: 'https://localhost:443/analise/'+idAnalise,
+        url: 'https://localhost:443/analise/' + idAnalise,
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({
-            filme:{
+            filme: {
                 id: idFilme
             },
             comment: analise.comment,
             nota: analise.nota
         }),
-        success: function (data){
+        success: function (data) {
             alert("Filme atualizado com sucesso")
         },
-        error: function (){
+        error: function () {
             alert("Não foi possivel atualizar o filme")
         }
     })
 }
 
 function makeAuthenticatedRequest() {
-                var token = localStorage.getItem('authToken');
-                if (token) {
-                    $.ajax({
-                        url: 'http://localhost:443/',
-                        type: 'GET',
-                        headers: {
-                            'Authorization': 'Bearer ' + token
-                        },
-                        success: function(response) {
-                            // Processa a resposta
-                        },
-                        error: function(xhr, status, error) {
-                            // Processa o erro
-                        }
-                    });
-                } else {
-                    alert('Usuário não está autenticado.');
-                }
+    var token = localStorage.getItem('authToken');
+    if (token) {
+        $.ajax({
+            url: 'http://localhost:443/',
+            type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function (response) {
+                // Processa a resposta
+            },
+            error: function (xhr, status, error) {
+                // Processa o erro
             }
         });
+    } else {
+        alert('Usuário não está autenticado.');
+    }
+}
+
+

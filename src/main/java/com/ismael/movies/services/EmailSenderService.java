@@ -24,7 +24,7 @@ public class EmailSenderService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
 
-            helper.setFrom(fromEmail, "Teste SMTP Spring boot");
+            helper.setFrom(fromEmail, "OpenStreamify");
             helper.setTo(recipientEmail);
 
             helper.setSubject(subject);

@@ -123,7 +123,7 @@ public class EmailController {
                     <body>
                         <div class="container">
                             <div class="header">
-                                <img src="https://example.com/logo.png" alt="Logo">
+                                <img src="http://192.168.100.12:8080/images/logo.png" alt="Logo">
                             </div>
                             <div class="content">
                                 <h1>Redefinição de Senha</h1>
