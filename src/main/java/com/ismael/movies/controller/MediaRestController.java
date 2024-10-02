@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.UUID;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -89,15 +91,25 @@ public class MediaRestController {
             file.transferTo(destFile);
 
             // Chamando o método para processar o vídeo com FFmpeg
-            fFmpegHLS.executeFFmpegCommand(destFile.getAbsolutePath(), rid);
-            Movie newMovie = moviesService.getMovieByRID(rid);
-            List<UUID> users = userService.findAllUsersId();
-            notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle(),users);
+            Future<Integer> resultCode = fFmpegHLS.executeFFmpegCommand(destFile.getAbsolutePath(), rid);
+
+            System.out.printf(resultCode.toString());
+            if (resultCode.get() == 0){
+                Movie newMovie = moviesService.getMovieByRID(rid);
+                List<UUID> users = userService.findAllUsersId();
+                notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle(),users);
+            }
             return ResponseEntity.ok("Video uploaded and processed successfully.");
+
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Failed to upload and process the video.");
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     @Value("${server.url}")

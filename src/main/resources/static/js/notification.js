@@ -1,7 +1,26 @@
-var user_id = "15013e55-78fc-4f18-892e-3d241bc3fbfc"
+var user_id;
 var token = localStorage.getItem('access_token');
+var email = localStorage.getItem('user');
+
 var notificationList = [];
 
+function getUserID(user){
+    $.ajax({
+        url: 'http://192.168.100.12:8080/api/v1/auth/' + user,
+        method: 'GET',
+        contentType: 'application/json',
+        headers:{
+          'Authorization': 'Bearer ' + token
+        },
+        success: function(data){
+           user_id = data;
+           localStorage.setItem("uuidUser",data);
+        },
+        error:function(error){
+        console.error(error)
+        }
+    })
+}
 function retrieveNotifications(user_id) {
     $.ajax({
         url: 'http://192.168.100.12:8080/api/v1/notice/' + this.user_id,
@@ -72,8 +91,10 @@ function showAndRideNotifications(){
 }
 
 $(document).ready(function () {
+    getUserID(email);
     var token = localStorage.getItem('user_id');
-    retrieveNotifications(this.user_id);
+    setTimeout(function() {retrieveNotifications(this.user_id);}, 3000);
+
 })
 
 var socket = new SockJS("/ws");

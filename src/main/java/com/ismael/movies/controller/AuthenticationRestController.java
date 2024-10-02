@@ -11,12 +11,15 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.Token;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -65,6 +68,11 @@ public class AuthenticationRestController {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping("/{login}")
+    public ResponseEntity<UUID> getUserUUID(@PathVariable String login){
+        UUID userFound = userService.findUserIdByLogin(login);
+        return new ResponseEntity<>(userFound, HttpStatus.OK);
+    }
 
 
 }

@@ -200,7 +200,7 @@
             success: function (response) {
               // Sucesso no login
               localStorage.setItem("access_token", response.token);
-
+              localStorage.setItem("user",email);
               // Exibe o modal de sucesso
               $("#success-modal").modal();
 

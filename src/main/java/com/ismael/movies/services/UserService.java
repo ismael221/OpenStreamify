@@ -49,4 +49,7 @@ public class UserService {
         return  userRepository.findAllUsersId();
     }
 
+    public UUID findUserIdByLogin(String login){
+        return userRepository.findUserIdByLogin(login);
+    }
 }
