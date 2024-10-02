@@ -401,12 +401,19 @@ video {
     align-items: center;
 }
 
-#notify {
+
+.list{
     height: 20rem;
     overflow-y: auto;
     overflow-x: hidden;
+    display: none;
 }
-
+.block{
+    height: 20rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: block;
+}
 .notify-date {
     color: #8b8b8b;
     text-align: left;

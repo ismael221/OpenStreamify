@@ -1,12 +1,11 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.model.Notifications;
 import com.ismael.movies.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,5 +20,11 @@ public class NotificationController {
     @GetMapping("{rid}")
     public ResponseEntity<List> listNotificationByUserId(@PathVariable UUID rid){
         return ResponseEntity.ok(notificationService.listNotificationsByUserId(rid));
+    }
+
+    @PostMapping
+    public ResponseEntity updateNotifications(@RequestBody List<Notifications> notifications){
+        notificationService.readNotifications(notifications);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

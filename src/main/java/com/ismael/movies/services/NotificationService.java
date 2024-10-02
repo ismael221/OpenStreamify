@@ -68,4 +68,9 @@ public class NotificationService {
                 .collect(Collectors.toList());
         return notificationDTOS;
     }
+    //TODO FIX DE WRONG RELATIONSHIP BETWEEN THE NOTIFICATIONS AND THE USERS, BECAUSE WHEN SOMEONE READ THEIR NOTIFICATIONS IT CHANGES TO ALL THE USERS
+    @Transactional
+    public void readNotifications(Iterable<Notifications> notifications){
+        notificationsRepository.saveAll(notifications);
+    }
 }
