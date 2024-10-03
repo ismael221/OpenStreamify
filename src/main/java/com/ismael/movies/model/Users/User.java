@@ -1,6 +1,7 @@
 package com.ismael.movies.model.Users;
 
 import com.ismael.movies.model.Notifications;
+import com.ismael.movies.model.UserNotification;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -34,13 +35,18 @@ public class User implements UserDetails {
     private String password;
     @Column(nullable = false)
     private UserRole role;
-    @ManyToMany
-    @JoinTable(
-            name = "notifications_has_users",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "rid")
-    )
-    List<Notifications> notifications;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserNotification> userNotifications;
+    /**
+     *
+     * @ManyToMany
+     *     @JoinTable(
+     *             name = "notifications_has_users",
+     *             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+     *             inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "rid")
+     *     )
+     *     List<Notifications> notifications;
+     */
 
     public User(String login,String password,UserRole role){
         this.login = login;
