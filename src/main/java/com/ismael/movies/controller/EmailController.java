@@ -4,6 +4,7 @@ import com.ismael.movies.infra.security.TokenService;
 import com.ismael.movies.model.Users.User;
 import com.ismael.movies.services.AuthorizationService;
 import com.ismael.movies.services.EmailSenderService;
+import com.ismael.movies.services.NotificationService;
 import com.ismael.movies.services.UserService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +36,9 @@ public class EmailController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    NotificationService notificationService;
 
     @Value("${server.url}")
     private String serverUrl;
@@ -148,7 +153,16 @@ public class EmailController {
             response.put("message", "User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } catch (Exception e) {
+
+            String mensagemPersonalizada = "🚨 *Erro não tratado* 🚨\n\n" +
+                    "*Título*: " + "Verifique as configurações do SMTP" + "\n" +
+                    "*Status*: " + HttpStatus.INTERNAL_SERVER_ERROR + "\n" +
+                    "*Mensagem*: " + e.getMessage() + "\n";
+
+            notificationService.enviarMensagemTelegram(mensagemPersonalizada);
+
             response.put("message", "Failed to send email: " + e.getMessage());
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

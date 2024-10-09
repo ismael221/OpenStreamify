@@ -90,14 +90,10 @@ $(document).on('click', 'li[id^="notifyButton"]',
 
 $(document).on('click', 'button[id^="deleteNots"]',
   function deleteNotifications() {
-    const readed = notificationList.map((x) => x.visualized = true );
-    console.log(readed);
-
     $.ajax({
       url: 'http://192.168.100.12:8080/api/v1/notice',
       method: 'POST',
       contentType: 'application/json',
-      data: JSON.stringify(notificationList),
       headers: {
         'Authorization': 'Bearer ' + token
       },

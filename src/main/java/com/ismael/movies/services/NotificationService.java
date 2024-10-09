@@ -11,14 +11,22 @@ import com.ismael.movies.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class NotificationService {
+    @Value("${TELEGRAM_BOT_TOKEN}")
+    private String token;
+
+    @Value("${TELEGRAM_CHAT_ID}")
+    private String chatId;
+
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
@@ -75,5 +83,18 @@ public class NotificationService {
     @Transactional
     public void markNotificationAsVisualized(UUID notificationId, UUID userId) {
         userNotificationRepository.markAsVisualized(notificationId, userId);
+    }
+
+    public void enviarMensagemTelegram(String mensagem) {
+
+        String url = "https://api.telegram.org/bot" + token + "/sendMessage";
+
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, String> body = new HashMap<>();
+        body.put("chat_id", chatId);
+        body.put("text", mensagem);
+        body.put("parse_mode", "Markdown");
+
+        restTemplate.postForObject(url, body, String.class);
     }
 }
