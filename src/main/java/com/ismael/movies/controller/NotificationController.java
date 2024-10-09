@@ -22,9 +22,9 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.listNotificationsByUserId(rid));
     }
 
-    @PostMapping
-    public ResponseEntity updateNotifications(@RequestBody List<Notifications> notifications){
-        notificationService.readNotifications(notifications);
+    @PostMapping("{notification}/{user}")
+    public ResponseEntity updateNotifications(@PathVariable UUID notification, @PathVariable UUID user){
+        notificationService.markNotificationAsVisualized(notification,user);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

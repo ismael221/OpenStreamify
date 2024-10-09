@@ -28,6 +28,7 @@ public class Notifications {
     private String message;
     private Date createdAt;
     @OneToMany(mappedBy = "notification")
+    @ToString.Exclude
     private List<UserNotification> userNotifications;
 
 }

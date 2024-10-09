@@ -16,5 +16,4 @@ public class NotificationDTO {
     private UUID rid ;
     private String message;
     private Date createdAt;
-    private boolean visualized;
 }

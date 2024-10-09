@@ -3,8 +3,10 @@ package com.ismael.movies.services;
 import com.ismael.movies.DTO.NotificationDTO;
 import com.ismael.movies.config.RabbitMQConfig;
 import com.ismael.movies.model.Notifications;
+import com.ismael.movies.model.UserNotification;
 import com.ismael.movies.model.Users.User;
 import com.ismael.movies.repository.NotificationsRepository;
+import com.ismael.movies.repository.UserNotificationRepository;
 import com.ismael.movies.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -27,6 +29,9 @@ public class NotificationService {
     UserRepository userRepository;
 
     @Autowired
+    UserNotificationRepository userNotificationRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     public NotificationDTO convertToDTO(Notifications notifications){
@@ -39,21 +44,19 @@ public class NotificationService {
         Notifications notification = new Notifications();
         notification.setMessage(message);
         notification.setCreatedAt(new Date());
-        notification.setVisualized(false);
+
+        notificationsRepository.save(notification);
 
         // Buscar os usuários com os IDs fornecidos
         List<User> users = userRepository.findAllById(userIds);
 
-        // Adicionar os usuários à notificação
-        notification.setUsers(users);
-
-        // Salvar a notificação (automaticamente salva o relacionamento ManyToMany)
-        Notifications savedNotification = notificationsRepository.save(notification);
-
-        // Agora associar a notificação aos usuários
-        for (User user : users) {
-            user.getNotifications().add(savedNotification);
-            userRepository.save(user);  // Atualizar o usuário com a notificação associada
+        for (User user: users){
+            UserNotification userNotification = UserNotification.builder()
+                    .user(user)
+                    .notification(notification)
+                    .visualized(false)
+                    .build();
+            userNotificationRepository.save(userNotification);
         }
 
         // Enviar a mensagem pelo RabbitMQ
@@ -70,7 +73,7 @@ public class NotificationService {
     }
     //TODO FIX DE WRONG RELATIONSHIP BETWEEN THE NOTIFICATIONS AND THE USERS, BECAUSE WHEN SOMEONE READ THEIR NOTIFICATIONS IT CHANGES TO ALL THE USERS
     @Transactional
-    public void readNotifications(Iterable<Notifications> notifications){
-        notificationsRepository.saveAll(notifications);
+    public void markNotificationAsVisualized(UUID notificationId, UUID userId) {
+        userNotificationRepository.markAsVisualized(notificationId, userId);
     }
 }
