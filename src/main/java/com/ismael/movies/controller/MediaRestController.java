@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import java.nio.file.Path;
@@ -97,6 +99,12 @@ public class MediaRestController {
             if (resultCode.get() == 0){
                 Movie newMovie = moviesService.getMovieByRID(rid);
                 List<UUID> users = userService.findAllUsersId();
+                String mensagem = "🎬 *Processamento de Filme Concluído*\n\n" +
+                        "O filme *" + newMovie.getTitle() + "* (ID: " + newMovie.getRid() + ") foi tratado com sucesso.\n" +
+                        "Data de conclusão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
+                        "✔️ O arquivo está pronto para uso.";
+
+                notificationService.enviarMensagemTelegram(mensagem);
                 notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle(),users);
             }
             return ResponseEntity.ok("Video uploaded and processed successfully.");

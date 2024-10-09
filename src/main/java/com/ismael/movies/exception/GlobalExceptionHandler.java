@@ -19,6 +19,9 @@ import java.net.URI;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @Autowired
+    NotificationService notificationService;
+
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -42,6 +45,13 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getDescription(false)
         );
+        String mensagemPersonalizada = "🚨 *Erro não tratado* 🚨\n\n" +
+                "*Título*: " + "Verifique os logs" + "\n" +
+                "*Status*: " + HttpStatus.INTERNAL_SERVER_ERROR + "\n" +
+                "*Mensagem*: " + ex.getMessage() + "\n";
+
+        notificationService.enviarMensagemTelegram(mensagemPersonalizada);
+
         return new ResponseEntity<>(problemDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
