@@ -15,6 +15,13 @@
     <link rel="icon" href="/images/favicon.ico" type="image/png" />
   </head>
   <style>
+    .material-symbols-outlined {
+      font-variation-settings:
+        "FILL" 0,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
+    }
     * {
       font-family: "Manrope", sans-serif;
     }
@@ -44,24 +51,35 @@
       padding: 25px;
       border-radius: 20px;
       font-size: 18px;
-      box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+      box-shadow:
+        rgba(0, 0, 0, 0.19) 0px 10px 20px,
+        rgba(0, 0, 0, 0.23) 0px 6px 6px;
     }
 
     .sidebar {
       background: #2a2d3e !important;
     }
 
-    h2{
+    h2 {
       padding: 15px;
-    text-align: center;
-    color: #bdafaf;
-    font-weight: bold;}
-    
+      text-align: center;
+      color: #bdafaf;
+      font-weight: bold;
+    }
 
+    a {
+      color: white !important;
+      font-weight: bold;
+      padding: 0 !important;
+    }
     @media only screen and (max-width: 600px) {
-      #main-container  {
+      #main-container {
         margin: 20px;
       }
+    }
+
+    .nav-item{
+      padding:5px;
     }
   </style>
   <body>
@@ -72,13 +90,44 @@
           <div class="position-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" href="#"> Dashboard </a>
+                <a class="nav-link active" href="#">
+                  <img
+                    th:src="@{/images/dashboard.svg}"
+                    class="material-symbols-outlined"
+                    alt=""
+                  />
+                  Dashboard
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" id="add-newMovie-nav"> Add New Movie </a>
+                <a class="nav-link" href="#" id="add-newMovie-nav">
+                  <img
+                    th:src="@{/images/add_circle.svg}"
+                    class="material-symbols-outlined"
+                    alt=""
+                  />
+                  Add New Movie
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" id="upload-movie-nav"> Upload Movie File </a>
+                <a class="nav-link" href="#" id="upload-movie-nav">
+                  <img
+                    th:src="@{/images/cloud_upload.svg}"
+                    class="material-symbols-outlined"
+                    alt=""
+                  />
+                  Upload Movie File
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/}" id="back-option-nav">
+                  <img
+                    th:src="@{/images/undo.svg}"
+                    class="material-symbols-outlined"
+                    alt=""
+                  />
+                  Voltar
+                </a>
               </li>
             </ul>
           </div>
@@ -93,32 +142,70 @@
             <h3>Add New Movie</h3>
             <form id="addMovieForm">
               <div class="mb-3">
-                  <label for="title" class="form-label">Movie Title</label>
-                  <input type="text" class="form-control" id="title" placeholder="Enter movie title" required>
+                <label for="title" class="form-label">Movie Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  placeholder="Enter movie title"
+                  required
+                />
               </div>
               <div class="mb-3">
-                  <label for="synopsis" class="form-label">Synopsis</label>
-                  <textarea class="form-control" id="synopsis" rows="3" placeholder="Enter movie synopsis" required></textarea>
+                <label for="synopsis" class="form-label">Synopsis</label>
+                <textarea
+                  class="form-control"
+                  id="synopsis"
+                  rows="3"
+                  placeholder="Enter movie synopsis"
+                  required
+                ></textarea>
               </div>
               <div class="mb-3">
-                  <label for="released" class="form-label">Release Date</label>
-                  <input type="date" class="form-control" id="released" required>
+                <label for="released" class="form-label">Release Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="released"
+                  required
+                />
               </div>
               <div class="mb-3">
-                  <label for="backgroundImg" class="form-label">Background Image</label>
-                  <input type="file" class="form-control" id="backgroundImg" required>
+                <label for="backgroundImg" class="form-label"
+                  >Background Image</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="backgroundImg"
+                  required
+                  onchange="loadBackgroundFile(event)"
+                />
+                <img id="output_background" style="padding: 20px;width: 100%;"/>
               </div>
               <div class="mb-3">
-                  <label for="coverImg" class="form-label">Cover Image</label>
-                  <input type="file" class="form-control" id="coverImg" required>
+                <label for="coverImg" class="form-label">Cover Image</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="coverImg"
+                  required
+                  onchange="loadCoverFile(event)"
+                />
+                <img id="output_cover" style="padding: 20px;width: 100%;"/>
               </div>
               <div class="mb-3">
-                  <label for="trailerUrl" class="form-label">Trailer URL</label>
-                  <input type="url" class="form-control" id="trailerUrl" placeholder="Enter trailer URL" required>
+                <label for="trailerUrl" class="form-label">Trailer URL</label>
+                <input
+                  type="url"
+                  class="form-control"
+                  id="trailerUrl"
+                  placeholder="Enter trailer URL"
+                  required
+                />
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-          
+            </form>
           </section>
 
           <!-- Upload Movie File Section -->
@@ -127,8 +214,13 @@
             <form id="uploadMovieForm" enctype="multipart/form-data">
               <div class="mb-3">
                 <label for="ridMovie" class="form-label">Movie RID</label>
-                <input type="UUID" class="form-control" id="ridMovie" required>
-            </div>
+                <input
+                  type="UUID"
+                  class="form-control"
+                  id="ridMovie"
+                  required
+                />
+              </div>
               <div class="mb-3">
                 <label for="movieFile" class="form-label"
                   >Choose Movie File</label

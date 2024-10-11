@@ -94,6 +94,9 @@ $('#addMovieForm').submit(function (event) {
                 success: function (data) {
                     console.log("Filme adicionado com sucesso:", data);
                     alert("Filme adicionado com sucesso!");
+                    $("#addMovieForm")[0].reset();
+                    $("#output_cover").attr("src", "");
+                    $("#output_background").attr("src", "");
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("Erro ao adicionar filme:", textStatus, errorThrown);
@@ -134,3 +137,21 @@ $('#uploadMovieForm').submit(function(event){
     });
 })
 
+var loadBackgroundFile = function(event) {
+    var output_background = document.getElementById('output_background');
+  
+
+    output_background.src = URL.createObjectURL(event.target.files[0]);
+    output_background.onload = function() {
+      URL.revokeObjectURL(output_background.src) // free memory
+    }
+
+}
+
+var loadCoverFile = function(event) {
+    var output_cover = document.getElementById('output_cover');
+    output_cover.src = URL.createObjectURL(event.target.files[0]);
+    output_cover.onload = function() {
+      URL.revokeObjectURL(output_cover.src) // free memory
+    }
+}
