@@ -29,7 +29,7 @@
     }
     .form-control:focus {
       background-color: #3b3e52;
-      color:#b3b3b3;
+      color: #b3b3b3;
     }
     ::placeholder {
       color: #b3b3b3 !important;
@@ -42,13 +42,27 @@
     #main-container {
       background: #2a2d3e;
       padding: 25px;
-      border-radius: 50px;
+      border-radius: 20px;
       font-size: 18px;
+      box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
     }
 
-    .sidebar{
-          background: #2a2d3e !important;
+    .sidebar {
+      background: #2a2d3e !important;
+    }
+
+    h2{
+      padding: 15px;
+    text-align: center;
+    color: #bdafaf;
+    font-weight: bold;}
+    
+
+    @media only screen and (max-width: 600px) {
+      #main-container  {
+        margin: 20px;
       }
+    }
   </style>
   <body>
     <div class="container mt-5">
@@ -61,10 +75,10 @@
                 <a class="nav-link active" href="#"> Dashboard </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"> Add New Movie </a>
+                <a class="nav-link" href="#" id="add-newMovie-nav"> Add New Movie </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"> Upload Movie File </a>
+                <a class="nav-link" href="#" id="upload-movie-nav"> Upload Movie File </a>
               </li>
             </ul>
           </div>
@@ -79,46 +93,42 @@
             <h3>Add New Movie</h3>
             <form id="addMovieForm">
               <div class="mb-3">
-                <label for="title" class="form-label">Movie Title</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="title"
-                  placeholder="Enter movie title"
-                  required
-                />
+                  <label for="title" class="form-label">Movie Title</label>
+                  <input type="text" class="form-control" id="title" placeholder="Enter movie title" required>
               </div>
               <div class="mb-3">
-                <label for="synopsis" class="form-label"
-                  >Description</label
-                >
-                <textarea
-                  class="form-control"
-                  id="synopsis"
-                  rows="3"
-                  placeholder="Enter movie description"
-                  required
-                ></textarea>
+                  <label for="synopsis" class="form-label">Synopsis</label>
+                  <textarea class="form-control" id="synopsis" rows="3" placeholder="Enter movie synopsis" required></textarea>
               </div>
               <div class="mb-3">
-                <label for="released" class="form-label"
-                  >Release Date</label
-                >
-                <input
-                  type="date"
-                  class="form-control"
-                  id="released"
-                  required
-                />
+                  <label for="released" class="form-label">Release Date</label>
+                  <input type="date" class="form-control" id="released" required>
               </div>
-              <button type="submit" class="btn btn-primary" id="movies" >Add Movie</button>
-            </form>
+              <div class="mb-3">
+                  <label for="backgroundImg" class="form-label">Background Image</label>
+                  <input type="file" class="form-control" id="backgroundImg" required>
+              </div>
+              <div class="mb-3">
+                  <label for="coverImg" class="form-label">Cover Image</label>
+                  <input type="file" class="form-control" id="coverImg" required>
+              </div>
+              <div class="mb-3">
+                  <label for="trailerUrl" class="form-label">Trailer URL</label>
+                  <input type="url" class="form-control" id="trailerUrl" placeholder="Enter trailer URL" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          
           </section>
 
           <!-- Upload Movie File Section -->
           <section id="upload-movie-file" class="mt-5">
             <h3>Upload Movie File</h3>
             <form id="uploadMovieForm" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="ridMovie" class="form-label">Movie RID</label>
+                <input type="UUID" class="form-control" id="ridMovie" required>
+            </div>
               <div class="mb-3">
                 <label for="movieFile" class="form-label"
                   >Choose Movie File</label

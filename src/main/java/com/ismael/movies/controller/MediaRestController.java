@@ -72,7 +72,9 @@ public class MediaRestController {
 
 
     @PostMapping("/hls/upload")
-    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam UUID rid) {
+    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("rid") String StringRid) {
+
+        UUID rid = UUID.fromString(StringRid);
 
         String uploadDir = System.getProperty("user.dir") + File.separator + "temp";
 
