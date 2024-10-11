@@ -81,6 +81,15 @@
     .nav-item{
       padding:5px;
     }
+
+   .movie-file-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px;
+    }
   </style>
   <body>
     <div class="container mt-5">
@@ -231,7 +240,12 @@
                   id="movieFile"
                   accept=".mp4,.mkv,.avi"
                   required
+                  onchange="loadMovieFile(event)"
                 />
+                <div class="movie-file-container">
+                  <video width="100%" controls id="video_here">
+                  </video>
+                </div>
               </div>
               <button type="submit" class="btn btn-primary">Upload File</button>
             </form>

@@ -155,3 +155,11 @@ var loadCoverFile = function(event) {
       URL.revokeObjectURL(output_cover.src) // free memory
     }
 }
+
+var loadMovieFile = function(event) {
+    var output = document.getElementById('video_here');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+}
