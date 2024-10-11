@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - OpenStreamify</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+  </head>
+  <style>
+    * {
+      font-family: "Manrope", sans-serif;
+    }
+    body {
+      background-color: #1a1d29;
+      color: #b3b3b3;
+      scroll-behavior: smooth;
+    }
+    .form-control {
+      background-color: #3b3e52;
+      color: #b3b3b3;
+    }
+    .form-control:focus {
+      background-color: #3b3e52;
+      color:#b3b3b3;
+    }
+    ::placeholder {
+      color: #b3b3b3 !important;
+      opacity: 1; /* Firefox */
+    }
+    ::-ms-input-placeholder {
+      /* Edge 12 -18 */
+      color: #b3b3b3 !important;
+    }
+    #main-container {
+      background: #2a2d3e;
+      padding: 25px;
+      border-radius: 50px;
+      font-size: 18px;
+    }
+
+    .sidebar{
+          background: #2a2d3e !important;
+      }
+  </style>
+  <body>
+    <div class="container mt-5">
+      <div class="row" id="main-container">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+          <div class="position-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="#"> Dashboard </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"> Add New Movie </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"> Upload Movie File </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <h2>Admin Panel</h2>
+
+          <!-- Add New Movie Section -->
+          <section id="add-movie" class="mt-4">
+            <h3>Add New Movie</h3>
+            <form id="addMovieForm">
+              <div class="mb-3">
+                <label for="title" class="form-label">Movie Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  placeholder="Enter movie title"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="synopsis" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="synopsis"
+                  rows="3"
+                  placeholder="Enter movie description"
+                  required
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="released" class="form-label"
+                  >Release Date</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="released"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary" id="movies" >Add Movie</button>
+            </form>
+          </section>
+
+          <!-- Upload Movie File Section -->
+          <section id="upload-movie-file" class="mt-5">
+            <h3>Upload Movie File</h3>
+            <form id="uploadMovieForm" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="movieFile" class="form-label"
+                  >Choose Movie File</label
+                >
+                <input
+                  class="form-control"
+                  type="file"
+                  id="movieFile"
+                  accept=".mp4,.mkv,.avi"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Upload File</button>
+            </form>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:src="@{/js/admin.js}"></script>
+  </body>
+</html>

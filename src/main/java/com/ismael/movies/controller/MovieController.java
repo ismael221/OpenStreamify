@@ -253,4 +253,9 @@ public class MovieController {
 
 
         //TODO adicionar enpoint para listar as series,baseado no type da entity movies
+
+        @GetMapping("/admin")
+        public String adminPanel(){
+                return "admin";
+        }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.net.URI;
+import java.time.Instant;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -27,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ProblemDetails> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         ProblemDetails problemDetails = new ProblemDetails(
-                URI.create("https://example.com/resource-not-found").toString(),
+                Instant.now(),
                 "Resource Not Found",
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
@@ -39,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ProblemDetails> handleGlobalException(Exception ex, WebRequest request) {
         ProblemDetails problemDetails = new ProblemDetails(
-                URI.create("https://example.com/internal-server-error").toString(),
+                Instant.now(),
                 "Internal Server Error",
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 ex.getMessage(),
@@ -58,7 +59,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ProblemDetails> handleBadRequestException(Exception ex, WebRequest request) {
         ProblemDetails problemDetails = new ProblemDetails(
-                URI.create("https://example.com/bad-request-error").toString(),
+                Instant.now(),
                 "Bad Request Error",
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
