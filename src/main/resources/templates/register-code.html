@@ -94,7 +94,7 @@
           maxlength="1"
           pattern="[0-9]"
           required
-          oninput="moveToNext(this, 'digit2')"
+          oninput="moveToNext(this, 'digit2'); this.value=this.value.slice(0,this.maxLength)"
           id="digit1"
           onkeydown="moveToPrev(event, 'digit1')" 
         />
@@ -103,7 +103,7 @@
           maxlength="1"
           pattern="[0-9]"
           required
-          oninput="moveToNext(this, 'digit3')"
+          oninput="moveToNext(this, 'digit3'); this.value=this.value.slice(0,this.maxLength)"
           id="digit2"
           onkeydown="moveToPrev(event, 'digit1', 'digit2')"
         />
@@ -112,7 +112,7 @@
           maxlength="1"
           pattern="[0-9]"
           required
-          oninput="moveToNext(this, 'digit4')"
+          oninput="moveToNext(this, 'digit4'); this.value=this.value.slice(0,this.maxLength)"
           id="digit3"
           onkeydown="moveToPrev(event, 'digit2', 'digit3')"
         />
@@ -121,7 +121,7 @@
           maxlength="1"
           pattern="[0-9]"
           required
-          oninput="moveToNext(this, 'digit5')"
+          oninput="moveToNext(this, 'digit5'); this.value=this.value.slice(0,this.maxLength)"
           id="digit4"
           onkeydown="moveToPrev(event, 'digit3', 'digit4')"
         />
@@ -130,11 +130,11 @@
           maxlength="1"
           pattern="[0-9]"
           required
-          oninput="moveToNext(this, 'digit6')"
+          oninput="moveToNext(this, 'digit6'); this.value=this.value.slice(0,this.maxLength)"
           id="digit5"
           onkeydown="moveToPrev(event, 'digit4', 'digit5')"
         />
-        <input type="number" maxlength="1" pattern="[0-9]" required id="digit6" onkeydown="moveToPrev(event, 'digit5', 'digit6')"/>
+        <input type="number" maxlength="1" pattern="[0-9]" required id="digit6" onkeydown="moveToPrev(event, 'digit5', 'digit6')" oninput="this.value=this.value.slice(0,this.maxLength)"/>
       </form>
       <p>
         Didnt't receive the code?
