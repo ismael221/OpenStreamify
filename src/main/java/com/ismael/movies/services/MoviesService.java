@@ -46,6 +46,7 @@ public class MoviesService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "movies-list")
     public List<MovieDTO> listAllMovies(){
         List<Movie>  moviesFoundList= movieRepository.findAll();
         List<MovieDTO> moviesListConverted =  moviesFoundList.stream().map(this::convertToDto).collect(Collectors.toList());
@@ -75,7 +76,7 @@ public class MoviesService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable
+    @Cacheable(cacheNames = "movie-by-rid",key = "#rid")
     public Movie getMovieByRID(UUID rid){
         Movie movie = movieRepository.getMoviesByRidIs(rid).orElseThrow(() -> new ResourceNotFoundException("Movie with " + rid +" not found"));
         return movie;

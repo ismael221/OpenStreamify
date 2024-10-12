@@ -85,15 +85,15 @@ public class NotificationService {
                 .collect(Collectors.toList());
         return notificationDTOS;
     }
-    //TODO FIX DE WRONG RELATIONSHIP BETWEEN THE NOTIFICATIONS AND THE USERS, BECAUSE WHEN SOMEONE READ THEIR NOTIFICATIONS IT CHANGES TO ALL THE USERS
+
     @Transactional
-    @CacheEvict(cacheNames = "notifications-list", key = "#userId")
+    @CacheEvict(cacheNames = "notifications-list", key = "#userId",allEntries = true)
     public void markNotificationAsVisualized(UUID notificationId, UUID userId) {
         userNotificationRepository.markAsVisualized(notificationId, userId);
     }
 
     @Transactional
-    @CacheEvict(cacheNames = "notifications-list", key = "#userId")
+    @CacheEvict(cacheNames = "notifications-list", key = "#userId",allEntries = true)
     public void  markAllNotificationsAsVisualized(UUID userId){
         userNotificationRepository.markAllAsVisualized(userId);
     }
