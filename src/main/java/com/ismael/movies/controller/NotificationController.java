@@ -38,6 +38,12 @@ public class NotificationController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PostMapping("{user}")
+    public ResponseEntity updateAllNotifications(@PathVariable UUID user){
+        notificationService.markAllNotificationsAsVisualized(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/grafana")
     public ResponseEntity<String> interceptarNotificacao(@RequestBody Map<String, Object> payload) {
         // Extrair e personalizar os dados da notificação do Grafana

@@ -91,7 +91,7 @@ $(document).on('click', 'li[id^="notifyButton"]',
 $(document).on('click', 'button[id^="deleteNots"]',
   function deleteNotifications() {
     $.ajax({
-      url: 'http://192.168.100.12:8080/api/v1/notice',
+      url: 'http://192.168.100.12:8080/api/v1/notice/'+ user_id,
       method: 'POST',
       contentType: 'application/json',
       headers: {

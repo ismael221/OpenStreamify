@@ -12,6 +12,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -20,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Cacheable(cacheNames = "notifications")
 public class NotificationService {
     @Value("${TELEGRAM_BOT_TOKEN}")
     private String token;
@@ -47,6 +51,7 @@ public class NotificationService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "notifications-list",allEntries = true)
     public void sendNotification(String message, List<UUID> userIds) {
         // Criar uma nova notificação
         Notifications notification = new Notifications();
@@ -72,6 +77,7 @@ public class NotificationService {
     }
 
     @Transactional
+    @Cacheable(cacheNames = "notifications-list")
     public List<NotificationDTO> listNotificationsByUserId(UUID userId){
         List<Notifications> oldList = notificationsRepository.findByUserId(userId);
         List<NotificationDTO> notificationDTOS = oldList.stream()
@@ -81,8 +87,15 @@ public class NotificationService {
     }
     //TODO FIX DE WRONG RELATIONSHIP BETWEEN THE NOTIFICATIONS AND THE USERS, BECAUSE WHEN SOMEONE READ THEIR NOTIFICATIONS IT CHANGES TO ALL THE USERS
     @Transactional
+    @CacheEvict(cacheNames = "notifications-list", key = "#userId")
     public void markNotificationAsVisualized(UUID notificationId, UUID userId) {
         userNotificationRepository.markAsVisualized(notificationId, userId);
+    }
+
+    @Transactional
+    @CacheEvict(cacheNames = "notifications-list", key = "#userId")
+    public void  markAllNotificationsAsVisualized(UUID userId){
+        userNotificationRepository.markAllAsVisualized(userId);
     }
 
     public void enviarMensagemTelegram(String mensagem) {

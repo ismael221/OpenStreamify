@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $("#upload-movie-file").hide();
-
+    $(".movie-file-container").hide();
 })
 
 
@@ -162,4 +162,12 @@ var loadMovieFile = function(event) {
     output.onload = function() {
       URL.revokeObjectURL(output.src) // free memory
     }
+    var isUploaded = $("#movieFile").val();
+
+    if(isUploaded){
+        $(".movie-file-container").show();
+    }else{
+        $(".movie-file-container").hide();
+    }
 }
+
