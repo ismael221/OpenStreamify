@@ -38,15 +38,21 @@ public class AuthenticationRestController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated AuthenticationDTO data, HttpServletResponse response){
-         var userNamePassword = new UsernamePasswordAuthenticationToken(data.login(),data.password());
-         var auth = this.authenticationManager.authenticate(userNamePassword);
-         var token = tokenService.generateToken((User) auth.getPrincipal());
-        Cookie cookie = new Cookie("access_token", token);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false); // Enviar apenas por HTTPS
-        cookie.setPath("/"); // Disponível para toda a aplicação
-        response.addCookie(cookie);
-         return ResponseEntity.ok(new LoginResponseDTO(token));
+        User userFound = userService.findUserByLogin(data.login());
+        if (userFound.isActive()){
+            var userNamePassword = new UsernamePasswordAuthenticationToken(data.login(),data.password());
+            var auth = this.authenticationManager.authenticate(userNamePassword);
+            var token = tokenService.generateToken((User) auth.getPrincipal());
+            Cookie cookie = new Cookie("access_token", token);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(false); // Enviar apenas por HTTPS
+            cookie.setPath("/"); // Disponível para toda a aplicação
+            response.addCookie(cookie);
+            return ResponseEntity.ok(new LoginResponseDTO(token));
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @PostMapping("/register")

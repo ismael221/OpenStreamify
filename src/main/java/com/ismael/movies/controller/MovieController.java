@@ -259,7 +259,7 @@ public class MovieController {
                 return "admin";
         }
 
-        @GetMapping("/register-code")
+        @GetMapping("auth/register-code")
         public String registerCodeInput(){
                 return "register-code";
         }

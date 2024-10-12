@@ -27,6 +27,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET,"/live").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/verify").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/auth/register-code").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/reset").permitAll()
@@ -34,6 +36,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/auth/user/{token}").permitAll() // Permitir acesso à rota de redefinição de senha
                         .requestMatchers(HttpMethod.POST,"/api/v1/email/send-reset-email").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/email/send-reset-email").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/email/send-verification-code").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/email/send-verification-code").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/movies").hasRole("ADMIN")

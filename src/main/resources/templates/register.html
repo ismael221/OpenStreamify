@@ -195,9 +195,34 @@
                   role: "USER",
                 }),
                 success: function (response) {
-                  alert("Cadastro realizado com sucesso!");
-                  // Redireciona para a página de login após o sucesso
-                  window.location.href = "/auth/login";
+                  
+          const email = document.querySelector("#email").value;
+          localStorage.setItem("code_verification_email",email)
+          //TODO Create a function that gets the serverUrl
+
+              fetch(
+                "http://192.168.100.12:8080/api/v1/email/send-verification-code?email=" +
+                  encodeURIComponent(email),
+                {
+                  method: "POST",
+                }
+              )
+                .then((response) => {
+                  if (response.ok) {
+                    window.location.href = "/auth/register-code";
+                    return response.json(); // Tenta interpretar a resposta como JSON
+                  } else {
+                    return response.text(); // Se não for JSON, trata como texto
+                  }
+                })
+                .then((data) => {
+                  alert(typeof data === "string" ? data : data.message);
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                  alert("Failed to send email");
+                });
+                
                 },
                 error: function (xhr, status, error) {
                   alert("Erro ao fazer cadastro: " + xhr.responseText);

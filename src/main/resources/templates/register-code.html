@@ -65,7 +65,7 @@
         margin-bottom: 20px;
         width: 350px;
       }
-      .reset-link{
+      .reset-link {
         text-decoration: none;
         color: #1a73e8;
       }
@@ -76,8 +76,8 @@
       }
 
       @media only screen and (max-width: 600px) {
-        .code-container{
-            padding: 10px;
+        .code-container {
+          padding: 10px;
         }
       }
     </style>
@@ -87,8 +87,8 @@
       <img th:src="@{/images/logo.png}" alt="OpenStreamify Logo" class="logo" />
       <h2>Code Verification</h2>
       <p>We sent you a 6-digit verfication code to.</p>
-      <p>ismaeldenunes@gmail.com</p>
-      <form>
+      <p id="email"></p>
+      <form id="register-code-form">
         <input
           type="number"
           maxlength="1"
@@ -96,7 +96,7 @@
           required
           oninput="moveToNext(this, 'digit2'); this.value=this.value.slice(0,this.maxLength)"
           id="digit1"
-          onkeydown="moveToPrev(event, 'digit1')" 
+          onkeydown="moveToPrev(event, 'digit1')"
         />
         <input
           type="number"
@@ -134,16 +134,34 @@
           id="digit5"
           onkeydown="moveToPrev(event, 'digit4', 'digit5')"
         />
-        <input type="number" maxlength="1" pattern="[0-9]" required id="digit6" onkeydown="moveToPrev(event, 'digit5', 'digit6')" oninput="this.value=this.value.slice(0,this.maxLength)"/>
-      </form>
-      <p>
-        Didnt't receive the code?
-        <a href="" class="reset-link">Resend Code</a>
-      </p>
-      <button type="submit">Submit</button>
-    </div>
+        <input
+          type="number"
+          maxlength="1"
+          pattern="[0-9]"
+          required
+          id="digit6"
+          onkeydown="moveToPrev(event, 'digit5', 'digit6')"
+          oninput="this.value=this.value.slice(0,this.maxLength)"
+        />
 
+        <p>
+          Didnt't receive the code?
+          <a href="" class="reset-link">Resend Code</a>
+        </p>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      document.addEventListener("DOMContentLoaded", function (e) {
+        const email = localStorage.getItem("code_verification_email");
+        if (email) {
+          document.getElementById("email").innerHTML = email;
+        } else {
+          console.log("Email not found in localStorage");
+        }
+      });
+
       function moveToNext(currentInput, nextInputId) {
         if (currentInput.value.length >= 1) {
           document.getElementById(nextInputId).focus();
@@ -153,9 +171,44 @@
       function moveToPrev(event, prevInputId, currentInputId) {
         const currentInput = document.getElementById(currentInputId);
         if (event.key === "Backspace" && currentInput.value === "") {
-            document.getElementById(prevInputId).focus();
+          document.getElementById(prevInputId).focus();
         }
-    }
+      }
+
+      $("#register-code-form").on("submit", function (e) {
+        e.preventDefault(); // Evita o comportamento padrão de submit
+
+        // Obtém os dados do formulário
+        var digit1 = $("#digit1").val();
+        var digit2 = $("#digit2").val();
+        var digit3 = $("#digit3").val();
+        var digit4 = $("#digit4").val();
+        var digit5 = $("#digit5").val();
+        var digit6 = $("#digit6").val();
+
+        var code = digit1 + digit2 + digit3 + digit4 + digit5 + digit6;
+        var email = localStorage.getItem("code_verification_email");
+        var codeString = code.toString();
+
+        // Envia os dados via AJAX
+        $.ajax({
+          url: `http://192.168.100.12:8080/api/v1/verify`,
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            email: email,
+            code: codeString,
+          }),
+          success: function (response) {
+            setTimeout(function () {
+              window.location.href = "/auth/login";
+            }, 2000);
+          },
+          error: function (xhr, status, error) {
+            console.log(error);
+          },
+        });
+      });
     </script>
   </body>
 </html>

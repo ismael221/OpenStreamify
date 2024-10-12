@@ -38,7 +38,7 @@
         border-radius: 8px;
         box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
         text-align: center;
-        margin:15px;
+        margin: 15px;
       }
 
       .login-box .logo {
@@ -201,7 +201,7 @@
             success: function (response) {
               // Sucesso no login
               localStorage.setItem("access_token", response.token);
-              localStorage.setItem("user",email);
+              localStorage.setItem("user", email);
               // Exibe o modal de sucesso
               $("#success-modal").modal();
 

@@ -53,10 +53,12 @@ public class UserService {
             user1.setRole(user.getRole());
             user1.setPassword(user.getPassword());
             userRepository.saveAndFlush(user1);
-            String mensagem = "🔒 *Alteração de Senha*\n\n" +
-                    "Usuário: " + user.getLogin() + " (ID: " + user.getId() + ") (Role: "+user.getRole()+ ") "+"\n" +
-                    "A senha foi alterada com sucesso em: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
+
+            String mensagem = "🔒 *Alteração de conta*\n\n" +
+                    "Usuário: " + user.getLogin() + " (ID: " + user.getId() + ") "+"(Ativo?: " + user.isActive() + ")"+"(Role: "+user.getRole()+ ") "+"\n" +
+                    "A conta foi alterada com sucesso em: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
                     "Se você não fez essa alteração, entre em contato imediatamente com o suporte.";
+
             notificationService.enviarMensagemTelegram(mensagem);
             return  userRepository.saveAndFlush(user1);
         }
@@ -69,5 +71,16 @@ public class UserService {
 
     public UUID findUserIdByLogin(String login){
         return userRepository.findUserIdByLogin(login);
+    }
+
+    public boolean activateUserAccountByEmail(String email){
+        User userFound = findUserByLogin(email);
+
+        if (userFound != null){
+            userFound.setActive(true);
+            return true;
+        }
+
+        return false;
     }
 }
