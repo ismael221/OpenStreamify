@@ -258,4 +258,9 @@ public class MovieController {
         public String adminPanel(){
                 return "admin";
         }
+
+        @GetMapping("/register-code")
+        public String registerCodeInput(){
+                return "register-code";
+        }
 }

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enter 6-Digit Code</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #141b29;
+      }
+      .code-container {
+        background-color: #2a2d3e;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        color: white;
+      }
+      input[type="number"] {
+        font-size: 24px;
+        text-align: center;
+        width: 40px;
+        height: 40px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+      }
+      input[type="number"]:focus {
+        border-color: #007bff;
+      }
+      input {
+        background-color: #3b3e52;
+        color: white;
+      }
+      ::placeholder {
+        color: white;
+        opacity: 1; /* Firefox */
+      }
+
+      ::-ms-input-placeholder {
+        /* Edge 12 -18 */
+        color: white;
+      }
+
+      button {
+        padding: 15px;
+        background-color: #1a73e8;
+        color: white;
+        font-size: 18px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        width: 350px;
+      }
+      .reset-link{
+        text-decoration: none;
+        color: #1a73e8;
+      }
+
+      .logo {
+        width: 150px;
+        margin-bottom: 20px;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .code-container{
+            padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="code-container">
+      <img th:src="@{/images/logo.png}" alt="OpenStreamify Logo" class="logo" />
+      <h2>Code Verification</h2>
+      <p>We sent you a 6-digit verfication code to.</p>
+      <p>ismaeldenunes@gmail.com</p>
+      <form>
+        <input
+          type="number"
+          maxlength="1"
+          pattern="[0-9]"
+          required
+          oninput="moveToNext(this, 'digit2')"
+          id="digit1"
+          onkeydown="moveToPrev(event, 'digit1')" 
+        />
+        <input
+          type="number"
+          maxlength="1"
+          pattern="[0-9]"
+          required
+          oninput="moveToNext(this, 'digit3')"
+          id="digit2"
+          onkeydown="moveToPrev(event, 'digit1', 'digit2')"
+        />
+        <input
+          type="number"
+          maxlength="1"
+          pattern="[0-9]"
+          required
+          oninput="moveToNext(this, 'digit4')"
+          id="digit3"
+          onkeydown="moveToPrev(event, 'digit2', 'digit3')"
+        />
+        <input
+          type="number"
+          maxlength="1"
+          pattern="[0-9]"
+          required
+          oninput="moveToNext(this, 'digit5')"
+          id="digit4"
+          onkeydown="moveToPrev(event, 'digit3', 'digit4')"
+        />
+        <input
+          type="number"
+          maxlength="1"
+          pattern="[0-9]"
+          required
+          oninput="moveToNext(this, 'digit6')"
+          id="digit5"
+          onkeydown="moveToPrev(event, 'digit4', 'digit5')"
+        />
+        <input type="number" maxlength="1" pattern="[0-9]" required id="digit6" onkeydown="moveToPrev(event, 'digit5', 'digit6')"/>
+      </form>
+      <p>
+        Didnt't receive the code?
+        <a href="" class="reset-link">Resend Code</a>
+      </p>
+      <button type="submit">Submit</button>
+    </div>
+
+    <script>
+      function moveToNext(currentInput, nextInputId) {
+        if (currentInput.value.length >= 1) {
+          document.getElementById(nextInputId).focus();
+        }
+      }
+
+      function moveToPrev(event, prevInputId, currentInputId) {
+        const currentInput = document.getElementById(currentInputId);
+        if (event.key === "Backspace" && currentInput.value === "") {
+            document.getElementById(prevInputId).focus();
+        }
+    }
+    </script>
+  </body>
+</html>
