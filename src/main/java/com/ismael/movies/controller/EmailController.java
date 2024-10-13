@@ -13,11 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @RestController
@@ -42,6 +45,9 @@ public class EmailController {
 
     @Autowired
     VerificationCodeService verificationCodeService;
+
+    @Autowired
+    private SpringTemplateEngine templateEngine;
 
     @Value("${server.url}")
     private String serverUrl;
@@ -179,90 +185,10 @@ public class EmailController {
             UserDetails userFound = authorizationService.loadUserByUsername(email);
             if (userFound != null) {
 
-                String emailContent = String.format("""
-                            <!DOCTYPE html>
-                                    <html lang="pt-BR">
-                                    <head>
-                                        <meta charset="UTF-8">
-                                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                        <title>Código de Verificação</title>
-                                        <style>
-                                            body {
-                                                font-family: Arial, sans-serif;
-                                                background-color: #f0f0f0;
-                                                margin: 0;
-                                                padding: 0;
-                                                color: #333;
-                                            }
-                                            .container {
-                                                width: 100%%;
-                                                max-width: 600px;
-                                                margin: 0 auto;
-                                                padding: 20px;
-                                                background-color: #ffffff;
-                                                border-radius: 8px;
-                                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                                            }
-                                            .header {
-                                                text-align: center;
-                                                padding-bottom: 20px;
-                                            }
-                                            .header img {
-                                                max-width: 150px;
-                                            }
-                                            .content {
-                                                text-align: center;
-                                                padding: 20px;
-                                            }
-                                            .content h1 {
-                                                font-size: 24px;
-                                                margin-bottom: 20px;
-                                            }
-                                            .content p {
-                                                font-size: 16px;
-                                                margin-bottom: 20px;
-                                            }
-                                            .code-box {
-                                                display: inline-block;
-                                                font-size: 28px;
-                                                letter-spacing: 12px;
-                                                padding: 10px 20px;
-                                                background-color: #f9f9f9;
-                                                border: 1px solid #ddd;
-                                                border-radius: 8px;
-                                                margin: 20px 0;
-                                            }
-                                            .footer {
-                                                text-align: center;
-                                                font-size: 14px;
-                                                color: #888;
-                                                padding: 20px;
-                                                border-top: 1px solid #ddd;
-                                            }
-                                        </style>
-                                    </head>
-                                    <body>
-                                        <div class="container">
-                                            <div class="header">
-                                                <img src="http://192.168.100.12:8080/images/logo.png" alt="Logo">
-                                            </div>
-                                            <div class="content">
-                                                <h1>Código de Verificação</h1>
-                                                <p>Olá,</p>
-                                                <p>Seu código de verificação é:</p>
-                                                <div class="code-box">%s</div>
-                                                <p>Use este código para concluir sua solicitação. O código expira em 10 minutos.</p>
-                                                <p>Se você não solicitou este código, ignore este e-mail.</p>
-                                            </div>
-                                            <div class="footer">
-                                                &copy; 2024 Sua Empresa. Todos os direitos reservados.<br>
-                                                Endereço da Empresa | Contato: ismaeldenunes@gmail.com
-                                            </div>
-                                        </div>
-                                    </body>
-                                    </html>
-                                       
-                        """, verificationCode);
+                Context context = new Context(Locale.getDefault());
+                context.setVariable("verificationCode", verificationCode);
+                String emailContent = templateEngine.process("verification-code", context);
+
                 UserVerification userVerification = new UserVerification();
                 userVerification.setVerificationCode(verificationCode);
                 userVerification.setEmail(userFound.getUsername());
