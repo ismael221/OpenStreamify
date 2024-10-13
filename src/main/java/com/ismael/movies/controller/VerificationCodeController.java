@@ -1,7 +1,9 @@
 package com.ismael.movies.controller;
 
 import com.ismael.movies.DTO.VerificationCodeDTO;
+import com.ismael.movies.model.UserVerification;
 import com.ismael.movies.model.Users.User;
+import com.ismael.movies.model.VerificationCodeGenerator;
 import com.ismael.movies.services.UserService;
 import com.ismael.movies.services.VerificationCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 
 
 @RestController
@@ -27,8 +33,13 @@ public class VerificationCodeController {
     public ResponseEntity<?> verifyRegisterCode(@RequestBody VerificationCodeDTO verificationCodeDTO)  {
         String email = verificationCodeDTO.getEmail();
         String code = verificationCodeDTO.getCode();
-        boolean isVerified = verificationCodeService.verifyCode(email,code);
 
+        UserVerification userVerification = verificationCodeService.checkCodeExpiration(email);
+
+
+
+        boolean isVerified = verificationCodeService.verifyCode(email,code);
+        //TODO VERIFY THE USER OUTPUT IF THE CODE HAS EXPIRED AND CHANGE IT ON THE DATABASE
         if (isVerified){
             User user = userService.findUserByLogin(email);
             user.setActive(true);

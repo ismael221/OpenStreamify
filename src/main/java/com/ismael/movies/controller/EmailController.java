@@ -268,7 +268,7 @@ public class EmailController {
                 userVerification.setEmail(userFound.getUsername());
                 userVerification.setGeneratedAt(Instant.now());
                 verificationCodeService.saveVerificationCode(userVerification);
-                emailSenderService.sendEmail(userFound.getUsername(), "ismael@enrotech.com.br", "Password Reset", emailContent);
+                emailSenderService.sendEmail(userFound.getUsername(), "ismael@enrotech.com.br", "Código de verificação", emailContent);
 
                 response.put("message", "Email sent successfully");
                 return ResponseEntity.ok(response);
