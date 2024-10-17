@@ -65,5 +65,10 @@ public class NotificationController {
         return ResponseEntity.ok("Notificação interceptada e personalizada.");
     }
 
+    @PostMapping
+    public ResponseEntity notifyAllUsers(@RequestBody Map<String,Object> message){
+        notificationService.notifyAllUsers((String) message.get("message"));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

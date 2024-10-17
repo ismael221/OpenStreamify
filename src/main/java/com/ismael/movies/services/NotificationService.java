@@ -110,4 +110,26 @@ public class NotificationService {
 
         restTemplate.postForObject(url, body, String.class);
     }
+
+    @Transactional
+    @CacheEvict(cacheNames = "notifications-list", allEntries = true)
+    public void notifyAllUsers(String message){
+        Notifications notification = new Notifications();
+        notification.setMessage(message);
+        notification.setCreatedAt(new Date());
+
+        notificationsRepository.save(notification);
+
+        List<User> users = userRepository.findAll();
+        for (User user: users){
+            UserNotification userNotification = UserNotification.builder()
+                    .user(user)
+                    .notification(notification)
+                    .visualized(false)
+                    .build();
+            userNotificationRepository.save(userNotification);
+        }
+
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
+    }
 }

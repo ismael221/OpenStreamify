@@ -9,16 +9,12 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.UUID;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RatingDTO implements Serializable {
-    @NotNull(message = "Review's comment cannot be empty")
+public class RatingResponseDTO implements Serializable {
     private String comment;
-    @NotNull(message = "The rating value cannot be empty")
     private int rating;
     private UUID rid;
-    private UUID movie;
 }

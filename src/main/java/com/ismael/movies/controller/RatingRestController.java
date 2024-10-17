@@ -1,5 +1,7 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.DTO.RatingDTO;
+import com.ismael.movies.DTO.RatingResponseDTO;
 import com.ismael.movies.model.Rating;
 import com.ismael.movies.services.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,14 @@ public class RatingRestController {
     RatingService ratingService;
 
     @PostMapping
-    public ResponseEntity<Rating> newRating(@RequestBody Rating analise){
-            var novaAnalise = ratingService.addRating(analise);
+    public ResponseEntity<RatingDTO> newRating(@RequestBody RatingDTO ratingDTO){
+            var novaAnalise = ratingService.addRating(ratingDTO);
             return  new ResponseEntity<>(novaAnalise, HttpStatus.CREATED);
     }
 
     @GetMapping
     public  ResponseEntity<List> ratingsList(){
-        List<Rating> analises = ratingService.listRatings();
+        List<RatingResponseDTO> analises = ratingService.listRatings();
         return new ResponseEntity<>(analises,HttpStatus.OK);
     }
 

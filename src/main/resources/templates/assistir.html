@@ -30,7 +30,7 @@
         controls
         preload="auto"
         autoplay
-        th:poster="@{${media.coverImgUrl}}"
+        th:poster="@{${media.backgroundImgUrl}}"
       >
         <source
           th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}"

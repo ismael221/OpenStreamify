@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class MoviesService {
     @Autowired
     MovieRepository movieRepository;
+    //TODO FIX THE CACHEC EVICT AS ITS NOT UPDATING WHEN ADDING A NEW MOVIE 2
 
     @Autowired
     ModelMapper modelMapper;

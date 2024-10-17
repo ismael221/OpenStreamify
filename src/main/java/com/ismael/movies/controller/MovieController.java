@@ -1,6 +1,7 @@
 package com.ismael.movies.controller;
 
 import com.ismael.movies.DTO.MovieDTO;
+import com.ismael.movies.DTO.RatingDTO;
 import com.ismael.movies.cookies.model.Preferencia;
 import com.ismael.movies.enums.MovieGenre;
 import com.ismael.movies.infra.security.TokenService;
@@ -130,8 +131,8 @@ public class MovieController {
         }
 
         @PostMapping("/cadastrarAnalise")
-        public String cadastrarAnalise(@ModelAttribute Rating analise, @ModelAttribute Movie movie, Model model) {
-                analise.setMovie(movie);
+        public String cadastrarAnalise(@ModelAttribute RatingDTO analise, @ModelAttribute Movie movie, Model model) {
+                analise.setMovie(movie.getRid());
                 ratingService.addRating(analise);
                 return "redirect:/listarFilmes";
         }

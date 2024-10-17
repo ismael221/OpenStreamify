@@ -146,14 +146,45 @@
 
         <p>
           Didnt't receive the code?
-          <a href="" class="reset-link">Resend Code</a>
+          <a href="" class="reset-link" id="reset-link">Resend Code <p id="timer"></p> </a>
         </p>
         <button type="submit">Submit</button>
       </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      let timer;
+let countdown = 60; // Set the countdown duration in seconds
+
+function startResendTimer() {
+    // Disable the button during the countdown
+    document.getElementById('reset-link').disabled = true;
+
+    // Start the countdown
+    timer = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    const timerElement = document.getElementById('timer');
+
+    if (countdown > 0) {
+        timerElement.textContent = `in ${countdown}`;
+        countdown--;
+    } else {
+        // Enable the button when the countdown reaches zero
+        document.getElementById('resendBtn').disabled = false;
+        timerElement.textContent = '';
+
+        // Reset countdown for the next attempt
+        countdown = 60;
+
+        // Stop the timer
+        clearInterval(timer);
+    }
+}
+
       document.addEventListener("DOMContentLoaded", function (e) {
+        startResendTimer();
         const email = localStorage.getItem("code_verification_email");
         if (email) {
           document.getElementById("email").innerHTML = email;
@@ -192,7 +223,7 @@
 
         // Envia os dados via AJAX
         $.ajax({
-          url: `http://openstreamify.ddns.net:8080/api/v1/verify`,
+          url: `http://192.168.100.12:8080/api/v1/verify`,
           type: "POST",
           contentType: "application/json",
           data: JSON.stringify({
@@ -209,6 +240,8 @@
           },
         });
       });
+
+
     </script>
   </body>
 </html>
