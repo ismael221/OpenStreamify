@@ -18,6 +18,7 @@
     />
     <!-- Custom Styles -->
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/ratings.css}" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <!-- NavBar-->
@@ -71,6 +72,34 @@
       </div>
     </div>
 
+   <div class="contains-ratings">
+    <div class="container" id="ratings">
+      <!-- Cards de avaliações -->
+
+  
+      <!-- Formulário de avaliação -->
+      <div class="review-form">
+          <h2>Add Your Review</h2>
+  
+          <!-- Estrelas para a avaliação -->
+          <div class="stars" id="starRating">
+              <button class="star" data-value="1">&#9733;</button>
+              <button class="star" data-value="2">&#9733;</button>
+              <button class="star" data-value="3">&#9733;</button>
+              <button class="star" data-value="4">&#9733;</button>
+              <button class="star" data-value="5">&#9733;</button>
+          </div>
+  
+          <!-- Formulário -->
+          <input type="text" style="display: none;" th:value="${details.rid}" id="movie-rid">
+          <input type="text" id="name" placeholder="Your Name" style="color: white;">
+          <textarea id="review" placeholder="Write your review here..." style="color: white;"></textarea>
+          <button id="submitReview">Submit Review</button>
+      </div>
+  </div>
+   </div>
+  
+
     <footer
       th:insert="footer.html :: footer"
       class="rodape"
@@ -83,5 +112,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
     <script th:src="@{/js/notification.js}"></script>
+    <script th:src="@{/js/ratings.js}"></script>
   </body>
 </html>

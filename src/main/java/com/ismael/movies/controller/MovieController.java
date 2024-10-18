@@ -1,12 +1,9 @@
 package com.ismael.movies.controller;
 
 import com.ismael.movies.DTO.MovieDTO;
-import com.ismael.movies.DTO.RatingDTO;
-import com.ismael.movies.cookies.model.Preferencia;
 import com.ismael.movies.enums.MovieGenre;
 import com.ismael.movies.infra.security.TokenService;
 import com.ismael.movies.model.Movie;
-import com.ismael.movies.model.Rating;
 import com.ismael.movies.model.Users.User;
 import com.ismael.movies.services.RatingService;
 import com.ismael.movies.services.MoviesService;
@@ -17,29 +14,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@CacheConfig(cacheNames = "templates")
 public class MovieController {
-        public String theme ="light";
+
         final
         MoviesService moviesService;
 
-        @Autowired
-        RatingService ratingService;
         @Autowired
         ConfigRestController config;
         @Autowired
@@ -89,7 +78,7 @@ public class MovieController {
         }
 
         // Método auxiliar para particionar a lista
-        @CachePut
+
         private <T> List<List<T>> partitionList(List<T> list, int chunkSize) {
                 List<List<T>> partitions = new ArrayList<>();
                 for (int i = 0; i < list.size(); i += chunkSize) {
@@ -98,18 +87,6 @@ public class MovieController {
                 return partitions;
         }
 
-        @GetMapping("/cadastrarFilme")
-        public  String mostrarFormCadastro(Model model){
-                model.addAttribute("css",theme);
-                model.addAttribute("filme",new Movie());
-                return "cadastrar";
-        }
-
-        @PostMapping("/cadastrarFilme")
-        public String cadastrarFilme(@ModelAttribute MovieDTO movie) {
-                moviesService.newMovie(movie);
-                return "redirect:/listarFilmes";
-        }
 
         @GetMapping("/list")
         public String listarFilmes(Model model){
@@ -118,42 +95,7 @@ public class MovieController {
                 return "movies";
         }
 
-        @GetMapping("/exibirAnalise/{id}")
-        public String analisePorFilme(Model model, @PathVariable UUID rid)
-        {
-                Movie movieEncontrado = moviesService.getMovieByRID(rid);
-                List<Rating> analisesEcontradas = ratingService.listRatingsByMovieRID(rid);
-                model.addAttribute("filme", movieEncontrado);
-                model.addAttribute("feedback", new Rating());
-                model.addAttribute("analises", analisesEcontradas);
-                model.addAttribute("css",theme);
-                return  "details";
-        }
 
-        @PostMapping("/cadastrarAnalise")
-        public String cadastrarAnalise(@ModelAttribute RatingDTO analise, @ModelAttribute Movie movie, Model model) {
-                analise.setMovie(movie.getRid());
-                ratingService.addRating(analise);
-                return "redirect:/listarFilmes";
-        }
-
-        @PostMapping("/preferencias")
-        public ModelAndView gravaPreferencias(@ModelAttribute Preferencia pref, HttpServletResponse response){
-         Cookie cookiePrefNome = new Cookie("pref-nome", "style");
-         cookiePrefNome.setDomain("localhost"); //disponível apenas no domínio "localhost"
-         cookiePrefNome.setHttpOnly(true); //acessível apenas por HTTP, JS não
-         cookiePrefNome.setMaxAge(86400); //1 dia
-         response.addCookie(cookiePrefNome);
-         Cookie cookiePrefEstilo = new Cookie("pref-estilo", pref.getEstilo());
-         cookiePrefEstilo.setDomain("localhost"); //disponível apenas no domínio "localhost"
-         cookiePrefEstilo.setHttpOnly(true); //acessível apenas por HTTP, JS não
-         cookiePrefEstilo.setMaxAge(86400); //1 dia
-         response.addCookie(cookiePrefEstilo);
-         return new ModelAndView("redirect:/"); //"index";
-
-        }
-
-        @Cacheable
         @GetMapping("/play/{rid}")
         public String assistirFilme(@PathVariable("rid") String mediaRID, Model model) {
                 UUID uuid = UUID.fromString(mediaRID); // Verifica se é um UUID válido
@@ -164,7 +106,7 @@ public class MovieController {
                 return "assistir";  // Nome do template Thymeleaf
         }
 
-        @Cacheable
+
         @GetMapping("/details/{rid}")
         public String detalhaFilme(@PathVariable("rid") String movie_RID, Model model){
                 UUID uuid = UUID.fromString(movie_RID); // Verifica se é um UUID válido
@@ -235,7 +177,7 @@ public class MovieController {
                 return "redirect:/auth/reset";
         }
 
-        @Cacheable
+
         @GetMapping("/auth/update")
         public String updatePassword(HttpServletRequest request, Model model) {
                 String email = (String) request.getSession().getAttribute("email");

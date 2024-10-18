@@ -15,6 +15,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -53,11 +54,12 @@ public class RatingService {
 
     @Transactional
     @CachePut
-    public RatingDTO addRating(RatingDTO rating){
+    public RatingResponseDTO addRating(RatingDTO rating){
             Rating newRating = convertToEntity(rating);
             newRating.setMovie(moviesService.getMovieByRID(rating.getMovie()));
-            ratingRepository.save(newRating);
-            return rating;
+            newRating.setCreatedAt(new Date());
+            Rating saved =  ratingRepository.save(newRating);
+            return convertToResponseDTO(saved);
     }
     //TODO FIX ISSUES WITH CACHE EVICT AS ITS NOT UPDATING THE LIST ON ADDING A NEW RATING
     @Transactional

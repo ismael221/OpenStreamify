@@ -70,7 +70,7 @@ public class MoviesService {
     }
 
     @Transactional
-    @CacheEvict(allEntries = true)
+    @CacheEvict(allEntries = true,key = "#movieRid")
     public void deleteMovie(UUID movieRid){
             Movie movie = getMovieByRID(movieRid);
             movieRepository.deleteById((int) movie.getId());

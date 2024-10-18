@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -21,4 +22,6 @@ public class RatingDTO implements Serializable {
     private int rating;
     private UUID rid;
     private UUID movie;
+    private Date createAt;
+    private String user;
 }

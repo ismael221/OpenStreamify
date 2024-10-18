@@ -20,7 +20,7 @@ public class RatingRestController {
     RatingService ratingService;
 
     @PostMapping
-    public ResponseEntity<RatingDTO> newRating(@RequestBody RatingDTO ratingDTO){
+    public ResponseEntity<RatingResponseDTO> newRating(@RequestBody RatingDTO ratingDTO){
             var novaAnalise = ratingService.addRating(ratingDTO);
             return  new ResponseEntity<>(novaAnalise, HttpStatus.CREATED);
     }

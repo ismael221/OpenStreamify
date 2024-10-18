@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -14,7 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class RatingResponseDTO implements Serializable {
+    private UUID rid;
     private String comment;
     private int rating;
-    private UUID rid;
+    private String user;
+    private Date createdAt;
 }
