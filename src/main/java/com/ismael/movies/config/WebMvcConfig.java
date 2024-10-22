@@ -32,7 +32,6 @@ public class WebMvcConfig  implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
     }
-    //TODO Fix the UTF-8 issue, even tho it was declared, some some characters cannot load properly on the template
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

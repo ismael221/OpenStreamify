@@ -8,6 +8,7 @@ import com.ismael.movies.services.*;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -72,7 +73,8 @@ public class EmailController {
                 User user = userService.findUserByLogin(email);
                 var resetPasswordToken = tokenService.generateToken(user);
 
-                Context context = new Context(Locale.getDefault());
+                Locale currentLocale = LocaleContextHolder.getLocale();
+                Context context = new Context(currentLocale );
                 context.setVariable("token", resetPasswordToken);
                 String emailContent = templateEngine.process("password-reset", context);
 
@@ -106,7 +108,8 @@ public class EmailController {
             UserDetails userFound = authorizationService.loadUserByUsername(email);
             if (userFound != null) {
 
-                Context context = new Context(Locale.getDefault());
+                Locale currentLocale = LocaleContextHolder.getLocale();
+                Context context = new Context(currentLocale);
                 context.setVariable("verificationCode", verificationCode);
                 String emailContent = templateEngine.process("verification-code", context);
 
