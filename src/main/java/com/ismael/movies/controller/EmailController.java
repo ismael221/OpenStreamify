@@ -75,6 +75,7 @@ public class EmailController {
 
                 Locale currentLocale = LocaleContextHolder.getLocale();
                 Context context = new Context(currentLocale );
+                context.setVariable("baseUrl",serverUrl);
                 context.setVariable("token", resetPasswordToken);
                 String emailContent = templateEngine.process("password-reset", context);
 
@@ -110,6 +111,7 @@ public class EmailController {
 
                 Locale currentLocale = LocaleContextHolder.getLocale();
                 Context context = new Context(currentLocale);
+                context.setVariable("baseUrl",serverUrl);
                 context.setVariable("verificationCode", verificationCode);
                 String emailContent = templateEngine.process("verification-code", context);
 
