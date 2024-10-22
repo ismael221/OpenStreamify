@@ -1,16 +1,17 @@
+import { config } from './config.js';
+
 var user_id;
-var token = localStorage.getItem('access_token');
 var email = localStorage.getItem('user');
 
 var notificationList = [];
 
 function getUserID(user) {
   $.ajax({
-    url: 'http://192.168.100.12:8080/api/v1/auth/' + user,
+    url: config.apiUrl + '/api/v1/auth/' + user,
     method: 'GET',
     contentType: 'application/json',
     headers: {
-      'Authorization': 'Bearer ' + token
+      'Authorization': 'Bearer ' + config.apiKey
     },
     success: function (data) {
       user_id = data;
@@ -23,11 +24,11 @@ function getUserID(user) {
 }
 function retrieveNotifications(user_id) {
   $.ajax({
-    url: 'http://192.168.100.12:8080/api/v1/notice/' + this.user_id,
+    url: config.apiUrl +'/api/v1/notice/' + localStorage.getItem('uuidUser'),
     method: 'GET',
     contentType: 'application/json',
     headers: {
-      'Authorization': 'Bearer ' + token
+      'Authorization': 'Bearer ' + config.apiKey
     },
     success: function (data) {
       $('#notify').empty();
@@ -91,11 +92,11 @@ $(document).on('click', 'li[id^="notifyButton"]',
 $(document).on('click', 'button[id^="deleteNots"]',
   function deleteNotifications() {
     $.ajax({
-      url: 'http://192.168.100.12:8080/api/v1/notice/'+ user_id,
+      url: config.apiUrl +'/api/v1/notice/'+ user_id,
       method: 'POST',
       contentType: 'application/json',
       headers: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + config.apiKey
       },
       success: function (data) {
         retrieveNotifications(user_id);
@@ -114,7 +115,7 @@ $(document).ready(function () {
 
 var socket = new SockJS("/ws");
 var stompClient = Stomp.over(socket);
-var audio = new Audio('http://192.168.100.12:8080/audio/notificationSound.mp3')
+var audio = new Audio(config.apiUrl +'/audio/notificationSound.mp3')
 
 stompClient.connect({}, function (frame) {
   console.log("Connected: " + frame);

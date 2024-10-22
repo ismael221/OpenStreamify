@@ -1,3 +1,5 @@
+import { config } from './config.js';
+
 $(document).ready(function () {
     $("#upload-movie-file").hide();
     $(".movie-file-container").hide();
@@ -18,17 +20,15 @@ $(document).on('click', 'a[id^="add-newMovie-nav"]',
 })
 
 
-var token = localStorage.getItem('access_token');
-
   function uploadImage(file, callback) {
     const formData = new FormData();
     formData.append('file', file);
 
     $.ajax({
-        url: 'http://192.168.100.12:8080/api/v1/media/img/upload',  // Endpoint de upload de imagens
+        url: config.apiUrl +'/api/v1/media/img/upload',  // Endpoint de upload de imagens
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + token
+            'Authorization': 'Bearer ' + config.apiKey
         },
         processData: false,
         contentType: false,
@@ -84,10 +84,10 @@ $('#addMovieForm').submit(function (event) {
 
             // Envia o filme para a API
             $.ajax({
-                url: 'http://192.168.100.12:8080/api/v1/movies',
+                url: config.apiUrl +'/api/v1/movies',
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + config.apiKey
                 },
                 contentType: 'application/json',
                 data: JSON.stringify(movie),
@@ -114,15 +114,15 @@ $('#uploadMovieForm').submit(function(event){
     let backgroundImg = $("#movieFile")[0].files[0];
 
     const formData = new FormData();
-    file = backgroundImg;
+    let file = backgroundImg;
     formData.append('file', file);
     formData.append('rid',rid);
 
     $.ajax({
-        url: 'http://192.168.100.12:8080/api/v1/media/hls/upload',  // Endpoint de upload de imagens
+        url: config.apiUrl +'/api/v1/media/hls/upload',  // Endpoint de upload de imagens
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + token
+            'Authorization': 'Bearer ' + config.apiKey
         },
         processData: false,
         contentType: false,
@@ -137,37 +137,4 @@ $('#uploadMovieForm').submit(function(event){
     });
 })
 
-var loadBackgroundFile = function(event) {
-    var output_background = document.getElementById('output_background');
-  
-
-    output_background.src = URL.createObjectURL(event.target.files[0]);
-    output_background.onload = function() {
-      URL.revokeObjectURL(output_background.src) // free memory
-    }
-
-}
-
-var loadCoverFile = function(event) {
-    var output_cover = document.getElementById('output_cover');
-    output_cover.src = URL.createObjectURL(event.target.files[0]);
-    output_cover.onload = function() {
-      URL.revokeObjectURL(output_cover.src) // free memory
-    }
-}
-
-var loadMovieFile = function(event) {
-    var output = document.getElementById('video_here');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function() {
-      URL.revokeObjectURL(output.src) // free memory
-    }
-    var isUploaded = $("#movieFile").val();
-
-    if(isUploaded){
-        $(".movie-file-container").show();
-    }else{
-        $(".movie-file-container").hide();
-    }
-}
 

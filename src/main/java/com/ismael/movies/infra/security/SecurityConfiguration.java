@@ -26,6 +26,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET,"/live").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/js/jquery-3.7.1.js").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/verify").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/register-code").permitAll()

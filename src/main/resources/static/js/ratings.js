@@ -1,3 +1,5 @@
+import { config } from './config.js';
+
 document.addEventListener("DOMContentLoaded", function () {
     const stars = document.querySelectorAll('.star');
     const submitReviewButton = document.getElementById('submitReview');
@@ -56,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // Faz a requisição POST para a API
-        fetch('/api/v1/ratings', {
+        fetch(config.apiUrl + '/api/v1/ratings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Função para exibir o card
     function displayReview(review) {
-        console.log("Merda pretona" +review)
+
         let date = new Date(review.createdAt);
         let year = date.getFullYear();
         let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
@@ -125,22 +127,20 @@ document.addEventListener("DOMContentLoaded", function () {
         reviewCard.appendChild(starsDiv);
         reviewCard.appendChild(commentPara);
         reviewCard.appendChild(timestampDiv);
-
         container.appendChild(reviewCard);
     }
 
     function getRatings() {
-        fetch('http://192.168.100.12:8080/api/v1/ratings')
+        fetch(config.apiUrl +'/api/v1/ratings')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); // Converter a resposta para JSON
+                return response.json();
             })
             .then(data => {
                 reviewData = 0;
-                reviewData= data; // Adiciona os dados ao array
-                console.log("Cu"+data); // Manipular os dados aqui
+                reviewData= data;
                 for(let i=0;i<reviewData.length;i++){
                     displayReview(reviewData[i]);
                 }
