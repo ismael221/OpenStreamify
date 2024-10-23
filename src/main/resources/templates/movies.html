@@ -35,7 +35,7 @@
       <div class="row movies-grid">
         <!-- Cartão do Movie -->
         <div class="col-md-2 mb-4" th:each="m : ${moviesList}">
-          <a th:href="@{'/details/'+ ${m.rid}}">
+          <a th:href="@{'/details/'+ ${m.rid}}" class="movie-link">
             <div class="card movie-list-card">
               <img
                 th:src="${m.coverImgUrl}"
@@ -58,6 +58,6 @@
     <script src="https://cdn.jsdelivr.net/sockjs/1.0.2/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
-    <script th:src="@{/js/notification.js}"></script>
+    <script type="module" th:src="@{/js/notification.js}"></script>
   </body>
 </html>

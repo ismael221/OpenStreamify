@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +18,9 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    NotificationService notificationService;
 
     public void createNewUser(RegisterDTO user){
         if (this.userRepository.findByLogin(user.login()) != null){
@@ -25,6 +30,14 @@ public class UserService {
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.password());
         User newUser = new User(user.login(),encryptedPassword,user.role());
         this.userRepository.save(newUser);
+
+        String mensagemPersonalizada = "🚨 *New user Alert* 🚨\n\n" +
+                "*Título*: " + "Novo usuário cadastrado" + "\n" +
+                "*Estado*: " + user.role() + "\n" +
+                "*Detalhes*: " + newUser.getLogin() + "\n" +
+                "[Ver mais no Grafana](" + ' ' + ")";
+
+        notificationService.enviarMensagemTelegram(mensagemPersonalizada);
 
     }
 
@@ -40,6 +53,13 @@ public class UserService {
             user1.setRole(user.getRole());
             user1.setPassword(user.getPassword());
             userRepository.saveAndFlush(user1);
+
+            String mensagem = "🔒 *Alteração de conta*\n\n" +
+                    "Usuário: " + user.getLogin() + " (ID: " + user.getId() + ") "+"(Ativo?: " + user.isActive() + ")"+"(Role: "+user.getRole()+ ") "+"\n" +
+                    "A conta foi alterada com sucesso em: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
+                    "Se você não fez essa alteração, entre em contato imediatamente com o suporte.";
+
+            notificationService.enviarMensagemTelegram(mensagem);
             return  userRepository.saveAndFlush(user1);
         }
         return null;
@@ -49,4 +69,18 @@ public class UserService {
         return  userRepository.findAllUsersId();
     }
 
+    public UUID findUserIdByLogin(String login){
+        return userRepository.findUserIdByLogin(login);
+    }
+
+    public boolean activateUserAccountByEmail(String email){
+        User userFound = findUserByLogin(email);
+
+        if (userFound != null){
+            userFound.setActive(true);
+            return true;
+        }
+
+        return false;
+    }
 }

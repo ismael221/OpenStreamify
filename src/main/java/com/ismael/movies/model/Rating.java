@@ -9,6 +9,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.io.Serializable;
 import java.sql.Types;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -18,9 +19,10 @@ import java.util.UUID;
 })
 public class Rating implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
-    private long id;
+    @UuidGenerator
+    @JdbcTypeCode(Types.VARCHAR)
+    @Column(unique = true,nullable = false)
+    private UUID rid;
     @ManyToOne
     @JoinColumn(name = "movie_rid",nullable = false,referencedColumnName = "rid")
     private Movie movie;
@@ -28,9 +30,8 @@ public class Rating implements Serializable {
     private String comment;
     @Column(nullable = false)
     private int rating;
-    @UuidGenerator
-    @JdbcTypeCode(Types.VARCHAR)
-    @Column(name = "rid",nullable = false)
-    private UUID rid;
+
+    private Date createdAt;
+    private String user;
 
 }

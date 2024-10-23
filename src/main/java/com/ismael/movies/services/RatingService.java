@@ -1,7 +1,13 @@
 package com.ismael.movies.services;
 
+import com.ismael.movies.DTO.MovieDTO;
+import com.ismael.movies.DTO.RatingDTO;
+import com.ismael.movies.DTO.RatingResponseDTO;
+import com.ismael.movies.model.Movie;
 import com.ismael.movies.model.Rating;
 import com.ismael.movies.repository.RatingRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -9,8 +15,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 //TODO Added the DTO class to fix the json infinite loop
 @Service
@@ -20,21 +28,48 @@ public class RatingService {
     final
     RatingRepository ratingRepository;
 
+
+    @Autowired
+    ModelMapper modelMapper;
+
+    @Autowired
+    MoviesService moviesService;
+
+    public RatingDTO convertToDto(Rating rating){
+        return modelMapper.map(rating, RatingDTO.class);
+    }
+
+    public RatingResponseDTO convertToResponseDTO(Rating rating){
+        return modelMapper.map(rating, RatingResponseDTO.class);
+    }
+
+    public Rating convertToEntity(RatingDTO ratingDTO){
+        return  modelMapper.map(ratingDTO, Rating.class);
+    }
+
+
     public RatingService(RatingRepository ratingRepository) {
         this.ratingRepository = ratingRepository;
     }
 
     @Transactional
     @CachePut
-    public Rating addRating(Rating rating){
-            ratingRepository.save(rating);
-            return rating;
+    public RatingResponseDTO addRating(RatingDTO rating){
+            Rating newRating = convertToEntity(rating);
+            newRating.setMovie(moviesService.getMovieByRID(rating.getMovie()));
+            newRating.setCreatedAt(new Date());
+            Rating saved =  ratingRepository.save(newRating);
+            return convertToResponseDTO(saved);
     }
-
+    //TODO FIX ISSUES WITH CACHE EVICT AS ITS NOT UPDATING THE LIST ON ADDING A NEW RATING
     @Transactional
     @Cacheable
-    public List<Rating> listRatings(){
-        List<Rating> ratingsList = ratingRepository.findAll();
+    public List<RatingResponseDTO> listRatings(){
+        List<Rating> ratings = ratingRepository.findAll();
+        List<RatingResponseDTO> ratingsList = ratings
+                .stream()
+                .map(this::convertToResponseDTO)
+                .collect(Collectors.toList());
         return ratingsList;
     }
 

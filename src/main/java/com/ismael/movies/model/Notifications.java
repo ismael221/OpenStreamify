@@ -27,14 +27,8 @@ public class Notifications {
     private UUID rid ;
     private String message;
     private Date createdAt;
-    private boolean visualized;
-    @ManyToMany(mappedBy = "notifications")
-    List<User> users;
-    @PrePersist
-    public void prePersist() {
-        if (rid == null) {
-            rid = UUID.randomUUID();
-        }
-    }
+    @OneToMany(mappedBy = "notification")
+    @ToString.Exclude
+    private List<UserNotification> userNotifications;
 
 }

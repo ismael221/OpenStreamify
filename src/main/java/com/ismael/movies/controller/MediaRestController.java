@@ -15,10 +15,14 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -68,7 +72,9 @@ public class MediaRestController {
 
 
     @PostMapping("/hls/upload")
-    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam UUID rid) {
+    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("rid") String StringRid) {
+
+        UUID rid = UUID.fromString(StringRid);
 
         String uploadDir = System.getProperty("user.dir") + File.separator + "temp";
 
@@ -89,15 +95,31 @@ public class MediaRestController {
             file.transferTo(destFile);
 
             // Chamando o método para processar o vídeo com FFmpeg
-            fFmpegHLS.executeFFmpegCommand(destFile.getAbsolutePath(), rid);
-            Movie newMovie = moviesService.getMovieByRID(rid);
-            List<UUID> users = userService.findAllUsersId();
-            notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle(),users);
+            Future<Integer> resultCode = fFmpegHLS.executeFFmpegCommand(destFile.getAbsolutePath(), rid);
+
+            System.out.printf(resultCode.toString());
+            if (resultCode.get() == 0){
+                Movie newMovie = moviesService.getMovieByRID(rid);
+                List<UUID> users = userService.findAllUsersId();
+                String mensagem = "🎬 *Processamento de Filme Concluído*\n\n" +
+                        "O filme *" + newMovie.getTitle() + "* (ID: " + newMovie.getRid() + ") foi tratado com sucesso.\n" +
+                        "Data de conclusão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
+                        "✔️ O arquivo está pronto para uso.";
+
+                notificationService.enviarMensagemTelegram(mensagem);
+                notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle(),users);
+            }
             return ResponseEntity.ok("Video uploaded and processed successfully.");
+
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Failed to upload and process the video.");
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     @Value("${server.url}")

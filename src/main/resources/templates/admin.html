@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - OpenStreamify</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+  </head>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings:
+        "FILL" 0,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
+    }
+    * {
+      font-family: "Manrope", sans-serif;
+    }
+    body {
+      background-color: #1a1d29;
+      color: #b3b3b3;
+      scroll-behavior: smooth;
+    }
+    .form-control {
+      background-color: #3b3e52;
+      color: #b3b3b3;
+    }
+    .form-control:focus {
+      background-color: #3b3e52;
+      color: #b3b3b3;
+    }
+    ::placeholder {
+      color: #b3b3b3 !important;
+      opacity: 1; /* Firefox */
+    }
+    ::-ms-input-placeholder {
+      /* Edge 12 -18 */
+      color: #b3b3b3 !important;
+    }
+    #main-container {
+      background: #2a2d3e;
+      padding: 25px;
+      border-radius: 20px;
+      font-size: 18px;
+      box-shadow:
+        rgba(0, 0, 0, 0.19) 0px 10px 20px,
+        rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    }
+
+    .sidebar {
+      background: #2a2d3e !important;
+    }
+
+    h2 {
+      padding: 15px;
+      text-align: center;
+      color: #bdafaf;
+      font-weight: bold;
+    }
+
+    a {
+      color: white !important;
+      font-weight: bold;
+      padding: 0 !important;
+    }
+    @media only screen and (max-width: 600px) {
+      #main-container {
+        margin: 20px;
+      }
+      #video_here{
+        width: 360px;
+      }
+    }
+
+    .nav-item{
+      padding:5px;
+    }
+
+   .movie-file-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px;
+    }
+  </style>
+  <body>
+    <div class="container mt-5">
+      <div class="row" id="main-container">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+          <div class="position-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">
+                  <img
+                    th:src="@{/images/dashboard.svg}"
+                    class="material-symbols-outlined"
+                    alt=""
+                  />
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" id="add-newMovie-nav">
+                  <img
+                    th:src="@{/images/add_circle.svg}"
+                    class="material-symbols-outlined"
+                    alt=""
+                  />
+                  Add New Movie
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" id="upload-movie-nav">
+                  <img
+                    th:src="@{/images/cloud_upload.svg}"
+                    class="material-symbols-outlined"
+                    alt=""
+                  />
+                  Upload Movie File
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" id="add-notification-nav">
+                  <img
+                    th:src="@{/images/notification_add.svg}"
+                    class="material-symbols-outlined"
+                    alt=""
+                  />
+                  Notificate users
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/}" id="back-option-nav">
+                  <img
+                    th:src="@{/images/undo.svg}"
+                    class="material-symbols-outlined"
+                    alt=""
+                  />
+                  Voltar
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <h2>Admin Panel</h2>
+
+          <!-- Add New Movie Section -->
+          <section id="add-movie" class="mt-4">
+            <h3>Add New Movie</h3>
+            <form id="addMovieForm">
+              <div class="mb-3">
+                <label for="title" class="form-label">Movie Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  placeholder="Enter movie title"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="synopsis" class="form-label">Synopsis</label>
+                <textarea
+                  class="form-control"
+                  id="synopsis"
+                  rows="3"
+                  placeholder="Enter movie synopsis"
+                  required
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="released" class="form-label">Release Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="released"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="backgroundImg" class="form-label"
+                  >Background Image</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="backgroundImg"
+                  required
+                  onchange="loadBackgroundFile(event)"
+                />
+                <img id="output_background" style="padding: 20px;width: 100%;"/>
+              </div>
+              <div class="mb-3">
+                <label for="coverImg" class="form-label">Cover Image</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="coverImg"
+                  required
+                  onchange="loadCoverFile(event)"
+                />
+                <img id="output_cover" style="padding: 20px;width: 100%;"/>
+              </div>
+              <div class="mb-3">
+                <label for="trailerUrl" class="form-label">Trailer URL</label>
+                <input
+                  type="url"
+                  class="form-control"
+                  id="trailerUrl"
+                  placeholder="Enter trailer URL"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </section>
+
+          <!-- Upload Movie File Section -->
+          <section id="upload-movie-file" class="mt-5">
+            <h3>Upload Movie File</h3>
+            <form id="uploadMovieForm" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="ridMovie" class="form-label">Movie RID</label>
+                <input
+                  type="UUID"
+                  class="form-control"
+                  id="ridMovie"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="movieFile" class="form-label"
+                  >Choose Movie File</label
+                >
+                <input
+                  class="form-control"
+                  type="file"
+                  id="movieFile"
+                  accept=".mp4,.mkv,.avi"
+                  required
+                  onchange="loadMovieFile(event)"
+                />
+                <div class="movie-file-container">
+                  <video width="100%" controls id="video_here">
+                  </video>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Upload File</button>
+            </form>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:src="@{/js/script.js}"></script>
+    <script type="module" th:src="@{/js/admin.js}"></script>
+  </body>
+</html>

@@ -19,9 +19,6 @@
                     <a class="nav-link" href="#" style="font-size:20px" th:text="#{series}">Series</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/live}" style="font-size:20px" th:text="#{lives}">Lives</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="#" style="font-size:20px" th:text="#{myList}">WatchList</a>
                 </li>
                 <!-- Notifications Dropdown -->
@@ -32,7 +29,7 @@
                         <span class="visually-hidden">unread messages</span>
                     </span>
                     </a>
-                    <ul id="notify" class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown" style=" display: none;">
+                    <ul id="notify" class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
                         <!-- <li><a class="dropdown-item" href="#">Notificação 1</a></li> -->
                         <!-- <li><hr class="dropdown-divider"></li> -->
                         <!--<li><a class="dropdown-item" href="#" th:text="#{notifications}" >See all Notifications</a></li>-->
@@ -46,6 +43,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="#" th:text="#{profile}">Profile</a></li>
                         <li><a class="dropdown-item" href="#" th:text="#{settings}">Settings</a></li>
+                        <li><a class="dropdown-item"  th:href="@{/admin}">Admin</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -56,13 +54,4 @@
         </div>
     </div>
 </nav>
-<script th:src="@{/js/jquery-3.7.1.js}"></script>
-<script th:src="@{/js/script.js}"></script>
-<script>
-    // Inicializar tooltip
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.forEach(function(tooltipTriggerEl) {
-        new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-</script>
-</script>
+

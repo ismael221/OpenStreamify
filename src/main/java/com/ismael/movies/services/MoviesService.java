@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class MoviesService {
     @Autowired
     MovieRepository movieRepository;
+    //TODO FIX THE CACHEC EVICT AS ITS NOT UPDATING WHEN ADDING A NEW MOVIE 2
 
     @Autowired
     ModelMapper modelMapper;
@@ -46,6 +47,7 @@ public class MoviesService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "movies-list")
     public List<MovieDTO> listAllMovies(){
         List<Movie>  moviesFoundList= movieRepository.findAll();
         List<MovieDTO> moviesListConverted =  moviesFoundList.stream().map(this::convertToDto).collect(Collectors.toList());
@@ -68,14 +70,14 @@ public class MoviesService {
     }
 
     @Transactional
-    @CacheEvict(allEntries = true)
+    @CacheEvict(allEntries = true,key = "#movieRid")
     public void deleteMovie(UUID movieRid){
             Movie movie = getMovieByRID(movieRid);
             movieRepository.deleteById((int) movie.getId());
     }
 
     @Transactional(readOnly = true)
-    @Cacheable
+    @Cacheable(cacheNames = "movie-by-rid",key = "#rid")
     public Movie getMovieByRID(UUID rid){
         Movie movie = movieRepository.getMoviesByRidIs(rid).orElseThrow(() -> new ResourceNotFoundException("Movie with " + rid +" not found"));
         return movie;

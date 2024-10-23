@@ -30,7 +30,7 @@
         controls
         preload="auto"
         autoplay
-        th:poster="@{${media.coverImgUrl}}"
+        th:poster="@{${media.backgroundImgUrl}}"
       >
         <source
           th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}"
@@ -72,7 +72,7 @@
         // Carregar a origem do vídeo e aplicar o tempo salvo
         if (Hls.isSupported()) {
           var hls = new Hls({
-            debug: true,
+           // debug: true,
             xhrSetup: function (xhr, url) {
               xhr.setRequestHeader(
                 "Authorization",

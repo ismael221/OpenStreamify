@@ -54,21 +54,21 @@
       <div class="carousel-inner">
         <div class="carousel-item active main-carrousel">
           <img
-            src="http://192.168.100.12:8080/api/v1/media/img/cover1.webp"
+            th:src="@{/api/v1/media/img/cover1.webp}"
             class="d-block w-100"
             alt="Banner 1"
           />
         </div>
         <div class="carousel-item main-carrousel">
           <img
-            src="http://192.168.100.12:8080/api/v1/media/img/cover2.jpg"
+            th:src="@{/api/v1/media/img/cover2.jpg}"
             class="d-block w-100"
             alt="Banner 2"
           />
         </div>
         <div class="carousel-item main-carrousel">
           <img
-            src="http://192.168.100.12:8080/api/v1/media/img/cover3.jpg"
+            th:src="@{/api/v1/media/img/cover3.jpg}"
             class="d-block w-100"
             alt="Banner 3"
           />
@@ -101,7 +101,7 @@
         <div class="col">
           <div class="recommended-card">
             <img
-              src="https://via.placeholder.com/200x150/333/fff?text=Movie+1"
+              src=""
               class="card-img-top"
               alt="Movie 1"
             />
@@ -110,7 +110,7 @@
         <div class="col">
           <div class="recommended-card">
             <img
-              src="https://via.placeholder.com/200x150/444/fff?text=Movie+2"
+              src=""
               class="card-img-top"
               alt="Movie 2"
             />
@@ -119,7 +119,7 @@
         <div class="col">
           <div class="recommended-card">
             <img
-              src="https://via.placeholder.com/200x150/555/fff?text=Movie+3"
+              src=""
               class="card-img-top"
               alt="Movie 3"
             />
@@ -128,7 +128,7 @@
         <div class="col">
           <div class="recommended-card">
             <img
-              src="https://via.placeholder.com/200x150/666/fff?text=Movie+4"
+              src=""
               class="card-img-top"
               alt="Movie 4"
             />
@@ -200,6 +200,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
-    <script th:src="@{/js/notification.js}"></script>
+    <script type="module" th:src="@{/js/notification.js}"></script>
   </body>
 </html>
