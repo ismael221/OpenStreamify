@@ -77,7 +77,7 @@ public class EmailController {
                 Context context = new Context(currentLocale );
                 context.setVariable("baseUrl",serverUrl);
                 context.setVariable("token", resetPasswordToken);
-                String emailContent = templateEngine.process("password-reset", context);
+                String emailContent = templateEngine.process("mail-templates/password-reset", context);
 
                 emailSenderService.sendEmail(userFound.getUsername(), "ismael@enrotech.com.br", "Password Reset", emailContent);
                 response.put("message", "Email sent successfully");
@@ -113,7 +113,7 @@ public class EmailController {
                 Context context = new Context(currentLocale);
                 context.setVariable("baseUrl",serverUrl);
                 context.setVariable("verificationCode", verificationCode);
-                String emailContent = templateEngine.process("verification-code", context);
+                String emailContent = templateEngine.process("mail-templates/verification-code", context);
 
                 UserVerification userVerification = new UserVerification();
                 userVerification.setVerificationCode(verificationCode);
