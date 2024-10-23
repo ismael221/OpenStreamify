@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +31,13 @@ public class MovieController {
         MoviesService moviesService;
 
         @Autowired
-        ConfigRestController config;
-        @Autowired
         TokenService tokenService;
 
         @Autowired
         UserService userService;
+
+        @Value("${server.url}")
+        private String serverUrl;
 
         public MovieController(MoviesService moviesService) {
                 this.moviesService = moviesService;
@@ -100,7 +102,7 @@ public class MovieController {
         public String assistirFilme(@PathVariable("rid") String mediaRID, Model model) {
                 UUID uuid = UUID.fromString(mediaRID); // Verifica se é um UUID válido
                 Movie media = moviesService.getMovieByRID(uuid);
-                String serverUrl = config.getServerUrl();
+                String serverUrl = this.serverUrl;
                 model.addAttribute("media", media);
                 model.addAttribute("config",serverUrl);
                 return "assistir";  // Nome do template Thymeleaf
