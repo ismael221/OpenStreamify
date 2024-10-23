@@ -43,20 +43,14 @@ function retrieveNotifications(user_id) {
       for (let i = 0; i < data.length; i++) {
         let notification = data[i];
         notificationList.push(notification);
-        /**
-           if(data.length > 0){
-                             showAndRideNotifications();
-                            }
-        */
+
         const date = new Date(notification.createdAt);
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
         const day = String(date.getDate()).padStart(2, '0');
         const hours = date.getHours();
         const minutes = date.getMinutes();
-        console.log(`${day}/${month}/${year} - ${hours}:${minutes}`); // Outputs: 28/09/2024
 
-        console.log(notification)
         $("#notify").prepend('<li><hr class="dropdown-divider"></li>').prepend('<li>' +
           '<a class="dropdown-item">' + notification.message + '</a>'
           +
@@ -65,7 +59,6 @@ function retrieveNotifications(user_id) {
           '</li>')
       }
       $("#notify").append('<button class="dropdown-item delete" href="#" th:text="#{notifications}" id="deleteNots">Delete all Notifications</button>')
-      console.log(notificationList.length)
       updateNotificationsAmount()
 
     },
@@ -83,8 +76,6 @@ function updateNotificationsAmount() {
 
 $(document).on('click', 'li[id^="notifyButton"]',
   function showAndRideNotifications() {
-    console.log("Clicked");
-    console.log("Clicked");
     $('#notify').toggleClass("block");
   });
 

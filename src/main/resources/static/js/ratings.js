@@ -106,8 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
         let minutes = String(date.getMinutes()).padStart(2, '0'); // Ensures two digits
         timestampDiv.textContent = `${day}/${month}/${year} - ${hours}:${minutes}`;
 
-        console.log(`${day}/${month}/${year} - ${hours}:${minutes}`); // Outputs: 18/10/2024 - 11:27
-
         const container = document.getElementById('ratings');
 
         const reviewCard = document.createElement('div');

@@ -164,60 +164,7 @@
       </div>
     </div>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
-    <script>
-      const serverUrl = "";
-      $(document).ready(function () {
-        let serverUrl = "";
-
-        // Primeiro, busca a URL do servidor
-        $.ajax({
-          url: `/api/config`,
-          type: "GET",
-          success: function (response) {
-            serverUrl = response;
-          },
-          error: function (xhr, status, error) {
-            console.error("Erro ao obter configuração: ", error);
-          },
-        });
-
-        // Envia o formulário de login
-        $("#login-form").on("submit", function (e) {
-          e.preventDefault(); // Evita o comportamento padrão de submit
-
-          // Obtém os dados do formulário
-          var email = $('input[name="login"]').val();
-          var password = $('input[name="password"]').val();
-
-          // Envia os dados via AJAX
-          $.ajax({
-            url: `${serverUrl}/api/v1/auth/login`,
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-              login: email,
-              password: password,
-            }),
-            success: function (response) {
-              // Sucesso no login
-              localStorage.setItem("access_token", response.token);
-              localStorage.setItem("user", email);
-              // Exibe o modal de sucesso
-              $("#success-modal").modal();
-
-              // Redirecionar após alguns segundos ou logo após fechar o modal
-              setTimeout(function () {
-                window.location.href = "/";
-              }, 2000); // Exemplo: redireciona após 2 segundos
-            },
-            error: function (xhr, status, error) {
-              // Exibe o modal de erro
-              $("#error-modal").modal();
-            },
-          });
-        });
-      });
-    </script>
+    <script type="module" th:src="@{/js/login.js}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
   </body>
 </html>
