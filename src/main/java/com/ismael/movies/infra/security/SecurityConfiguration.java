@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -23,7 +25,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+               // .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET,"/live").permitAll()
                         .requestMatchers(HttpMethod.GET,"/js/*").permitAll()
@@ -34,7 +36,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/reset").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/reset").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/auth/user/{token}").permitAll() // Permitir acesso à rota de redefinição de senha
+                        .requestMatchers(HttpMethod.GET, "/auth/user/{token}").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/email/send-reset-email").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/email/send-reset-email").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/email/send-verification-code").permitAll()
@@ -45,10 +47,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST,"/api/v1/media/hls/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/v1/media/img/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/config").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/images/logo.png").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/images/favicon.ico").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/images/*").permitAll()
                         .requestMatchers(HttpMethod.GET,"/actuator/prometheus").permitAll()
-                      // .anyRequest().permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
@@ -57,11 +57,14 @@ public class SecurityConfiguration {
                                 .defaultSuccessUrl("/", true)
                                 .permitAll()
                 )
-                .exceptionHandling(exceptionHandling ->
-                        exceptionHandling
-                                .authenticationEntryPoint((request, response, authException) -> {
-                                    response.sendRedirect("/auth/login"); // Redireciona para o login se não autenticado
-                                })
+                .oauth2Login( oauth2Login ->
+                        oauth2Login
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/")
+                                .permitAll()
+                )
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
                 .logout(logout -> logout
                         .logoutUrl("/signout").permitAll()

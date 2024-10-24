@@ -36,7 +36,19 @@ spring:
     password: guest
   resources:
     static-locations: file:videos/hls/
-
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id:
+            client-secret:
+            scope:
+              - profile
+              - email
+          google:
+            client-id:
+            client-secret:
 api:
   security:
     token:
@@ -61,7 +73,7 @@ logging:
 server:
   tomcat:
     max-swallow-size: -1
-  url: http://192.168.100.12:8080
+  url: http://localhost:8080
   port: 8080
 
 minio:

@@ -43,7 +43,7 @@
 
       .login-box .logo {
         width: 150px;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
       }
 
       .login-box form {
@@ -60,7 +60,7 @@
         font-size: 16px;
       }
 
-      .login-box button {
+      .login-box #login-form button {
         padding: 15px;
         background-color: #1a73e8;
         color: white;
@@ -110,6 +110,44 @@
         /* Edge 12 -18 */
         color: white;
       }
+
+              .google-button{
+        width: 100%;
+        background: floralwhite;
+        color: gray;
+        padding: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        }
+        .github-button{
+        width: 100%;
+        background: black;
+        color: white;
+        padding: 11px;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        }
+        #login-form{
+            margin-bottom: 40px;
+        }
+        .github-icon{
+            width: 30px;
+            height: auto;
+            float: left;
+            margin-left: 5%;
+        }
+        .google-icon{
+            width: 30px;
+            height: auto;
+            float: left;
+            margin-left: 5%;
+        }
     </style>
   </head>
   <body>
@@ -136,18 +174,29 @@
             th:placeholder="#{password}"
           />
           <button type="submit" th:text="#{login}">Log In</button>
-        </form>
-        <a
-          th:href="@{'/auth/reset'}"
-          class="forgot-password"
-          th:text="#{forgot}"
+          <a
+                  th:href="@{'/auth/reset'}"
+                  class="forgot-password"
+                  th:text="#{forgot}"
           >Forgot password?</a
-        >
+          >
+        </form>
+        <a href="/oauth2/authorization/google">
+          <button type="button" class="google-button" >
+            <img th:src="@{/images/google.png}" alt="Google icon" class="google-icon">
+            <p th:text="#{google-text}">Sign in with Google</p>
+          </button>
+        </a>
+        <a href="/oauth2/authorization/github">
+          <button type="button" class="github-button" >
+            <img th:src="@{/images/github.png}" alt="Github icon" class="github-icon">
+          <p th:text="#{github-text}">Sign in with GitHub</p>
+          </button>
+        </a>
         <div class="signup-link">
           <p th:text="#{newTo}" style="padding: 5px">New to OpenStreamify?</p>
           <a th:href="@{'/auth/register'}" th:text="#{signUp}"> Sign up </a>
         </div>
-      </div>
       <!-- Modal de sucesso -->
       <div id="success-modal" class="modal">
         <p style="color: green">
