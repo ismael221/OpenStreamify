@@ -1,6 +1,8 @@
 package com.ismael.movies.services;
 
+import com.ismael.movies.DTO.VideoDTO;
 import com.ismael.movies.config.MinioConfig;
+import com.ismael.movies.config.RabbitMQConfig;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
@@ -8,6 +10,7 @@ import io.minio.PutObjectArgs;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
+import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,10 +38,16 @@ public class FFmpegHLS {
     @Autowired
     MinioConfig minioConfig;
 
+    @Autowired
+    RabbitMQConfig rabbitMQConfig;
+
+    private final RabbitTemplate rabbitTemplate;
+
     private static final Logger logger = LoggerFactory.getLogger(FFmpegHLS.class);
     private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-    public FFmpegHLS() {
+    public FFmpegHLS(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public Future<Integer> executeFFmpegCommand(String inputFilePath, UUID ridFilme) {
@@ -85,10 +96,15 @@ public class FFmpegHLS {
 
                 if (exitCode == 0) {
                     // Fazer upload dos arquivos gerados para o MinIO
-                    uploadFilesToMinIO(tempDir, ridFilme);
-
+                  //  uploadFilesToMinIO(tempDir, ridFilme);
+                    VideoDTO videoDTO = new VideoDTO();
+                    videoDTO.setDate(new Date());
+                    videoDTO.setRidFilme(ridFilme);
+                    videoDTO.setTempDir(tempDir);
+                    System.out.printf("Enviado para fila");
+                    shutdown();
                     // Remover os arquivos locais após o upload
-                    cleanUpLocalFiles(tempDir);
+                  //  cleanUpLocalFiles(tempDir);
                 }
 
                 return exitCode;
@@ -99,43 +115,8 @@ public class FFmpegHLS {
             }
         });
     }
+    //TODO add some monitoring on minio using prometheus in order to notify a rabbitMq queue, when the bucket is offline/online, allowing asincrous uploads
 
-    // Método para fazer o upload dos arquivos gerados para o MinIO
-    private void uploadFilesToMinIO(String tempDir, UUID ridFilme) throws Exception {
-        File dir = new File(tempDir);
-        File[] files = dir.listFiles((dir1, name) -> name.endsWith(".ts") || name.endsWith(".m3u8"));
-
-        if (files != null) {
-            for (File file : files) {
-                try (InputStream stream = new FileInputStream(file)) {
-                   // String objectName = "hls/" + ridFilme + "/" + file.getName();
-                    String objectName = "hls/" + file.getName();
-                    minioClient.putObject(
-                            PutObjectArgs.builder()
-                                    .bucket(minioConfig.getStreamBucket())
-                                    .object(objectName)
-                                    .stream(stream, file.length(), -1)
-                                    .contentType("application/vnd.apple.mpegurl")
-                                    .build());
-                    logger.info("Arquivo {} enviado para o MinIO.", file.getName());
-                }
-            }
-        }
-    }
-
-    // Método para limpar os arquivos locais após o upload
-    private void cleanUpLocalFiles(String tempDir) throws IOException {
-        File dir = new File(tempDir);
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile()) {
-                    Files.deleteIfExists(file.toPath());
-                }
-            }
-        }
-        Files.deleteIfExists(Paths.get(tempDir));  // Remove o diretório temporário
-    }
 
     // Método para encerrar o pool de threads
     public void shutdown() {

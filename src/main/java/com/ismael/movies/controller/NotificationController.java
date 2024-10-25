@@ -1,7 +1,10 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.DTO.VideoDTO;
+import com.ismael.movies.config.RabbitMQConfig;
 import com.ismael.movies.model.Notifications;
 import com.ismael.movies.services.NotificationService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -26,6 +29,16 @@ public class NotificationController {
 
     @Autowired
     NotificationService notificationService;
+
+    private final RabbitTemplate rabbitTemplate;
+
+    public NotificationController(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
+    @Autowired
+    RabbitMQConfig rabbitMQConfig;
+
 
     @GetMapping("{rid}")
     public ResponseEntity<List> listNotificationByUserId(@PathVariable UUID rid){
@@ -69,6 +82,14 @@ public class NotificationController {
     public ResponseEntity notifyAllUsers(@RequestBody Map<String,Object> message){
         notificationService.notifyAllUsers((String) message.get("message"));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/send_alert")
+    public String sendAlert(@RequestBody VideoDTO alertData) {
+        // Envia o alerta para a fila RabbitMQ
+        System.out.println(alertData);
+        rabbitTemplate.convertAndSend(rabbitMQConfig.ALERT_QUEUE, alertData);
+        return "Alert sent to RabbitMQ";
     }
 
 }

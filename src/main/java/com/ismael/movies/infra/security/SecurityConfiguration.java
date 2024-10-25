@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET,"/live").permitAll()
                         .requestMatchers(HttpMethod.GET,"/js/*").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/notice/send_alert").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/verify").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/register-code").permitAll()

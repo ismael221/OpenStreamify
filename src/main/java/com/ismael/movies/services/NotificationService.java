@@ -132,4 +132,8 @@ public class NotificationService {
 
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
     }
+    @Transactional
+    public void sendToMinioUploadindQueue(String message){
+        rabbitTemplate.convertAndSend(RabbitMQConfig.MINIO_EXCHANGE_NAME, RabbitMQConfig.MINIO_ROUTING_KEY, message);
+    }
 }

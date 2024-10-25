@@ -1,5 +1,7 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.DTO.MovieDTO;
+import com.ismael.movies.model.Exceptions.MediaNotProcessedException;
 import com.ismael.movies.model.Exceptions.ResourceNotFoundException;
 import com.ismael.movies.model.Movie;
 import com.ismael.movies.services.*;
@@ -7,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,26 +104,14 @@ public class MediaRestController {
             System.out.printf(resultCode.toString());
             if (resultCode.get() == 0){
                 Movie newMovie = moviesService.getMovieByRID(rid);
-                List<UUID> users = userService.findAllUsersId();
-                String mensagem = "🎬 *Processamento de Filme Concluído*\n\n" +
-                        "O filme *" + newMovie.getTitle() + "* (ID: " + newMovie.getRid() + ") foi tratado com sucesso.\n" +
-                        "Data de conclusão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
-                        "✔️ O arquivo está pronto para uso.";
-
-                notificationService.enviarMensagemTelegram(mensagem);
-                notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle(),users);
+                notificationService.sendToMinioUploadindQueue(StringRid);
             }
             return ResponseEntity.ok("Video uploaded and processed successfully.");
 
-        } catch (IOException e) {
+        } catch (IOException  | ExecutionException | InterruptedException e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Failed to upload and process the video.");
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new MediaNotProcessedException("Failed to upload and process the video.");
         }
-
     }
 
     @Value("${server.url}")
@@ -135,7 +127,7 @@ public class MediaRestController {
             String fileUrl = imagesService.uploadFile(file);
             return ResponseEntity.ok(fileUrl);
         } catch (IOException e) {
-            return ResponseEntity.status(500).body("Erro ao salvar a imagem.");
+            throw new MediaNotProcessedException("Error while saving image");
         }
     }
 

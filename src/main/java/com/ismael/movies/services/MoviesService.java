@@ -56,7 +56,7 @@ public class MoviesService {
 
     @Transactional
     @CachePut
-    public Movie updateMovie(UUID movieRid, Movie movieRequest){
+    public MovieDTO updateMovie(UUID movieRid, MovieDTO movieRequest){
             Movie movie = getMovieByRID(movieRid);
             movie.setGenres(movieRequest.getGenres());
             movie.setTitle(movieRequest.getTitle());
@@ -66,14 +66,14 @@ public class MoviesService {
             movie.setCoverImgUrl(movieRequest.getCoverImgUrl());
             movie.setTrailerUrl(movieRequest.getTrailerUrl());
             movieRepository.save(movie);
-            return movie;
+            return convertToDto(movie);
     }
 
     @Transactional
     @CacheEvict(allEntries = true,key = "#movieRid")
     public void deleteMovie(UUID movieRid){
             Movie movie = getMovieByRID(movieRid);
-            movieRepository.deleteById((int) movie.getId());
+            movieRepository.delete(movie);
     }
 
     @Transactional(readOnly = true)
