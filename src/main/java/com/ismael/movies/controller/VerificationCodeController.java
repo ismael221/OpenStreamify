@@ -36,8 +36,6 @@ public class VerificationCodeController {
 
         UserVerification userVerification = verificationCodeService.checkCodeExpiration(email);
 
-
-
         boolean isVerified = verificationCodeService.verifyCode(email,code);
         //TODO VERIFY THE USER OUTPUT IF THE CODE HAS EXPIRED AND CHANGE IT ON THE DATABASE
         if (isVerified){
