@@ -16,56 +16,56 @@ public class RabbitMQConfig {
     public static final String ROUTING_KEY = "notificationRoutingKey";
 
     public static final String ALERT_QUEUE = "alerts_queue";
-    public static final String ALERT_EXCHANGE_NAME = "alertExchange"; // Nova exchange para alertas
+    public static final String ALERT_EXCHANGE_NAME = "alertExchange";
     public static final String ALERT_ROUTING_KEY = "alertRoutingKey";
 
     public static final String MINIO_QUEUE = "minio_queue";
-    public static final String MINIO_EXCHANGE_NAME = "minioExchange"; // Nova exchange para alertas
+    public static final String MINIO_EXCHANGE_NAME = "minioExchange";
     public static final String MINIO_ROUTING_KEY = "minioRoutingKey";
 
     @Bean
     public Queue notificationQueue() {
-        return new Queue(QUEUE_NAME, true); // A fila será persistente
+        return new Queue(QUEUE_NAME, true);
     }
 
     @Bean
     public DirectExchange notificationExchange() {
-        return new DirectExchange(EXCHANGE_NAME); // Exchange para notificações
+        return new DirectExchange(EXCHANGE_NAME);
     }
 
     @Bean
     public Binding notificationBinding(@Qualifier("notificationQueue") Queue notificationQueue, DirectExchange notificationExchange) {
-        return BindingBuilder.bind(notificationQueue).to(notificationExchange).with(ROUTING_KEY); // Vincula a fila à exchange de notificações
+        return BindingBuilder.bind(notificationQueue).to(notificationExchange).with(ROUTING_KEY);
     }
 
     @Bean
     public Queue alertQueue() {
-        return new Queue(ALERT_QUEUE, true); // A fila será persistente
+        return new Queue(ALERT_QUEUE, true);
     }
 
     @Bean
     public DirectExchange alertExchange() {
-        return new DirectExchange(ALERT_EXCHANGE_NAME); // Nova exchange para alertas
+        return new DirectExchange(ALERT_EXCHANGE_NAME);
     }
 
     @Bean
     public Binding alertBinding(@Qualifier("alertQueue") Queue alertQueue, DirectExchange alertExchange) {
-        return BindingBuilder.bind(alertQueue).to(alertExchange).with(ALERT_ROUTING_KEY); // Vincula a fila à nova exchange de alertas
-    }
-
-
-    @Bean
-    public Queue minioQueue() {
-        return new Queue(MINIO_QUEUE, true); // A fila será persistente
+        return BindingBuilder.bind(alertQueue).to(alertExchange).with(ALERT_ROUTING_KEY);
     }
 
     @Bean
-    public DirectExchange minioExchange() {
-        return new DirectExchange(MINIO_EXCHANGE_NAME); // Nova exchange para alertas
+    public Queue minioQueue(){
+        return new Queue(MINIO_QUEUE,true);
     }
 
     @Bean
-    public Binding minioBinding(@Qualifier("minioQueue") Queue minioQueue, DirectExchange minioExchange) {
-        return BindingBuilder.bind(minioQueue).to(minioExchange).with(MINIO_ROUTING_KEY); // Vincula a fila à nova exchange de alertas
+    public DirectExchange minioExchange(){
+        return new DirectExchange(MINIO_EXCHANGE_NAME);
     }
+
+    @Bean
+    public Binding minioBinding(@Qualifier("minioQueue") Queue minioQueue, DirectExchange minioExchange){
+        return BindingBuilder.bind(minioQueue).to(minioExchange).with(MINIO_ROUTING_KEY);
+    }
+
 }

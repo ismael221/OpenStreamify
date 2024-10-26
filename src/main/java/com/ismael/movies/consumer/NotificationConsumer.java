@@ -16,7 +16,6 @@ public class NotificationConsumer {
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
     public void receiveMessage(String message) {
-        // Enviar a notificação para o frontend via WebSocket
         messagingTemplate.convertAndSend("/topic/notifications", message);
     }
 }

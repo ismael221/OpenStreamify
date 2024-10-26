@@ -25,14 +25,12 @@ import java.util.stream.Collectors;
 @Service
 @Cacheable(cacheNames = "notifications")
 public class NotificationService {
+
     @Value("${TELEGRAM_BOT_TOKEN}")
     private String token;
 
     @Value("${TELEGRAM_CHAT_ID}")
     private String chatId;
-
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
 
     @Autowired
     NotificationsRepository notificationsRepository;
@@ -45,6 +43,9 @@ public class NotificationService {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    NotificationQueueService notificationQueueService;
 
     public NotificationDTO convertToDTO(Notifications notifications){
         return  modelMapper.map(notifications,NotificationDTO.class);
@@ -71,9 +72,7 @@ public class NotificationService {
                     .build();
             userNotificationRepository.save(userNotification);
         }
-
-        // Enviar a mensagem pelo RabbitMQ
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
+        notificationQueueService.sendToNoticationsQueue(message);
     }
 
     @Transactional
@@ -130,10 +129,6 @@ public class NotificationService {
             userNotificationRepository.save(userNotification);
         }
 
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
-    }
-    @Transactional
-    public void sendToMinioUploadindQueue(String message){
-        rabbitTemplate.convertAndSend(RabbitMQConfig.MINIO_EXCHANGE_NAME, RabbitMQConfig.MINIO_ROUTING_KEY, message);
+        notificationQueueService.sendToNoticationsQueue(message);
     }
 }

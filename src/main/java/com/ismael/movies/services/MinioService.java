@@ -13,15 +13,15 @@ import java.io.InputStream;
 
 
 @Service
-public class HlsService {
+public class MinioService {
 
     //TODO Find a way to cache it on Redis first and then retrieve from it, if exists on cache;
 
     private final MinioClient minioClient;
     private final MinioConfig minioConfig;
-    private final Logger logger = LoggerFactory.getLogger(HlsService.class);
+    private final Logger logger = LoggerFactory.getLogger(MinioService.class);
 
-    public HlsService(MinioClient minioClient, MinioConfig minioConfig) {
+    public MinioService(MinioClient minioClient, MinioConfig minioConfig) {
         this.minioClient = minioClient;
         this.minioConfig = minioConfig;
     }

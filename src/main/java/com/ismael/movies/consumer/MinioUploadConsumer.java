@@ -1,29 +1,23 @@
 package com.ismael.movies.consumer;
 
-import com.ismael.movies.DTO.VideoDTO;
 import com.ismael.movies.config.MinioConfig;
 import com.ismael.movies.config.RabbitMQConfig;
 import com.ismael.movies.model.Movie;
-import com.ismael.movies.services.FFmpegHLS;
 import com.ismael.movies.services.MoviesService;
 import com.ismael.movies.services.NotificationService;
 import com.ismael.movies.services.UserService;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
-import org.hibernate.validator.internal.constraintvalidators.bv.time.futureorpresent.FutureOrPresentValidatorForYear;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -32,7 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class VideoUploadConsumer {
+public class MinioUploadConsumer {
 
     @Autowired
     MinioClient minioClient;
@@ -45,13 +39,11 @@ public class VideoUploadConsumer {
     @Autowired
     NotificationService notificationService;
 
-    private static final Logger logger = LoggerFactory.getLogger(VideoUploadConsumer.class);
+    private static final Logger logger = LoggerFactory.getLogger(MinioUploadConsumer.class);
 
     @RabbitListener(queues = RabbitMQConfig.MINIO_QUEUE)
-    public void uploadVideo(UUID ridFilme) throws Exception {
+    public void uploadVideo(String ridFilme) throws Exception {
         String tempDir = System.getProperty("java.io.tmpdir") + "/hls/" + ridFilme + "/";
-
-        System.out.printf("Calling consumer");
         if (isMinioOnline()) {
             uploadFilesToMinIO(tempDir,ridFilme);
         } else {
@@ -62,12 +54,14 @@ public class VideoUploadConsumer {
 
     private boolean isMinioOnline() {
         // Verifica o status do MinIO
-        return true; // Placeholder para lógica de verificação
+        return true;
     }
 
-    private void uploadFilesToMinIO(String tempDir, UUID ridFilme) throws Exception {
+    private void uploadFilesToMinIO(String tempDir, String ridFilme) throws Exception {
         File dir = new File(tempDir);
+        System.out.println(dir);
         File[] files = dir.listFiles((dir1, name) -> name.endsWith(".ts") || name.endsWith(".m3u8"));
+        System.out.printf("Trying to upload ..." );
         if (files != null) {
             for (File file : files) {
                 try (InputStream stream = new FileInputStream(file)) {
@@ -84,15 +78,14 @@ public class VideoUploadConsumer {
                     logger.info("Arquivo {} enviado para o MinIO.", file.getName());
                 }
             }
-            List<UUID> users = userService.findAllUsersId();
-            Movie newMovie = moviesService.getMovieByRID(ridFilme);
+            Movie newMovie = moviesService.getMovieByRID(UUID.fromString(ridFilme));
             String mensagem = "🎬 *Processamento de Filme Concluído*\n\n" +
                     "O filme *" + newMovie.getTitle() + "* (ID: " + newMovie.getRid() + ") foi tratado com sucesso.\n" +
                     "Data de conclusão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
                     "✔️ O arquivo está pronto para uso.";
 
             notificationService.enviarMensagemTelegram(mensagem);
-            notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle(),users);
+            notificationService.notifyAllUsers("Novo filme disponivel: "+ newMovie.getTitle());
             cleanUpLocalFiles(tempDir);
         }
     }
