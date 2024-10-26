@@ -1,10 +1,12 @@
 package com.ismael.movies.services;
 
+import com.ismael.movies.model.EmailMessage;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,6 +19,10 @@ import java.io.UnsupportedEncodingException;
 public class EmailSenderService {
     @Autowired
     JavaMailSender mailSender;
+
+    @Value("${spring.mail.username}")
+    private String from;
+
     private static final Logger logger = LoggerFactory.getLogger(FFmpegService.class);
 
     public EmailSenderService(JavaMailSender mailSender) {
@@ -24,20 +30,15 @@ public class EmailSenderService {
     }
 
     @Async
-    public void sendEmail(
-            String recipientEmail,
-            String fromEmail,
-            String subject,
-            String content
-    ) throws MessagingException, UnsupportedEncodingException {
+    public void sendEmail(EmailMessage emailMessage) throws MessagingException, UnsupportedEncodingException {
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setFrom(fromEmail, "OpenStreamify");
-            helper.setTo(recipientEmail);
-            helper.setSubject(subject);
-            helper.setText(content, true);
+            helper.setFrom(from, "OpenStreamify");
+            helper.setTo(emailMessage.getTo());
+            helper.setSubject(emailMessage.getSubject());
+            helper.setText(emailMessage.getBody(), true);
             mailSender.send(message);
             logger.info("Email sent successfully.");
         } catch (MessagingException | UnsupportedEncodingException e) {
@@ -45,11 +46,4 @@ public class EmailSenderService {
         }
     }
 
-    public void sendVerificationEmail(String toEmail, String verificationCode) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject("Email Verification Code");
-        message.setText("Your verification code is: " + verificationCode);
-        mailSender.send(message);
-    }
 }
