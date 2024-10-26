@@ -54,14 +54,13 @@ public class EmailController {
     private String serverUrl;
 
     @PostMapping("/send")
-    public String sendEmail(@RequestBody Map<String, String> request) throws MessagingException, UnsupportedEncodingException {
+    public ResponseEntity sendEmail(@RequestBody Map<String, String> request) throws MessagingException, UnsupportedEncodingException {
         String from = request.get("from");
         String to = request.get("to");
         String subject = request.get("subject");
         String content = request.get("content");
-        String result = emailSenderService.sendEmail(to, from, subject, content);
-
-        return result;
+         emailSenderService.sendEmail(to, from, subject, content);
+         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/send-reset-email")
