@@ -20,9 +20,6 @@ $("#register-code-form").on("submit", function (e) {
       url: config.apiUrl +`/api/v1/verify`,
       type: "POST",
       contentType: "application/json",
-      headers: {
-        'Authorization': 'Bearer ' + config.apiKey
-      },
       data: JSON.stringify({
         email: email,
         code: codeString,
