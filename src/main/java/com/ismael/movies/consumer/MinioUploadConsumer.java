@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -41,6 +42,7 @@ public class MinioUploadConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(MinioUploadConsumer.class);
 
+    @Async
     @RabbitListener(queues = RabbitMQConfig.MINIO_QUEUE)
     public void uploadVideo(String ridFilme) throws Exception {
         String tempDir = System.getProperty("java.io.tmpdir") + "/hls/" + ridFilme + "/";
