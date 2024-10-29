@@ -4,6 +4,7 @@ import com.ismael.movies.DTO.MovieDTO;
 import com.ismael.movies.enums.MovieGenre;
 import com.ismael.movies.infra.security.TokenService;
 import com.ismael.movies.model.Movie;
+import com.ismael.movies.model.Users.CustomOAuth2User;
 import com.ismael.movies.model.Users.User;
 import com.ismael.movies.services.RatingService;
 import com.ismael.movies.services.MoviesService;
@@ -15,6 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +80,7 @@ public class MovieController {
 
         @GetMapping("/")
         public String homePage(Model model) {
+
                 List<MovieDTO> moviesList = moviesService.listAllMovies();
 
                 // Particionar a lista de filmes manualmente

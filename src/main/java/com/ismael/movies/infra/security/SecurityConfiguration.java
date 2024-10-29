@@ -43,7 +43,6 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
-               // .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET,"/live").permitAll()
                         .requestMatchers(HttpMethod.GET,"/js/*").permitAll()
@@ -51,6 +50,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/oauth/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/oauth/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/logout").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/signout").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/verify").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/register-code").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/register").permitAll()
@@ -99,6 +100,10 @@ public class SecurityConfiguration {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/signout").permitAll()
+                        .logoutSuccessUrl("/auth/login")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID","access_token")
                 )
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
