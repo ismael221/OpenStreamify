@@ -133,9 +133,6 @@
         cursor: pointer;
         margin-bottom: 20px;
         }
-        #login-form{
-            margin-bottom: 40px;
-        }
         .github-icon{
             width: 30px;
             height: auto;
@@ -148,6 +145,33 @@
             float: left;
             margin-left: 5%;
         }
+        .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #8d8d8d;
+  }
+
+  .divider:not(:empty)::before {
+    margin-right: 10px;
+  }
+
+  .divider:not(:empty)::after {
+    margin-left: 10px;
+  }
+ .login-box button:hover {
+    background-color: #474c53;
+    transform: scale(1.03);
+    outline: 3px solid #ccc;
+    border: 2px solid #333;
+}
     </style>
   </head>
   <body>
@@ -181,6 +205,7 @@
           >Forgot password?</a
           >
         </form>
+        <div class="divider">or</div>
         <a href="/oauth2/authorization/google">
           <button type="button" class="google-button" >
             <img th:src="@{/images/google.png}" alt="Google icon" class="google-icon">

@@ -36,7 +36,7 @@
 
       .signup-form {
         background-color: #2a2d3e;
-        padding: 40px;
+        padding: 25px;
         border-radius: 10px;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         text-align: center;
@@ -115,6 +115,71 @@
       .terms a:hover {
         text-decoration: underline;
       }
+         .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #8d8d8d;
+  }
+
+  .divider:not(:empty)::before {
+    margin-right: 10px;
+  }
+
+  .divider:not(:empty)::after {
+    margin-left: 10px;
+  }
+ .login-box button:hover {
+    background-color: #474c53;
+    transform: scale(1.03);
+    outline: 3px solid #ccc;
+    border: 2px solid #333;
+}
+              .github-icon{
+            width: 25px;
+            height: auto;
+            float: left;
+            margin-left: 5%;
+        }
+        .google-icon{
+            width: 25px;
+            height: auto;
+            float: left;
+            margin-left: 5%;
+        }
+           .google-button{
+        width: 100%;
+        background: floralwhite;
+        color: gray;
+        padding: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        }
+        .github-button{
+        width: 100%;
+        background: black;
+        color: white;
+        padding: 11px;
+        font-size: 18px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        }
+      h2{
+          text-align: center;
+    font-size: 20px;
+}
     </style>
   </head>
   <body>
@@ -125,7 +190,7 @@
           alt="OpenStreamify Logo"
           class="logo"
         />
-        <h2 th:text="#{createAccount}">Create Your OpenStreamify Account</h2>
+        <h2 th:text="#{createAccount}">Create Your Account</h2>
         <form id="register-form">
           <div class="form-group">
             <label for="email" th:text="#{emailAdress}">Email Address</label>
@@ -157,6 +222,19 @@
             Sign Up
           </button>
         </form>
+        <div class="divider">or</div>
+        <a href="/oauth2/authorization/google">
+          <button type="button" class="google-button" >
+            <img th:src="@{/images/google.png}" alt="Google icon" class="google-icon">
+            <p th:text="#{google-text}">Sign in with Google</p>
+          </button>
+        </a>
+        <a href="/oauth2/authorization/github">
+          <button type="button" class="github-button" >
+            <img th:src="@{/images/github.png}" alt="Github icon" class="github-icon">
+            <p th:text="#{github-text}">Sign in with GitHub</p>
+          </button>
+        </a>
         <p class="terms">
           By signing up, you agree to the <a href="#">Terms of Service</a> and
           <a href="#">Privacy Policy</a>.
