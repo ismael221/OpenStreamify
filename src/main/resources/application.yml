@@ -1,0 +1,87 @@
+spring:
+  datasource:
+    username: root
+    password: ismael
+    url: jdbc:mysql://localhost:3306/movies_dev
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 6048MB
+      max-request-size: 6048MB
+  mail:
+    host:
+    port:
+    username:
+    password:
+    properties:
+      mail.smtp.starttls.enable: true
+  redis:
+      host: localhost
+      port: 6379
+      time-to-live: 1h
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  resources:
+    static-locations: file:videos/hls/
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id:
+            client-secret:
+            scope:
+              - profile
+              - email
+          google:
+            client-id:
+            client-secret:
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    prometheus:
+      enabled: true
+
+logging:
+  level:
+    root: ERROR
+    com.ismael.movie: ERROR
+    org.hibernate.SQL: ERROR
+    org.springframework.web: ERROR
+
+server:
+  tomcat:
+    max-swallow-size: -1
+  url: http://localhost:8080
+  port: 8080
+
+minio:
+  endpoint: http://192.168.100.12:9000
+  access-key: ROOTUSER
+  secret-key: CHANGEME123
+  bucket:
+    stream: openstreamify
+
+TELEGRAM_BOT_TOKEN:
+TELEGRAM_CHAT_ID:

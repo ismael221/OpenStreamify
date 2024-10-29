@@ -73,12 +73,15 @@
         if (Hls.isSupported()) {
           var hls = new Hls({
            // debug: true,
-            xhrSetup: function (xhr, url) {
+         /**
+         Deleted as both oauth and jwt token are sending cookies in the request headers
+               xhrSetup: function (xhr, url) {
               xhr.setRequestHeader(
                 "Authorization",
                 "Bearer " + localStorage.getItem("access_token")
               );
             },
+         **/
           });
 
           hls.loadSource(videoSrc);

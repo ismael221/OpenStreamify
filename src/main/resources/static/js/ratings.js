@@ -90,14 +90,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    const timestampDiv = document.createElement('div');
-    timestampDiv.classList.add('timestamp');
+   
 
 
 
     // Função para exibir o card
     function displayReview(review) {
 
+        const timestampDiv = document.createElement('div');
+        timestampDiv.classList.add('timestamp');
         let date = new Date(review.createdAt);
         let year = date.getFullYear();
         let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based

@@ -1,15 +1,15 @@
 package com.ismael.movies.controller;
 
-import com.ismael.movies.model.Notifications;
+import com.ismael.movies.config.RabbitMQConfig;
+import com.ismael.movies.services.MinioQueueService;
 import com.ismael.movies.services.NotificationService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,6 +26,19 @@ public class NotificationController {
 
     @Autowired
     NotificationService notificationService;
+
+    @Autowired
+    MinioQueueService minioQueueService;
+
+    private final RabbitTemplate rabbitTemplate;
+
+    public NotificationController(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
+    @Autowired
+    RabbitMQConfig rabbitMQConfig;
+
 
     @GetMapping("{rid}")
     public ResponseEntity<List> listNotificationByUserId(@PathVariable UUID rid){
@@ -70,5 +83,11 @@ public class NotificationController {
         notificationService.notifyAllUsers((String) message.get("message"));
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    //TODO FIX AND CREATE A PROPER QUEUE, THIS ONE IS INTENDED TO BE USED FOR ALERTING THE FFMPEG PROCESS
+    @PostMapping("/send_alert")
+    public String sendAlert(@RequestBody String alertData) {
+        System.out.println(alertData);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.ALERT_QUEUE, alertData);
+        return "Alert sent to RabbitMQ";
+    }
 }

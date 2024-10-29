@@ -1,5 +1,6 @@
 package com.ismael.movies.model.Users;
 
+import com.ismael.movies.enums.Provider;
 import com.ismael.movies.model.Notifications;
 import com.ismael.movies.model.UserNotification;
 import jakarta.persistence.*;
@@ -35,6 +36,12 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
     @Column(nullable = false)
     private UserRole role;

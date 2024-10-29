@@ -1,11 +1,15 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.config.RabbitMQConfig;
+import com.ismael.movies.consumer.EmailSenderConsumer;
 import com.ismael.movies.infra.security.TokenService;
+import com.ismael.movies.model.EmailMessage;
 import com.ismael.movies.model.UserVerification;
 import com.ismael.movies.model.Users.User;
 import com.ismael.movies.model.VerificationCodeGenerator;
 import com.ismael.movies.services.*;
 import jakarta.mail.MessagingException;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -30,7 +34,7 @@ import java.util.Map;
 public class EmailController {
 
     @Autowired
-    EmailSenderService emailSenderService;
+    EmailQueueService emailQueueService;
 
     @Autowired
     AuthorizationService authorizationService;
@@ -50,18 +54,21 @@ public class EmailController {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+
     @Value("${server.url}")
     private String serverUrl;
 
     @PostMapping("/send")
-    public String sendEmail(@RequestBody Map<String, String> request) throws MessagingException, UnsupportedEncodingException {
-        String from = request.get("from");
-        String to = request.get("to");
-        String subject = request.get("subject");
-        String content = request.get("content");
-        String result = emailSenderService.sendEmail(to, from, subject, content);
-
-        return result;
+    public ResponseEntity sendEmail(@RequestBody Map<String, String> request) throws MessagingException, UnsupportedEncodingException {
+        EmailMessage emailMessage = new EmailMessage(
+          request.get("to"),
+          request.get("subject"),
+          request.get("content")
+        );
+        emailQueueService.sendEmailToQueue(emailMessage);
+         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/send-reset-email")
@@ -78,8 +85,12 @@ public class EmailController {
                 context.setVariable("baseUrl",serverUrl);
                 context.setVariable("token", resetPasswordToken);
                 String emailContent = templateEngine.process("mail-templates/password-reset", context);
-
-                emailSenderService.sendEmail(userFound.getUsername(), "ismael@enrotech.com.br", "Password Reset", emailContent);
+                EmailMessage emailMessage = new EmailMessage(
+                  userFound.getUsername(),
+                  "Password Reset",
+                  emailContent
+                );
+                emailQueueService.sendEmailToQueue(emailMessage);
                 response.put("message", "Email sent successfully");
                 return ResponseEntity.ok(response);
             }
@@ -105,32 +116,31 @@ public class EmailController {
         Map<String, String> response = new HashMap<>();
         VerificationCodeGenerator codeGenerator = new VerificationCodeGenerator();
         String verificationCode = codeGenerator.generateVerificationCode();
-        try {
-            UserDetails userFound = authorizationService.loadUserByUsername(email);
-            if (userFound != null) {
+        UserDetails userFound = authorizationService.loadUserByUsername(email);
+        if (userFound != null) {
 
-                Locale currentLocale = LocaleContextHolder.getLocale();
-                Context context = new Context(currentLocale);
-                context.setVariable("baseUrl",serverUrl);
-                context.setVariable("verificationCode", verificationCode);
-                String emailContent = templateEngine.process("mail-templates/verification-code", context);
+            Locale currentLocale = LocaleContextHolder.getLocale();
+            Context context = new Context(currentLocale);
+            context.setVariable("baseUrl",serverUrl);
+            context.setVariable("verificationCode", verificationCode);
+            String emailContent = templateEngine.process("mail-templates/verification-code", context);
 
-                UserVerification userVerification = new UserVerification();
-                userVerification.setVerificationCode(verificationCode);
-                userVerification.setEmail(userFound.getUsername());
-                userVerification.setGeneratedAt(Instant.now());
-                verificationCodeService.saveVerificationCode(userVerification);
-                emailSenderService.sendEmail(userFound.getUsername(), "ismael@enrotech.com.br", "Código de verificação", emailContent);
+            UserVerification userVerification = new UserVerification();
+            userVerification.setVerificationCode(verificationCode);
+            userVerification.setEmail(userFound.getUsername());
+            userVerification.setGeneratedAt(Instant.now());
+            verificationCodeService.saveVerificationCode(userVerification);
+            EmailMessage emailMessage = new EmailMessage(
+                    userFound.getUsername(),
+                    "Código de verificação",
+                    emailContent
+            );
+            emailQueueService.sendEmailToQueue(emailMessage);
 
-                response.put("message", "Email sent successfully");
-                return ResponseEntity.ok(response);
-            }
-            response.put("message", "User not found");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            response.put("message", "Email sent successfully");
+            return ResponseEntity.ok(response);
         }
+        response.put("message", "User not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }

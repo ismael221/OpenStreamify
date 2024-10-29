@@ -20,9 +20,6 @@ $(document).ready(function () {
             url: config.apiUrl + '/api/v1/auth/update',
             type: 'POST',
             contentType: 'application/json',
-            headers: {
-                'Authorization': 'Bearer ' + config.apiKey
-              },
             data: JSON.stringify({
                 login: email,
                 password: newPassword,

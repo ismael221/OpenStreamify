@@ -4,6 +4,7 @@ import com.ismael.movies.DTO.RatingDTO;
 import com.ismael.movies.DTO.RatingResponseDTO;
 import com.ismael.movies.model.Rating;
 import com.ismael.movies.services.RatingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class RatingRestController {
     RatingService ratingService;
 
     @PostMapping
-    public ResponseEntity<RatingResponseDTO> newRating(@RequestBody RatingDTO ratingDTO){
+    public ResponseEntity<RatingResponseDTO> newRating(@Valid @RequestBody RatingDTO ratingDTO){
             var novaAnalise = ratingService.addRating(ratingDTO);
             return  new ResponseEntity<>(novaAnalise, HttpStatus.CREATED);
     }

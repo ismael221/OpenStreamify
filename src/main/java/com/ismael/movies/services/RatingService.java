@@ -6,6 +6,7 @@ import com.ismael.movies.DTO.RatingResponseDTO;
 import com.ismael.movies.model.Movie;
 import com.ismael.movies.model.Rating;
 import com.ismael.movies.repository.RatingRepository;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -56,7 +57,8 @@ public class RatingService {
     @CachePut
     public RatingResponseDTO addRating(RatingDTO rating){
             Rating newRating = convertToEntity(rating);
-            newRating.setMovie(moviesService.getMovieByRID(rating.getMovie()));
+            Movie movie = moviesService.getMovieByRID(rating.getMovie());
+            newRating.setMovie(movie);
             newRating.setCreatedAt(new Date());
             Rating saved =  ratingRepository.save(newRating);
             return convertToResponseDTO(saved);
