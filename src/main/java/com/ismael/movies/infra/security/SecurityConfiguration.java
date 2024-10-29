@@ -1,5 +1,11 @@
 package com.ismael.movies.infra.security;
 
+import com.ismael.movies.model.Users.CustomOAuth2User;
+import com.ismael.movies.services.CustomOAuth2UserService;
+import com.ismael.movies.services.UserService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,17 +17,28 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
     @Autowired
+    private CustomOAuth2UserService oauthUserService;
+    @Autowired
     SecurityFilter securityFilter;
+
+    @Autowired
+    UserService userService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
@@ -31,6 +48,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/live").permitAll()
                         .requestMatchers(HttpMethod.GET,"/js/*").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/notice/send_alert").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/oauth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/oauth/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/verify").permitAll()
                         .requestMatchers(HttpMethod.GET,"/auth/register-code").permitAll()
@@ -62,7 +81,20 @@ public class SecurityConfiguration {
                 .oauth2Login( oauth2Login ->
                         oauth2Login
                                 .loginPage("/login")
-                                .defaultSuccessUrl("/")
+                                .userInfoEndpoint( auth -> auth
+                                    .userService(oauthUserService)
+                                )
+                                .successHandler(
+                                        (request, response, authentication) -> {
+
+                                            CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
+                                            OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+                                            String provider = oauthToken.getAuthorizedClientRegistrationId();
+                                            userService.processOAuthPostLogin(oauthUser.getEmail(),oauthUser.getName(),provider);
+
+                                            response.sendRedirect("/");
+                                        }
+                                )
                                 .permitAll()
                 )
                 .logout(logout -> logout

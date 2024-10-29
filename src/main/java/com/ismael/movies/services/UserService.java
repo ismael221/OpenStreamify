@@ -1,8 +1,10 @@
 package com.ismael.movies.services;
 
+import com.ismael.movies.enums.Provider;
 import com.ismael.movies.model.Exceptions.BadRequestException;
 import com.ismael.movies.model.Users.RegisterDTO;
 import com.ismael.movies.model.Users.User;
+import com.ismael.movies.model.Users.UserRole;
 import com.ismael.movies.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -82,5 +84,20 @@ public class UserService {
         }
 
         return false;
+    }
+
+    public void processOAuthPostLogin(String email,String name, String provider) {
+        User existUser = userRepository.findByLogin(email);
+        if (existUser == null) {
+            User newUser = new User();
+            newUser.setLogin(email);
+            newUser.setProvider(Provider.valueOf(provider.toUpperCase()));
+            newUser.setActive(true);
+            newUser.setRole(UserRole.USER);
+            newUser.setName(name);
+            newUser.setPassword(" ");
+
+            userRepository.save(newUser);
+        }
     }
 }
