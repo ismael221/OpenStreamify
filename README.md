@@ -5,21 +5,27 @@
 
 ## Description
 
-This is a web application developed in **Spring Boot** for movie management and streaming. The application includes features like JWT-based authentication, **Spring MVC** for handling HTTP requests, and an access control system based on user permissions. Additionally, it supports movie streaming using **HLS (HTTP Live Streaming)**.
+This is a web application developed in **Spring Boot** for movie and series management and streaming. The application includes features like JWT-based authentication, OAuth2 login, **Spring MVC** for handling HTTP requests, and an access control system based on user permissions. Additionally, it supports movie and series streaming using **HLS (HTTP Live Streaming)**, notifications when a new movie or series is added, and a one-time password (OTP) system for secure password recovery.
 
 ### Features
 
-- Movie and user management.
-- User login and registration with JWT authentication.
-- Movie reviews with the ability to add ratings and comments.
-- Video streaming in HLS format.
-- Access control based on user permissions.
-- Secure endpoints using JWT authentication.
-- User interaction pages rendered using Thymeleaf.
-- Application monitoring with Grafana and Prometheus running in Docker containers.
-- **Redis** for caching to enhance system performance.
-- **RabbitMQ** for messaging, aiding in high-scale processing.
-- **minIO** for storing video files.
+- **User Authentication**:
+   - JWT-based authentication for secure API access.
+   - OAuth2 login options (Google, GitHub) for simplified access.
+- **Movie and Series Management**:
+   - Create, update, delete, and list movies and series with role-based access control.
+   - Notifications for users when new movies or series are added.
+- **Streaming**:
+   - Video streaming in HLS format for both movies and series.
+- **Password Recovery**:
+   - OTP system for secure password recovery through email.
+- **Caching and Messaging**:
+   - **Redis** for caching frequently accessed data, improving response times.
+   - **RabbitMQ** for asynchronous messaging, supporting high-scale processing.
+- **Storage and Monitoring**:
+   - **minIO** for video file storage.
+   - **Grafana and Prometheus** for system monitoring and performance tracking.
+
 
 ## Technologies Used
 
@@ -39,6 +45,8 @@ This is a web application developed in **Spring Boot** for movie management and 
 - **Prometheus**: Monitoring and alerting toolkit.
 - **minIO**: Object storage used to store movie files.
 
+
+
 ## System Requirements
 
 - **JDK 17** or later
@@ -50,6 +58,8 @@ This is a web application developed in **Spring Boot** for movie management and 
 - **FFmpeg** (To convert videos into .m3u8 and .ts segments)
 - **minIO** (to store video files)
 
+---
+
 ## Setup and Installation
 
 1. Clone the repository:
@@ -57,14 +67,136 @@ This is a web application developed in **Spring Boot** for movie management and 
    git clone https://github.com/ismael221/OpenStreamify
    ```
 
-2. Configure the database in the `application.properties` file:
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/database_name
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
-   spring.jpa.hibernate.ddl-auto=update
-   spring.jpa.show-sql=true
-   ```
+2. Update your `application.yml` with the following configurations:
+
+```yaml
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+  datasource:
+    username: your db user
+    password: your db password
+    url: jdbc:mysql://localhost:3306/yourDatabase
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 6048MB
+      max-request-size: 6048MB
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USER}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    time-to-live: 1h
+  rabbitmq:
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
+  resources:
+    static-locations: file:videos/hls/
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENTID}
+            client-secret: ${GITHUB_CLIENTSECRET}
+            scope:
+              - user:email
+              - user
+          google:
+            client-id: ${GOOGLE_CLIENTID}
+            client-secret: ${GOOGLE_CLIENTSECRET}
+            scope:
+              - profile
+              - email
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    prometheus:
+      enabled: true
+
+logging:
+  level:
+    root: DEBUG
+    com.ismael.movie: ERROR
+    org.hibernate.SQL: ERROR
+    org.springframework.web: DEBUG
+
+server:
+  tomcat:
+    max-swallow-size: -1
+  url: ${SERVER_URL}
+  port: ${SERVER_PORT}
+
+minio:
+  endpoint: ${MINIO_ENDPOINT}
+  access-key: ${MINIO_ACCESSKEY}
+  secret-key: ${MINIO_SECRETKEY}
+  bucket:
+    stream: ${MINIO_BUCKET}
+
+TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+```
+
+### Environment Variables
+
+Make sure to set up the following environment variables in your system or in a `.env` file:
+
+- `SMTP_HOST`: SMTP server for email.
+- `SMTP_PORT`: Port for SMTP.
+- `SMTP_USER`: Username for SMTP authentication.
+- `SMTP_PASSWORD`: Password for SMTP authentication.
+- `REDIS_HOST`: Host for Redis server.
+- `REDIS_PORT`: Port for Redis server.
+- `RABBIT_HOST`: Host for RabbitMQ.
+- `RABBIT_PORT`: Port for RabbitMQ.
+- `RABBIT_USERNAME`: Username for RabbitMQ.
+- `RABBIT_PASSWORD`: Password for RabbitMQ.
+- `GITHUB_CLIENTID`: OAuth client ID for GitHub.
+- `GITHUB_CLIENTSECRET`: OAuth client secret for GitHub.
+- `GOOGLE_CLIENTID`: OAuth client ID for Google.
+- `GOOGLE_CLIENTSECRET`: OAuth client secret for Google.
+- `JWT_SECRET`: Secret key for JWT token encryption.
+- `SERVER_URL`: Base URL for the server.
+- `SERVER_PORT`: Port on which the server will run.
+- `MINIO_ENDPOINT`: URL for minIO.
+- `MINIO_ACCESSKEY`: Access key for minIO.
+- `MINIO_SECRETKEY`: Secret key for minIO.
+- `MINIO_BUCKET`: Bucket name for video storage in minIO.
+- `TELEGRAM_BOT_TOKEN`: Token for Telegram bot.
+- `TELEGRAM_CHAT_ID`: Chat ID for Telegram notifications
+   
 
 3. Start Redis (if using Docker):
    ```bash
@@ -129,20 +261,38 @@ This is a web application developed in **Spring Boot** for movie management and 
 
 - **GET** `/api/v1/media/hls/{filename}.m3u8`: Streams the video using HLS based on the file name.
 
-### Example of an Authenticated Request with JWT
 
-All routes, except login and registration, require a JWT token for authentication. To access protected routes, pass the token in the request header:
+### Example of an Authenticated Request with JWT and OAuth2
+
+All routes, except for login and registration, require authentication. The application supports two methods for authenticated requests:
+
+1. **JWT Authentication**: Users can log in with username and password, receiving a JWT token in the response, which is stored as an HTTP-only cookie.
+2. **OAuth2 Authentication**: Users can log in via OAuth2 providers (such as GitHub or Google), which returns an authentication cookie upon successful login.
+
+#### JWT Authentication
+
+When logging in with JWT, the server responds with a cookie named `access_token`, containing the JWT token. This cookie will be automatically sent with each request to protected routes.
+
+To access protected routes with JWT authentication, ensure that the `access_token` cookie is included in your request headers. Alternatively, you may manually include the JWT token in the `Authorization` header as shown below.
+
+### Login Request (JWT)
 
 ```http
-Authorization: Bearer <your-jwt-token>
+POST /api/login
+Content-Type: application/json
+
+{
+  "username": "your-username",
+  "password": "your-password"
+}
 ```
 
 ### Swagger UI
 
 To see all available endpoints and their descriptions, access Swagger UI:
-```
+
 http://localhost:8080/swagger-ui.html
-```
+
 
 ## Project Structure
 
@@ -153,14 +303,7 @@ http://localhost:8080/swagger-ui.html
 
 ## Security
 
-The application uses **JWT tokens** for authentication and authorization. After logging in, the user receives a token that must be included in the header of all subsequent requests to protected routes.
-
-## Future Improvements
-
-- Integration with messaging services for high-scale processing using **RabbitMQ**.
-- Implementation of a **CDN** to enhance streaming performance at scale.
-- Support for multiple video qualities in HLS.
-- Implementation of **Redis** cache to optimize system performance.
+The application uses **JWT tokens** and **OAuth2** for authentication and authorization. After logging in, the user receives a token or/and a cookie that must be included in the header of all subsequent requests to protected routes.
 
 ## Contributing
 

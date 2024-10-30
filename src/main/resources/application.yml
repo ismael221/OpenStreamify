@@ -1,8 +1,11 @@
 spring:
+  output:
+    ansi:
+      enabled: ALWAYS
   datasource:
     username: root
     password: ismael
-    url: jdbc:mysql://localhost:3306/movies_dev
+    url: jdbc:mysql://localhost:3306/movies_dev2
   jpa:
     properties:
       hibernate:
@@ -19,21 +22,25 @@ spring:
       max-file-size: 6048MB
       max-request-size: 6048MB
   mail:
-    host:
-    port:
-    username:
-    password:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USER}
+    password: ${SMTP_PASSWORD}
     properties:
-      mail.smtp.starttls.enable: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
       time-to-live: 1h
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
   resources:
     static-locations: file:videos/hls/
   security:
@@ -41,14 +48,17 @@ spring:
       client:
         registration:
           github:
-            client-id:
-            client-secret:
+            client-id: ${GITHUB_CLIENTID}
+            client-secret: ${GITHUB_CLIENTSECRET}
+            scope:
+              - user:email
+              - user
+          google:
+            client-id: ${GOOGLE_CLIENTID}
+            client-secret: ${GOOGLE_CLIENTSECRET}
             scope:
               - profile
               - email
-          google:
-            client-id:
-            client-secret:
 api:
   security:
     token:
@@ -65,23 +75,23 @@ management:
 
 logging:
   level:
-    root: ERROR
+    root: DEBUG
     com.ismael.movie: ERROR
     org.hibernate.SQL: ERROR
-    org.springframework.web: ERROR
+    org.springframework.web: DEBUG
 
 server:
   tomcat:
     max-swallow-size: -1
-  url: http://localhost:8080
-  port: 8080
+  url: ${SERVER_URL}
+  port: ${SERVER_PORT}
 
 minio:
-  endpoint: http://192.168.100.12:9000
-  access-key: ROOTUSER
-  secret-key: CHANGEME123
+  endpoint: ${MINIO_ENDPOINT}
+  access-key: ${MINIO_ACCESSKEY}
+  secret-key: ${MINIO_SECRETKEY}
   bucket:
-    stream: openstreamify
+    stream: ${MINIO_BUCKET}
 
-TELEGRAM_BOT_TOKEN:
-TELEGRAM_CHAT_ID:
+TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
