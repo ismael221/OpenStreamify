@@ -30,7 +30,7 @@ public class UserService {
         };
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.password());
-        User newUser = new User(user.login(),encryptedPassword,user.role());
+        User newUser = new User(user.login(),encryptedPassword,user.role(), user.name(), user.provider());
         this.userRepository.save(newUser);
 
         String mensagemPersonalizada = "🚨 *New user Alert* 🚨\n\n" +

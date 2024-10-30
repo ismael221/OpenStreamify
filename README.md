@@ -305,6 +305,11 @@ http://localhost:8080/swagger-ui.html
 
 The application uses **JWT tokens** and **OAuth2** for authentication and authorization. After logging in, the user receives a token or/and a cookie that must be included in the header of all subsequent requests to protected routes.
 
+## Future Improvements
+User Profile Section: A dedicated area for users to manage their profiles, including updating personal information and preferences.
+Separation of Series from Movies: Creating distinct tables for movies and series to enhance data management and organization.
+Design Patterns: Implementing various design patterns to improve code structure, maintainability, and scalability.
+
 ## Contributing
 
 Contributions are welcome! Feel free to open an **issue** or submit a **pull request**.
