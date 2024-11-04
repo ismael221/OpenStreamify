@@ -1,5 +1,6 @@
 package com.ismael.movies.DTO;
 
+import com.ismael.movies.model.Rating;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,17 @@ public class RatingDTO implements Serializable {
     private int rating;
     private UUID rid;
     private UUID movie;
-    private Date createAt;
+    private Date createdAt;
     private String user;
+
+    public static RatingDTO from(Rating rating){
+        RatingDTO ratingDTO =  RatingDTO.builder().user(rating.getUser())
+                .comment(rating.getComment())
+                .createdAt(rating.getCreatedAt())
+                .rating(rating.getRating())
+                .rid(rating.getRid())
+                .movie(rating.getMovie().getRid())
+                .build();
+        return ratingDTO;
+    }
 }

@@ -76,16 +76,31 @@ public class RatingService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable
-    public List<Rating> listRatingsByMovieRID(UUID movieId){
+    @Cacheable(cacheNames = "ratings-list")
+    public List<RatingDTO> listRatingsByMovieRID(UUID movieId){
          List<Rating> ratings =  ratingRepository.findByMovie_rid(movieId);
-         return ratings;
+         return ratings.stream()
+                 .map(RatingDTO::from)
+                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Cacheable
+    public RatingDTO getRatingDtoByRid(UUID rid){
+        Rating rating = ratingRepository.findByRidEquals(rid).orElseThrow();
+        RatingDTO ratingDTO = RatingDTO.builder()
+                .user(rating.getUser())
+                .comment(rating.getComment())
+                .createdAt(rating.getCreatedAt())
+                .rating(rating.getRating())
+                .rid(rating.getRid())
+                .movie(rating.getMovie().getRid())
+                .build();
+          return ratingDTO;
+    }
+
     public Rating getRatingByRid(UUID rid){
-          return  ratingRepository.findByRidEquals(rid).orElseThrow();
+        return ratingRepository.findByRidEquals(rid).orElseThrow();
     }
 
     @Transactional

@@ -1,5 +1,16 @@
 import { config } from './config.js';
 
+
+function extractRidFromUrl(Url) {
+    const match = Url.match(/details\/([\w-]+)/);
+    return match ? match[1] : null;
+}
+
+const url = document.URL;
+const movieRid = extractRidFromUrl(url)
+
+console.log(movieRid)
+
 document.addEventListener("DOMContentLoaded", function () {
     const stars = document.querySelectorAll('.star');
     const submitReviewButton = document.getElementById('submitReview');
@@ -68,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 alert('Review submitted successfully!');
+                reviewData = 0;
                 getRatings();
                 // Aqui você pode adicionar a lógica para exibir a nova avaliação na página, se necessário
             })
@@ -130,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function getRatings() {
-        fetch(config.apiUrl +'/api/v1/ratings')
+        fetch(config.apiUrl +'/api/v1/ratings/movie/'+ movieRid)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -138,7 +150,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(data => {
-                reviewData = 0;
                 reviewData= data;
                 for(let i=0;i<reviewData.length;i++){
                     displayReview(reviewData[i]);
