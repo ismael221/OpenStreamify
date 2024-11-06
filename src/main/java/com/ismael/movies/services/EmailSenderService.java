@@ -23,7 +23,7 @@ public class EmailSenderService {
     @Value("${spring.mail.username}")
     private String from;
 
-    private static final Logger logger = LoggerFactory.getLogger(FFmpegService.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmailSenderService.class);
 
     public EmailSenderService(JavaMailSender mailSender) {
         this.mailSender = mailSender;

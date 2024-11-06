@@ -1,0 +1,38 @@
+groups:
+  - name: minio-alerts
+    rules:
+      - alert: NodesOffline
+        expr: avg_over_time(minio_cluster_nodes_offline_total{job="minio-job"}[2m]) > 0
+        for: 3m
+        labels:
+          severity: warn
+        annotations:
+          summary: "Node down in MinIO deployment"
+          description: "Node(s) in cluster {{ $labels.instance }} offline for more than 3 minutes"
+
+      - alert: DisksOffline
+        expr: avg_over_time(minio_cluster_drive_offline_total{job="minio-job"}[3m]) > 0
+        for: 3m
+        labels:
+          severity: warn
+        annotations:
+          summary: "Disks down in MinIO deployment"
+          description: "Disks(s) in cluster {{ $labels.instance }} offline for more than 3 minutes"
+
+      - alert: MinioOffline
+        expr: up{job="minio-job"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Minio Offline"
+          description: "O servidor do minio esta offline por mais de 5 minutos"
+
+      - alert: OpenStreamifyOffline
+        expr: up{job="MoviesServerMetrics"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "OpenStreamify offline"
+          description: "O servidor do OpenStreamify esta offline por mais de 5 minutos."

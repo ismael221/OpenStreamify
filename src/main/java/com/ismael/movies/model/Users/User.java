@@ -46,6 +46,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private UserRole role;
 
+    private String profilePic;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserNotification> userNotifications;
 
