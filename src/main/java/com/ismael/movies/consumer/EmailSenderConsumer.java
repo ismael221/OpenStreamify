@@ -13,8 +13,12 @@ import java.io.UnsupportedEncodingException;
 @Component
 public class EmailSenderConsumer {
 
-    @Autowired
+    final
     EmailSenderService emailSenderService;
+
+    public EmailSenderConsumer(EmailSenderService emailSenderService) {
+        this.emailSenderService = emailSenderService;
+    }
 
     @RabbitListener(queues = RabbitMQConfig.EMAIL_QUEUE)
     public void sendEmailReceivedByQueue(EmailMessage emailMessage) throws MessagingException, UnsupportedEncodingException {

@@ -29,11 +29,10 @@ public class RatingService {
     final
     RatingRepository ratingRepository;
 
-
-    @Autowired
+    final
     ModelMapper modelMapper;
 
-    @Autowired
+    final
     MoviesService moviesService;
 
     public RatingDTO convertToDto(Rating rating){
@@ -49,8 +48,10 @@ public class RatingService {
     }
 
 
-    public RatingService(RatingRepository ratingRepository) {
+    public RatingService(RatingRepository ratingRepository, ModelMapper modelMapper, MoviesService moviesService) {
         this.ratingRepository = ratingRepository;
+        this.modelMapper = modelMapper;
+        this.moviesService = moviesService;
     }
 
     @Transactional

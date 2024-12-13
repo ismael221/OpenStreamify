@@ -22,14 +22,20 @@ import java.util.stream.Collectors;
 @Service
 @Cacheable(cacheNames = "movies")
 public class MoviesService {
-    @Autowired
+
+    final
     MovieRepository movieRepository;
     //TODO FIX THE CACHEC EVICT AS ITS NOT UPDATING WHEN ADDING A NEW MOVIE 2
 
-    @Autowired
+    final
     ModelMapper modelMapper;
 
     private  static  final Logger logger = LoggerFactory.getLogger(MoviesService.class);
+
+    public MoviesService(MovieRepository movieRepository, ModelMapper modelMapper) {
+        this.movieRepository = movieRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public MovieDTO convertToDto(Movie movie){
         return modelMapper.map(movie, MovieDTO.class);

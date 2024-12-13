@@ -18,46 +18,40 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-
-
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/v1/media")
 public class MediaRestController {
-    @Autowired
-    private MinioService minioService;
+
+    private final MinioService minioService;
 
     private final Path uploadDir = Paths.get("uploads");
 
-    @Autowired
-    private ImagesService imagesService;
+    private final ImagesService imagesService;
 
-    @Autowired
-    private  VideoUploadService videoUploadService;
+    private final VideoUploadService videoUploadService;
 
-    @Autowired
-    private VideoProcessingQueueService videoProcessingQueue;
+    private final VideoProcessingQueueService videoProcessingQueue;
 
-    @Autowired
-    private  NotificationService notificationService;
+    private final NotificationService notificationService;
 
     @GetMapping("/hls/{filename:.+}")
     public ResponseEntity<Resource> getHlsFile(@PathVariable String filename) {
         try {
-            // Tenta obter o arquivo do serviço
+            //Try to get the service file
             Resource resource = minioService.getHlsResource(filename);
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl") // Define o content type adequado para HLS
                     .body(resource);
         } catch (ResourceNotFoundException e) {
-            // Caso o arquivo não seja encontrado
-            System.err.println("Erro: Arquivo não encontrado - " + e.getMessage());
+            // If the file is not found
+            System.err.println("Error: File not found - " + e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
 
-            // Log de erro genérico
-            System.err.println("Erro desconhecido: " + e.getMessage());
+            // Generic log error
+            System.err.println("Unknown error: " + e.getMessage());
             return ResponseEntity.status(500).build();
         }
     }
@@ -76,9 +70,14 @@ public class MediaRestController {
 
     @Value("${server.url}")
     private String serverUrl;
-    public MediaRestController() throws IOException {
-        // Cria o diretório de upload se não existir
+    public MediaRestController(MinioService minioService, ImagesService imagesService, VideoUploadService videoUploadService, VideoProcessingQueueService videoProcessingQueue, NotificationService notificationService) throws IOException {
+        // Create upload directory if it doesn't exist
         Files.createDirectories(uploadDir);
+        this.minioService = minioService;
+        this.imagesService = imagesService;
+        this.videoUploadService = videoUploadService;
+        this.videoProcessingQueue = videoProcessingQueue;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/img/upload")
@@ -95,7 +94,7 @@ public class MediaRestController {
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         try {
             Resource resource = imagesService.getFile(filename);
-            // Determinar o tipo de conteúdo baseado na extensão do arquivo
+            // Determine content type based on file extension
             String contentType = Files.probeContentType(resource.getFile().toPath());
             if (contentType == null) {
                 contentType = "application/octet-stream"; // Content-Type genérico

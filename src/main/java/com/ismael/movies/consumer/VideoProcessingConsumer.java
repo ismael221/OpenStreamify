@@ -4,7 +4,6 @@ import com.ismael.movies.config.RabbitMQConfig;
 import com.ismael.movies.services.FFmpegService;
 import com.ismael.movies.services.MinioQueueService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
@@ -15,20 +14,25 @@ import java.util.concurrent.Future;
 @Component
 public class VideoProcessingConsumer {
 
-    @Autowired
+    final
     FFmpegService fFmpegService;
 
-    @Autowired
+    final
     MinioQueueService minioQueueService;
 
-    @RabbitListener(queues = RabbitMQConfig.ALERT_QUEUE)
+    public VideoProcessingConsumer(FFmpegService fFmpegService, MinioQueueService minioQueueService) {
+        this.fFmpegService = fFmpegService;
+        this.minioQueueService = minioQueueService;
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.VIDEO_PROCESSING_QUEUE)
     public void processVideo(String videoPath) throws ExecutionException, InterruptedException {
         Path path = Paths.get(videoPath);
         String fileName = path.getFileName().toString();
         Future<Integer> result =  fFmpegService.executeFFmpegCommand(fileName);
         if (result.get() != -1){
             String nameWithoutExtension = removeExtension(fileName);
-            minioQueueService.sendToMinioUploadindQueue(nameWithoutExtension);
+            minioQueueService.sendToMinioUploadingQueue(nameWithoutExtension);
         }
     }
 

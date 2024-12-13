@@ -1,7 +1,5 @@
 package com.ismael.movies.controller;
 
-import com.ismael.movies.config.RabbitMQConfig;
-import com.ismael.movies.consumer.EmailSenderConsumer;
 import com.ismael.movies.infra.security.TokenService;
 import com.ismael.movies.model.EmailMessage;
 import com.ismael.movies.model.UserVerification;
@@ -10,12 +8,10 @@ import com.ismael.movies.model.VerificationCodeGenerator;
 import com.ismael.movies.services.*;
 import jakarta.mail.MessagingException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.context.Context;
@@ -23,45 +19,54 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/email")
-@CrossOrigin(origins = "http://ismael221.ddns.net") // Defina a origem que deve ser permitida
+@CrossOrigin(origins = "http://ismael221.ddns.net") // Define the origin that should be allowed
 public class EmailController {
 
-    @Autowired
+    final
     EmailQueueService emailQueueService;
 
-    @Autowired
+    final
     AuthorizationService authorizationService;
 
-    @Autowired
+    final
     TokenService tokenService;
 
-    @Autowired
+    final
     UserService userService;
 
-    @Autowired
+    final
     NotificationService notificationService;
 
-    @Autowired
+    final
     VerificationCodeService verificationCodeService;
 
-    @Autowired
-    private SpringTemplateEngine templateEngine;
+    private final SpringTemplateEngine templateEngine;
 
-    @Autowired
+    final
     RabbitTemplate rabbitTemplate;
 
     @Value("${server.url}")
     private String serverUrl;
 
+    public EmailController(EmailQueueService emailQueueService, AuthorizationService authorizationService, TokenService tokenService, UserService userService, NotificationService notificationService, VerificationCodeService verificationCodeService, SpringTemplateEngine templateEngine, RabbitTemplate rabbitTemplate) {
+        this.emailQueueService = emailQueueService;
+        this.authorizationService = authorizationService;
+        this.tokenService = tokenService;
+        this.userService = userService;
+        this.notificationService = notificationService;
+        this.verificationCodeService = verificationCodeService;
+        this.templateEngine = templateEngine;
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
     @PostMapping("/send")
-    public ResponseEntity sendEmail(@RequestBody Map<String, String> request) throws MessagingException, UnsupportedEncodingException {
+    public ResponseEntity sendEmail(@RequestBody Map<String, String> request) {
         EmailMessage emailMessage = new EmailMessage(
           request.get("to"),
           request.get("subject"),

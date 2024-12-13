@@ -18,11 +18,17 @@ import java.util.UUID;
 
 @Service
 public class UserService {
-    @Autowired
+
+    final
     UserRepository userRepository;
 
-    @Autowired
+    final
     NotificationService notificationService;
+
+    public UserService(UserRepository userRepository, NotificationService notificationService) {
+        this.userRepository = userRepository;
+        this.notificationService = notificationService;
+    }
 
     public void createNewUser(RegisterDTO user){
         if (this.userRepository.findByLogin(user.login()) != null){

@@ -23,11 +23,16 @@ import java.util.Date;
 @RequestMapping("api/v1/verify")
 public class VerificationCodeController {
 
-    @Autowired
+    final
     UserService userService;
 
-    @Autowired
+    final
     VerificationCodeService verificationCodeService;
+
+    public VerificationCodeController(UserService userService, VerificationCodeService verificationCodeService) {
+        this.userService = userService;
+        this.verificationCodeService = verificationCodeService;
+    }
 
     @PostMapping
     public ResponseEntity<?> verifyRegisterCode(@RequestBody VerificationCodeDTO verificationCodeDTO)  {

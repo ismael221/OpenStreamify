@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class VideoProcessingQueueService {
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
+
+    public VideoProcessingQueueService(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     public void queueForProcessing(String videoPath) {
-        rabbitTemplate.convertAndSend(RabbitMQConfig.ALERT_EXCHANGE_NAME, RabbitMQConfig.ALERT_ROUTING_KEY, videoPath);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.VIDEO_PROCESSING_EXCHANGE_NAME, RabbitMQConfig.VIDEO_PROCESSING_ROUTING_KEY, videoPath);
     }
 }

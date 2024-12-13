@@ -24,19 +24,22 @@ public class NotificationController {
     @Value("${TELEGRAM_CHAT_ID}")
     private String chatId;
 
-    @Autowired
+    final
     NotificationService notificationService;
 
-    @Autowired
+    final
     MinioQueueService minioQueueService;
 
     private final RabbitTemplate rabbitTemplate;
 
-    public NotificationController(RabbitTemplate rabbitTemplate) {
+    public NotificationController(RabbitTemplate rabbitTemplate, NotificationService notificationService, MinioQueueService minioQueueService, RabbitMQConfig rabbitMQConfig) {
         this.rabbitTemplate = rabbitTemplate;
+        this.notificationService = notificationService;
+        this.minioQueueService = minioQueueService;
+        this.rabbitMQConfig = rabbitMQConfig;
     }
 
-    @Autowired
+    final
     RabbitMQConfig rabbitMQConfig;
 
 
@@ -59,20 +62,20 @@ public class NotificationController {
 
     @PostMapping("/grafana")
     public ResponseEntity<String> interceptarNotificacao(@RequestBody Map<String, Object> payload) {
-        // Extrair e personalizar os dados da notificação do Grafana
+        // Extract and customize notification data from Grafana
         String estadoAlerta = (String) payload.get("state");
         String mensagem = (String) payload.get("message");
         String titulo = (String) payload.get("title");
         String urlGrafana = (String) payload.get("externalUrl");
 
-        // Montar uma mensagem personalizada
+        // Create a personalized message
         String mensagemPersonalizada = "🚨 *Grafana Alert* 🚨\n\n" +
                 "*Título*: " + titulo + "\n" +
                 "*Estado*: " + estadoAlerta + "\n" +
                 "*Detalhes*: " + mensagem + "\n" +
                 "[Ver mais no Grafana](" + urlGrafana + ")";
 
-        // Enviar para o bot do Telegram
+        // Send to Telegram bot
         notificationService.enviarMensagemTelegram(mensagemPersonalizada);
 
         return ResponseEntity.ok("Notificação interceptada e personalizada.");
@@ -88,7 +91,7 @@ public class NotificationController {
     public String sendAlert(@RequestBody String alertData) {
         System.out.println(alertData);
         notificationService.enviarMensagemTelegram(alertData);
-        rabbitTemplate.convertAndSend(RabbitMQConfig.ALERT_QUEUE, alertData);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.VIDEO_PROCESSING_QUEUE, alertData);
         return "Alert sent to RabbitMQ";
     }
 }

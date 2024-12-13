@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @Data
 public class MinioConfig {
+
     @Value("${minio.access-key}")
     private String accessKey;
 
@@ -45,27 +46,27 @@ public class MinioConfig {
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
                     public X509Certificate[] getAcceptedIssuers() {
-                        return new X509Certificate[0]; // Confia em todos os certificados
+                        return new X509Certificate[0]; // Trust in all certificates
                     }
 
                     public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                        // Não verifica nada
+                        //Does not verify anything
                     }
 
                     public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                        // Não verifica nada
+                        //Does not verify anything
                     }
                 }
         };
 
-        // Instalar o TrustManager que ignora a verificação de certificados
+        // Install TrustManager that bypasses certificate verification
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
 
-        // Configurar o OkHttpClient para ignorar SSL
+        // Configure OkHttpClient to bypass SSL
         OkHttpClient httpClient = new OkHttpClient.Builder()
                 .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0])
-                .hostnameVerifier((hostname, session) -> true) // Ignora verificação de hostname
+                .hostnameVerifier((hostname, session) -> true) // Bypass hostname check
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)

@@ -17,7 +17,8 @@ import java.io.UnsupportedEncodingException;
 
 @Service
 public class EmailSenderService {
-    @Autowired
+
+    final
     JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
@@ -30,7 +31,7 @@ public class EmailSenderService {
     }
 
     @Async
-    public void sendEmail(EmailMessage emailMessage) throws MessagingException, UnsupportedEncodingException {
+    public void sendEmail(EmailMessage emailMessage) {
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -42,7 +43,7 @@ public class EmailSenderService {
             mailSender.send(message);
             logger.info("Email sent successfully.");
         } catch (MessagingException | UnsupportedEncodingException e) {
-            logger.debug("Failed to send email. Error: " + e.getMessage());
+            logger.debug("Failed to send email. Error: {}", e.getMessage());
         }
     }
 

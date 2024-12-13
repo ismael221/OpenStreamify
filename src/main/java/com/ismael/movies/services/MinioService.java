@@ -29,7 +29,7 @@ public class MinioService {
     public Resource getHlsResource(String filename) throws Exception {
         String objectName = "hls/" + filename; // Caminho do arquivo no MinIO
 
-        // Busca diretamente no MinIO
+        //Search directly in MinIO
         InputStream stream = minioClient.getObject(
                 GetObjectArgs.builder()
                         .bucket(minioConfig.getStreamBucket())

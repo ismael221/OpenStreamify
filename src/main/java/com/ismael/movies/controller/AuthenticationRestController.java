@@ -25,16 +25,23 @@ import java.util.UUID;
 @RequestMapping("/api/v1/auth")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthenticationRestController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
+
+    private final AuthenticationManager authenticationManager;
+    final
     UserRepository userRepository;
 
-    @Autowired
+    final
     TokenService tokenService;
 
-    @Autowired
+    final
     UserService userService;
+
+    public AuthenticationRestController(AuthenticationManager authenticationManager, UserRepository userRepository, TokenService tokenService, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.tokenService = tokenService;
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated AuthenticationDTO data, HttpServletResponse response){
@@ -45,8 +52,8 @@ public class AuthenticationRestController {
             var token = tokenService.generateToken((User) auth.getPrincipal());
             Cookie cookie = new Cookie("access_token", token);
             cookie.setHttpOnly(true);
-            cookie.setSecure(false); // Enviar apenas por HTTPS
-            cookie.setPath("/"); // Disponível para toda a aplicação
+            cookie.setSecure(false); // Send only via HTTPS
+            cookie.setPath("/"); // Available for all applications
             response.addCookie(cookie);
             return ResponseEntity.ok(new LoginResponseDTO(token));
         }else {

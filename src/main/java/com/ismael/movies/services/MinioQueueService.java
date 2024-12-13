@@ -3,16 +3,19 @@ package com.ismael.movies.services;
 
 import com.ismael.movies.config.RabbitMQConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MinioQueueService {
 
-    @Autowired
+    final
     RabbitTemplate rabbitTemplate;
 
-    public void sendToMinioUploadindQueue(String message){
+    public MinioQueueService(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
+    public void sendToMinioUploadingQueue(String message){
         rabbitTemplate.convertAndSend(RabbitMQConfig.MINIO_EXCHANGE_NAME, RabbitMQConfig.MINIO_ROUTING_KEY, message);
     }
 }

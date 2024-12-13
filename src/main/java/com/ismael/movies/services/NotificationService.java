@@ -32,20 +32,28 @@ public class NotificationService {
     @Value("${TELEGRAM_CHAT_ID}")
     private String chatId;
 
-    @Autowired
+    final
     NotificationsRepository notificationsRepository;
 
-    @Autowired
+    final
     UserRepository userRepository;
 
-    @Autowired
+    final
     UserNotificationRepository userNotificationRepository;
 
-    @Autowired
+    final
     ModelMapper modelMapper;
 
-    @Autowired
+    final
     NotificationQueueService notificationQueueService;
+
+    public NotificationService(NotificationsRepository notificationsRepository, UserRepository userRepository, UserNotificationRepository userNotificationRepository, ModelMapper modelMapper, NotificationQueueService notificationQueueService) {
+        this.notificationsRepository = notificationsRepository;
+        this.userRepository = userRepository;
+        this.userNotificationRepository = userNotificationRepository;
+        this.modelMapper = modelMapper;
+        this.notificationQueueService = notificationQueueService;
+    }
 
     public NotificationDTO convertToDTO(Notifications notifications){
         return  modelMapper.map(notifications,NotificationDTO.class);
@@ -54,14 +62,14 @@ public class NotificationService {
     @Transactional
     @CacheEvict(cacheNames = "notifications-list",allEntries = true)
     public void sendNotification(String message, List<UUID> userIds) {
-        // Criar uma nova notificação
+        // Create a new notification
         Notifications notification = new Notifications();
         notification.setMessage(message);
         notification.setCreatedAt(new Date());
 
         notificationsRepository.save(notification);
 
-        // Buscar os usuários com os IDs fornecidos
+        // Search for users with the given IDs
         List<User> users = userRepository.findAllById(userIds);
 
         for (User user: users){

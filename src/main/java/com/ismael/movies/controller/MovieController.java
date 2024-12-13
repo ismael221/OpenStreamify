@@ -34,17 +34,19 @@ public class MovieController {
         final
         MoviesService moviesService;
 
-        @Autowired
+        final
         TokenService tokenService;
 
-        @Autowired
+        final
         UserService userService;
 
         @Value("${server.url}")
         private String serverUrl;
 
-        public MovieController(MoviesService moviesService) {
+        public MovieController(MoviesService moviesService, TokenService tokenService, UserService userService) {
                 this.moviesService = moviesService;
+                this.tokenService = tokenService;
+                this.userService = userService;
         }
 
 
@@ -62,8 +64,8 @@ public class MovieController {
                                 if ("access_token".equals(cookie.getName())) {
                                         cookie.setValue(null);
                                         cookie.setHttpOnly(false);
-                                        cookie.setMaxAge(0); // Define o tempo de vida do cookie para 0
-                                        cookie.setPath("/"); // Certifique-se de que o caminho está correto
+                                        cookie.setMaxAge(0); // Sets cookie lifetime to 0
+                                        cookie.setPath("/");
                                         response.addCookie(cookie);
                                 } else if ("JSESSIONID".equals(cookie.getName())) {
                                         cookie.setValue(null);
@@ -83,13 +85,13 @@ public class MovieController {
 
                 List<MovieDTO> moviesList = moviesService.listAllMovies();
 
-                // Particionar a lista de filmes manualmente
+                // Partition the movie list manually
                 List<List<MovieDTO>> movieChunks = partitionList(moviesList, 4);
                 model.addAttribute("moviesChunks", movieChunks);
                 return "index";
         }
 
-        // Método auxiliar para particionar a lista
+        // Helper method to partition the list
 
         private <T> List<List<T>> partitionList(List<T> list, int chunkSize) {
                 List<List<T>> partitions = new ArrayList<>();
@@ -101,7 +103,7 @@ public class MovieController {
 
 
         @GetMapping("/list")
-        public String listarFilmes(Model model){
+        public String listAllMovies(Model model){
              //   model.addAttribute("css",theme);
                 model.addAttribute("moviesList",moviesService.listAllMovies());
                 return "movies";
@@ -109,8 +111,8 @@ public class MovieController {
 
 
         @GetMapping("/play/{rid}")
-        public String assistirFilme(@PathVariable("rid") String mediaRID, Model model) {
-                UUID uuid = UUID.fromString(mediaRID); // Verifica se é um UUID válido
+        public String watchMovie(@PathVariable("rid") String mediaRID, Model model) {
+                UUID uuid = UUID.fromString(mediaRID); // Checks if it is a valid UUID
                 Movie media = moviesService.getMovieByRID(uuid);
                 String serverUrl = this.serverUrl;
                 model.addAttribute("media", media);
@@ -120,8 +122,8 @@ public class MovieController {
 
 
         @GetMapping("/details/{rid}")
-        public String detalhaFilme(@PathVariable("rid") String movie_RID, Model model){
-                UUID uuid = UUID.fromString(movie_RID); // Verifica se é um UUID válido
+        public String detailMovie(@PathVariable("rid") String movie_RID, Model model){
+                UUID uuid = UUID.fromString(movie_RID); // Checks if it is a valid UUID
                 List<String> genres = Arrays.stream(MovieGenre.values())
                         .map(Enum::name)
                         .collect(Collectors.toList());
@@ -201,7 +203,7 @@ public class MovieController {
                 return "updatePassword";
         }
 
-        //TODO adicionar enpoint para listar as series,baseado no type da entity movies
+        //TODO add enpoint to list the series, based on the entity movies type
 
         @GetMapping("/admin")
         public String adminPanel(){

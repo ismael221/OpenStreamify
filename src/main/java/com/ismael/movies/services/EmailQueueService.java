@@ -9,8 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailQueueService {
 
-    @Autowired
+    final
     RabbitTemplate rabbitTemplate;
+
+    public EmailQueueService(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     public void sendEmailToQueue(EmailMessage emailMessage){
         rabbitTemplate.convertAndSend(RabbitMQConfig.EMAIL_EXCHANGE_NAME,RabbitMQConfig.EMAIL_ROUTING_KEY,emailMessage);

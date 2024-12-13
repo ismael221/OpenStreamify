@@ -21,8 +21,12 @@ import java.util.UUID;
 @CrossOrigin("*")
 public class MovieRestController {
 
-    @Autowired
+    final
     MoviesService moviesService;
+
+    public MovieRestController(MoviesService moviesService) {
+        this.moviesService = moviesService;
+    }
 
     @GetMapping
     public  ResponseEntity<List> getAllFilmes(){

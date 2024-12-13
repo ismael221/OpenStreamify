@@ -17,8 +17,12 @@ import java.util.UUID;
 @RequestMapping("api/v1/ratings")
 public class RatingRestController {
 
-    @Autowired
+    final
     RatingService ratingService;
+
+    public RatingRestController(RatingService ratingService) {
+        this.ratingService = ratingService;
+    }
 
     @PostMapping
     public ResponseEntity<RatingResponseDTO> newRating(@Valid @RequestBody RatingDTO ratingDTO){

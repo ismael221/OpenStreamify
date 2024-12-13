@@ -8,7 +8,6 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class RabbitMQConfig {
@@ -16,9 +15,9 @@ public class RabbitMQConfig {
     public static final String EXCHANGE_NAME = "notificationExchange";
     public static final String ROUTING_KEY = "notificationRoutingKey";
 
-    public static final String ALERT_QUEUE = "alerts_queue";
-    public static final String ALERT_EXCHANGE_NAME = "alertExchange";
-    public static final String ALERT_ROUTING_KEY = "alertRoutingKey";
+    public static final String VIDEO_PROCESSING_QUEUE = "videoProcessingQueue";
+    public static final String VIDEO_PROCESSING_EXCHANGE_NAME = "videoProcessingExchange";
+    public static final String VIDEO_PROCESSING_ROUTING_KEY = "videoProcessingRoutingKey";
 
     public static final String MINIO_QUEUE = "minio_queue";
     public static final String MINIO_EXCHANGE_NAME = "minioExchange";
@@ -57,18 +56,18 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue alertQueue() {
-        return new Queue(ALERT_QUEUE, true);
+    public Queue videoProcessingQueue() {
+        return new Queue(VIDEO_PROCESSING_QUEUE, true);
     }
 
     @Bean
-    public DirectExchange alertExchange() {
-        return new DirectExchange(ALERT_EXCHANGE_NAME);
+    public DirectExchange videoProcessingExchange() {
+        return new DirectExchange(VIDEO_PROCESSING_EXCHANGE_NAME);
     }
 
     @Bean
-    public Binding alertBinding(@Qualifier("alertQueue") Queue alertQueue, DirectExchange alertExchange) {
-        return BindingBuilder.bind(alertQueue).to(alertExchange).with(ALERT_ROUTING_KEY);
+    public Binding videoProcessingBinding(@Qualifier("videoProcessingQueue") Queue videoProcessingQueue, DirectExchange videoProcessingExchange) {
+        return BindingBuilder.bind(videoProcessingQueue).to(videoProcessingExchange).with(VIDEO_PROCESSING_ROUTING_KEY);
     }
 
     @Bean

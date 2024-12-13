@@ -29,16 +29,23 @@ import java.util.UUID;
 @Component
 public class MinioUploadConsumer {
 
-    @Autowired
+    final
     MinioClient minioClient;
-    @Autowired
+    final
     MinioConfig minioConfig;
-    @Autowired
+    final
     MoviesService moviesService;
-    @Autowired
+    final
     NotificationService notificationService;
 
     private static final Logger logger = LoggerFactory.getLogger(MinioUploadConsumer.class);
+
+    public MinioUploadConsumer(MinioClient minioClient, MinioConfig minioConfig, MoviesService moviesService, NotificationService notificationService) {
+        this.minioClient = minioClient;
+        this.minioConfig = minioConfig;
+        this.moviesService = moviesService;
+        this.notificationService = notificationService;
+    }
 
     @Async
     @RabbitListener(queues = RabbitMQConfig.MINIO_QUEUE)
@@ -47,13 +54,13 @@ public class MinioUploadConsumer {
         if (isMinioOnline()) {
             uploadFilesToMinIO(tempDir,ridFilme);
         } else {
-            // Se o MinIO não estiver online, a mensagem permanecerá na fila para reprocessamento
-            throw new RuntimeException("MinIO offline - tentativa de upload falhou");
+            // If MinIO is not online, a message remains in the queue for reprocessing
+            throw new RuntimeException("MinIO offline - upload attempt failed");
         }
     }
 
     private boolean isMinioOnline() {
-        // Verifica o status do MinIO
+        // Check MinIO status
         return true;
     }
 
@@ -75,7 +82,7 @@ public class MinioUploadConsumer {
                                     .stream(stream, file.length(), -1)
                                     .contentType("application/vnd.apple.mpegurl")
                                     .build());
-                    logger.info("Arquivo {} enviado para o MinIO.", file.getName());
+                    logger.info("File {} sent to MinIO.", file.getName());
                 }
             }
             Movie newMovie = moviesService.getMovieByRID(UUID.fromString(ridFilme));
@@ -102,7 +109,7 @@ public class MinioUploadConsumer {
                 }
             }
         }
-        Files.deleteIfExists(Paths.get(tempDir));  // Remove o diretório temporário
+        Files.deleteIfExists(Paths.get(tempDir));  // Remove temporary directory
     }
 
     private void cleanUpLocalRawFiles(String tempDir) throws IOException {
@@ -115,6 +122,6 @@ public class MinioUploadConsumer {
                 }
             }
         }
-        Files.deleteIfExists(Paths.get(tempDir));  // Remove o diretório temporário
+        Files.deleteIfExists(Paths.get(tempDir));  // Remove temporary directory
     }
 }

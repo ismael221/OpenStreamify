@@ -24,10 +24,14 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @Autowired
+    final
     NotificationService notificationService;
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    public GlobalExceptionHandler(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex){

@@ -31,13 +31,19 @@ import java.io.IOException;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    @Autowired
-    private CustomOAuth2UserService oauthUserService;
-    @Autowired
+
+    private final CustomOAuth2UserService oauthUserService;
+    final
     SecurityFilter securityFilter;
 
-    @Autowired
+    final
     UserService userService;
+
+    public SecurityConfiguration(CustomOAuth2UserService oauthUserService, SecurityFilter securityFilter, UserService userService) {
+        this.oauthUserService = oauthUserService;
+        this.securityFilter = securityFilter;
+        this.userService = userService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{

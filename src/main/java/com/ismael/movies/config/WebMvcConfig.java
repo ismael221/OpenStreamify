@@ -17,14 +17,14 @@ public class WebMvcConfig  implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(new Locale("pt")); // Define o idioma padrão como português
+        slr.setDefaultLocale(new Locale("pt")); // Defines the default language as Brazilian Portuguese
         return slr;
     }
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-        lci.setParamName("lang"); // O parâmetro usado para trocar o idioma
+        lci.setParamName("lang"); //  The parameter used to change the language
         return lci;
     }
 

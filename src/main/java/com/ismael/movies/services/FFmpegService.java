@@ -3,7 +3,6 @@ package com.ismael.movies.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import java.io.File;
@@ -18,7 +17,7 @@ import java.util.concurrent.Future;
 @Service
 public class FFmpegService {
 
-    @Autowired
+    final
     RabbitTemplate rabbitTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(FFmpegService.class);
@@ -47,44 +46,44 @@ public class FFmpegService {
 
             File destFile = new File(uploadDir + File.separator + file);
 
-            // Definir o diretório temporário local para salvar os segmentos HLS
+            // Set local temp directory to save HLS segments
             String tempDir = System.getProperty("java.io.tmpdir") + "/hls/" + fileName + "/";
-            Files.createDirectories(Paths.get(tempDir)); // Certifique-se de que o diretório existe
+            Files.createDirectories(Paths.get(tempDir)); //Make sure the directory exists
 
-            // Caminhos de arquivos locais
+            // Local file paths
             String m3u8FilePath = tempDir + fileName + ".m3u8";
             String tsFilePattern = tempDir + fileName + "_%03d.ts";
 
-            // Comando FFmpeg para gerar HLS localmente
+            // FFmpeg command to generate HLS locally
             String[] command = {
                     "ffmpeg",
-                    "-i", destFile.getAbsolutePath(),            // Caminho do arquivo de entrada
-                    "-c:v", "copy",                 // Copia o vídeo sem alterações
-                    "-c:a", "libmp3lame",           // Converte o áudio para MP3 usando libmp3lame
-                    "-b:a", "320k",                 // Define a taxa de bits do áudio (320 kbps)
-                    "-start_number", "0",           // Inicia a numeração dos segmentos em 0
-                    "-hls_time", "10",              // Duração dos segmentos em segundos
-                    "-hls_list_size", "0",          // Mantém todos os segmentos na lista
-                    "-hls_segment_filename", tsFilePattern,  // Nome dos segmentos localmente
-                    m3u8FilePath                   // Nome do arquivo de índice m3u8 localmente
+                    "-i", destFile.getAbsolutePath(),            // Input file path
+                    "-c:v", "copy",                 // Copy the video without changes
+                    "-c:a", "libmp3lame",           // Convert audio to MP3 using libmp3lame
+                    "-b:a", "320k",                 // Sets the audio bitrate (320 kbps)
+                    "-start_number", "0",           // Start segment numbering at 0
+                    "-hls_time", "10",              // Duration of segments in seconds
+                    "-hls_list_size", "0",          // Keeps all segments in the list
+                    "-hls_segment_filename", tsFilePattern,  //Name of segments locally
+                    m3u8FilePath                   // m3u8 index file name locally
             };
 
-            // Criando o ProcessBuilder
+            // Creating the ProcessBuilder
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             processBuilder.redirectErrorStream(true);
 
             try {
-                // Iniciar o processo FFmpeg
+                // Start the FFmpeg process
                 Process process = processBuilder.start();
 
-                // Lendo a saída do processo
+                // Reading process output
                 InputStream inputStream = process.getInputStream();
                 int c;
                 while ((c = inputStream.read()) != -1) {
                     System.out.print((char) c);
                 }
 
-                // Esperar o processo finalizar
+                // Wait for the process to finish
                 int exitCode = process.waitFor();
                 logger.info("Processo FFmpeg finalizado com código: {}", exitCode);
 
@@ -98,15 +97,9 @@ public class FFmpegService {
     }
     //TODO add some monitoring on minio using prometheus in order to notify a rabbitMq queue, when the bucket is offline/online, allowing asincrous uploads
 
-
-    // Método para encerrar o pool de threads
-    public void shutdown() {
-        executorService.shutdown();
-    }
-
     public static String removeExtension(String fileName) {
         int lastDotIndex = fileName.lastIndexOf('.');
-        // Se encontrar um ponto, retorna a substring antes dele; caso contrário, retorna o nome original
+        // If it finds a point, returns the substring before it; otherwise, returns the original name
         return (lastDotIndex == -1) ? fileName : fileName.substring(0, lastDotIndex);
     }
 }
