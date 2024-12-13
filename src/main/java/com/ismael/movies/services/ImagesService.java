@@ -20,36 +20,36 @@ public class ImagesService {
 
     private  static  final Logger logger = LoggerFactory.getLogger(ImagesService.class);
 
-    // Configuração do diretório de upload
+    //Upload directory configuration
     private final Path uploadDir = Paths.get("uploads");
 
-    // URL base para acessar os arquivos
+    //Base URL to access files
     @Value("${server.url}")
     private String serverUrl;
 
     public ImagesService() throws IOException {
-        // Cria o diretório de upload se não existir
+        // Create upload directory if it doesn't exist
         Files.createDirectories(uploadDir);
     }
 
     public String uploadFile(MultipartFile file) throws IOException {
-        // Gera um nome de arquivo único
+        // Generate a unique file name
         String filename = System.currentTimeMillis() + "-" + file.getOriginalFilename();
         Path filePath = uploadDir.resolve(filename);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        // Retorna a URL da imagem  return serverUrl + "/api/v1/media/img/" + filename;
+        // Returns the image URL return serverUrl + "/api/v1/media/img/" + filename;
         return serverUrl + "/api/v1/media/img/" + filename;
     }
 
-    public Resource getFile(String filename) throws MalformedURLException, IOException {
+    public Resource getFile(String filename) throws IOException {
         Path filePath = uploadDir.resolve(filename).normalize();
         Resource resource = new UrlResource(filePath.toUri());
 
         if (resource.exists() && resource.isReadable()) {
             return resource;
         } else {
-            logger.error("Arquivo não encontrado "+filename);
+            logger.error("Arquivo não encontrado {}", filename);
             throw new RuntimeException("Arquivo não encontrado: " + filename);
         }
     }

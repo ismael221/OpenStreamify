@@ -1,132 +1,83 @@
 package com.ismael.movies.controller;
 
+import com.ismael.movies.model.Exceptions.MediaNotProcessedException;
 import com.ismael.movies.model.Exceptions.ResourceNotFoundException;
-import com.ismael.movies.model.Movie;
 import com.ismael.movies.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.UUID;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/v1/media")
 public class MediaRestController {
-    @Autowired
-    private HlsService hlsService;
 
-    @Autowired
-    private FFmpegHLS fFmpegHLS;
-
-    @Autowired
-    NotificationService notificationService;
-
-    @Autowired
-    MoviesService moviesService;
-
-    @Autowired
-    UserService userService;
+    private final MinioService minioService;
 
     private final Path uploadDir = Paths.get("uploads");
 
-    @Autowired
-    private ImagesService imagesService;
+    private final ImagesService imagesService;
+
+    private final VideoUploadService videoUploadService;
+
+    private final VideoProcessingQueueService videoProcessingQueue;
+
+    private final NotificationService notificationService;
 
     @GetMapping("/hls/{filename:.+}")
     public ResponseEntity<Resource> getHlsFile(@PathVariable String filename) {
         try {
-            // Tenta obter o arquivo do serviço
-            Resource resource = hlsService.getHlsResource(filename);
+            //Try to get the service file
+            Resource resource = minioService.getHlsResource(filename);
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl") // Define o content type adequado para HLS
                     .body(resource);
         } catch (ResourceNotFoundException e) {
-            // Caso o arquivo não seja encontrado
-            System.err.println("Erro: Arquivo não encontrado - " + e.getMessage());
+            // If the file is not found
+            System.err.println("Error: File not found - " + e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
 
-            // Log de erro genérico
-            System.err.println("Erro desconhecido: " + e.getMessage());
+            // Generic log error
+            System.err.println("Unknown error: " + e.getMessage());
             return ResponseEntity.status(500).build();
         }
     }
 
 
     @PostMapping("/hls/upload")
-    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("rid") String StringRid) {
-
-        UUID rid = UUID.fromString(StringRid);
-
-        String uploadDir = System.getProperty("user.dir") + File.separator + "temp";
-
-        File directory = new File(uploadDir);
-
-        if (!directory.exists()) {
-            boolean created = directory.mkdirs();
-            if (!created) {
-                return ResponseEntity.status(500).body("Failed to create the upload directory.");
-            }
-        }
-
-
-        File destFile = new File(uploadDir + File.separator + file.getOriginalFilename());
-
+    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("rid") String StringRid) throws IOException {
         try {
-            // Transferindo o arquivo enviado para o destino
-            file.transferTo(destFile);
-
-            // Chamando o método para processar o vídeo com FFmpeg
-            Future<Integer> resultCode = fFmpegHLS.executeFFmpegCommand(destFile.getAbsolutePath(), rid);
-
-            System.out.printf(resultCode.toString());
-            if (resultCode.get() == 0){
-                Movie newMovie = moviesService.getMovieByRID(rid);
-                List<UUID> users = userService.findAllUsersId();
-                String mensagem = "🎬 *Processamento de Filme Concluído*\n\n" +
-                        "O filme *" + newMovie.getTitle() + "* (ID: " + newMovie.getRid() + ") foi tratado com sucesso.\n" +
-                        "Data de conclusão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
-                        "✔️ O arquivo está pronto para uso.";
-
-                notificationService.enviarMensagemTelegram(mensagem);
-                notificationService.sendNotification("Novo filme disponivel: "+ newMovie.getTitle(),users);
-            }
-            return ResponseEntity.ok("Video uploaded and processed successfully.");
-
+            Path savedPath = videoUploadService.saveVideo(file,StringRid);
+            videoProcessingQueue.queueForProcessing(savedPath.toString());
+            return ResponseEntity.ok("Upload successful, video queued for processing.");
         } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Failed to upload and process the video.");
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload video.");
         }
-
     }
 
     @Value("${server.url}")
     private String serverUrl;
-    public MediaRestController() throws IOException {
-        // Cria o diretório de upload se não existir
+    public MediaRestController(MinioService minioService, ImagesService imagesService, VideoUploadService videoUploadService, VideoProcessingQueueService videoProcessingQueue, NotificationService notificationService) throws IOException {
+        // Create upload directory if it doesn't exist
         Files.createDirectories(uploadDir);
+        this.minioService = minioService;
+        this.imagesService = imagesService;
+        this.videoUploadService = videoUploadService;
+        this.videoProcessingQueue = videoProcessingQueue;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/img/upload")
@@ -135,7 +86,7 @@ public class MediaRestController {
             String fileUrl = imagesService.uploadFile(file);
             return ResponseEntity.ok(fileUrl);
         } catch (IOException e) {
-            return ResponseEntity.status(500).body("Erro ao salvar a imagem.");
+            throw new MediaNotProcessedException("Error while saving image");
         }
     }
 
@@ -143,7 +94,7 @@ public class MediaRestController {
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         try {
             Resource resource = imagesService.getFile(filename);
-            // Determinar o tipo de conteúdo baseado na extensão do arquivo
+            // Determine content type based on file extension
             String contentType = Files.probeContentType(resource.getFile().toPath());
             if (contentType == null) {
                 contentType = "application/octet-stream"; // Content-Type genérico

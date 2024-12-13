@@ -19,11 +19,16 @@ import java.util.Arrays;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
+    final
     TokenService tokenService;
 
-    @Autowired
+    final
     UserRepository userRepository;
+
+    public SecurityFilter(TokenService tokenService, UserRepository userRepository) {
+        this.tokenService = tokenService;
+        this.userRepository = userRepository;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -39,13 +44,13 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     private String recoverToken(HttpServletRequest request){
-        // Tenta recuperar o token do cabeçalho Authorization
+        // Attempts to retrieve the token from the Authorization header
         var authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7); // Remove o prefixo "Bearer "
+            return authHeader.substring(7); // Remove the "Bearer" prefix
         }
 
-        // Tenta recuperar o token do cookie
+        //Try to retrieve the cookie token
         var cookies = request.getCookies();
         if (cookies != null) {
             var cookie = Arrays.stream(cookies)

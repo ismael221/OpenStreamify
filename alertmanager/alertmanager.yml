@@ -1,0 +1,13 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: ['alertname']        # Agrupa os alertas pelo nome
+  group_interval: 2m             # Intervalo entre as notificações agrupadas
+  repeat_interval: 2m            # Repetição da notificação após este intervalo
+  receiver: 'rabbitMq'
+
+receivers:
+  - name: 'rabbitMq'
+    webhook_configs:
+      - url: 'http://openstreamify.ddns.net:8080/api/v1/notice/send_alert'  # URL da sua API

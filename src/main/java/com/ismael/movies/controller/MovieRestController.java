@@ -3,6 +3,7 @@ package com.ismael.movies.controller;
 import com.ismael.movies.DTO.MovieDTO;
 import com.ismael.movies.model.Movie;
 import com.ismael.movies.services.MoviesService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,8 +21,12 @@ import java.util.UUID;
 @CrossOrigin("*")
 public class MovieRestController {
 
-    @Autowired
+    final
     MoviesService moviesService;
+
+    public MovieRestController(MoviesService moviesService) {
+        this.moviesService = moviesService;
+    }
 
     @GetMapping
     public  ResponseEntity<List> getAllFilmes(){
@@ -36,13 +41,13 @@ public class MovieRestController {
     }
 
     @PostMapping
-    public ResponseEntity<MovieDTO> newMovie(@RequestBody MovieDTO movie){
+    public ResponseEntity<MovieDTO> newMovie(@Valid @RequestBody MovieDTO movie){
         var novoFilme = moviesService.newMovie(movie);
         return  new ResponseEntity<>(novoFilme, HttpStatus.CREATED);
     }
 
     @PutMapping("{rid}")
-    public  ResponseEntity<Movie> updateMovie(@PathVariable UUID rid, @RequestBody Movie movie){
+    public  ResponseEntity<MovieDTO> updateMovie(@PathVariable UUID rid,@Valid @RequestBody MovieDTO movie){
         var filmeAtualizado = moviesService.updateMovie(rid, movie);
         return  new ResponseEntity<>(filmeAtualizado,HttpStatus.OK);
     }

@@ -1,15 +1,15 @@
 package com.ismael.movies.controller;
 
-import com.ismael.movies.model.Notifications;
+import com.ismael.movies.config.RabbitMQConfig;
+import com.ismael.movies.services.MinioQueueService;
 import com.ismael.movies.services.NotificationService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,8 +24,24 @@ public class NotificationController {
     @Value("${TELEGRAM_CHAT_ID}")
     private String chatId;
 
-    @Autowired
+    final
     NotificationService notificationService;
+
+    final
+    MinioQueueService minioQueueService;
+
+    private final RabbitTemplate rabbitTemplate;
+
+    public NotificationController(RabbitTemplate rabbitTemplate, NotificationService notificationService, MinioQueueService minioQueueService, RabbitMQConfig rabbitMQConfig) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.notificationService = notificationService;
+        this.minioQueueService = minioQueueService;
+        this.rabbitMQConfig = rabbitMQConfig;
+    }
+
+    final
+    RabbitMQConfig rabbitMQConfig;
+
 
     @GetMapping("{rid}")
     public ResponseEntity<List> listNotificationByUserId(@PathVariable UUID rid){
@@ -46,20 +62,20 @@ public class NotificationController {
 
     @PostMapping("/grafana")
     public ResponseEntity<String> interceptarNotificacao(@RequestBody Map<String, Object> payload) {
-        // Extrair e personalizar os dados da notificação do Grafana
+        // Extract and customize notification data from Grafana
         String estadoAlerta = (String) payload.get("state");
         String mensagem = (String) payload.get("message");
         String titulo = (String) payload.get("title");
         String urlGrafana = (String) payload.get("externalUrl");
 
-        // Montar uma mensagem personalizada
+        // Create a personalized message
         String mensagemPersonalizada = "🚨 *Grafana Alert* 🚨\n\n" +
                 "*Título*: " + titulo + "\n" +
                 "*Estado*: " + estadoAlerta + "\n" +
                 "*Detalhes*: " + mensagem + "\n" +
                 "[Ver mais no Grafana](" + urlGrafana + ")";
 
-        // Enviar para o bot do Telegram
+        // Send to Telegram bot
         notificationService.enviarMensagemTelegram(mensagemPersonalizada);
 
         return ResponseEntity.ok("Notificação interceptada e personalizada.");
@@ -70,5 +86,12 @@ public class NotificationController {
         notificationService.notifyAllUsers((String) message.get("message"));
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    //TODO FIX AND CREATE A PROPER QUEUE, THIS ONE IS INTENDED TO BE USED FOR ALERTING THE FFMPEG PROCESS
+    @PostMapping("/send_alert")
+    public String sendAlert(@RequestBody String alertData) {
+        System.out.println(alertData);
+        notificationService.enviarMensagemTelegram(alertData);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.VIDEO_PROCESSING_QUEUE, alertData);
+        return "Alert sent to RabbitMQ";
+    }
 }

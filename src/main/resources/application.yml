@@ -1,0 +1,97 @@
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+  datasource:
+    username: root
+    password: ismael
+    url: jdbc:mysql://localhost:3306/movies_dev2
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 6048MB
+      max-request-size: 6048MB
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USER}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      time-to-live: 1h
+  rabbitmq:
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
+  resources:
+    static-locations: file:videos/hls/
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENTID}
+            client-secret: ${GITHUB_CLIENTSECRET}
+            scope:
+              - user:email
+              - user
+          google:
+            client-id: ${GOOGLE_CLIENTID}
+            client-secret: ${GOOGLE_CLIENTSECRET}
+            scope:
+              - profile
+              - email
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    prometheus:
+      enabled: true
+
+logging:
+  level:
+    root: DEBUG
+    com.ismael.movie: ERROR
+    org.hibernate.SQL: ERROR
+    org.springframework.web: DEBUG
+
+server:
+  tomcat:
+    max-swallow-size: -1
+  url: ${SERVER_URL}
+  port: ${SERVER_PORT}
+
+minio:
+  endpoint: ${MINIO_ENDPOINT}
+  access-key: ${MINIO_ACCESSKEY}
+  secret-key: ${MINIO_SECRETKEY}
+  bucket:
+    stream: ${MINIO_BUCKET}
+
+TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}

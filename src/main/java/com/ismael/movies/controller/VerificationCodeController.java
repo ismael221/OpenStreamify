@@ -23,22 +23,24 @@ import java.util.Date;
 @RequestMapping("api/v1/verify")
 public class VerificationCodeController {
 
-    @Autowired
+    final
     UserService userService;
 
-    @Autowired
+    final
     VerificationCodeService verificationCodeService;
+
+    public VerificationCodeController(UserService userService, VerificationCodeService verificationCodeService) {
+        this.userService = userService;
+        this.verificationCodeService = verificationCodeService;
+    }
 
     @PostMapping
     public ResponseEntity<?> verifyRegisterCode(@RequestBody VerificationCodeDTO verificationCodeDTO)  {
         String email = verificationCodeDTO.getEmail();
         String code = verificationCodeDTO.getCode();
-
         UserVerification userVerification = verificationCodeService.checkCodeExpiration(email);
-
-
-
         boolean isVerified = verificationCodeService.verifyCode(email,code);
+
         //TODO VERIFY THE USER OUTPUT IF THE CODE HAS EXPIRED AND CHANGE IT ON THE DATABASE
         if (isVerified){
             User user = userService.findUserByLogin(email);

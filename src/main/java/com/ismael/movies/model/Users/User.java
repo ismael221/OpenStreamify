@@ -1,5 +1,6 @@
 package com.ismael.movies.model.Users;
 
+import com.ismael.movies.enums.Provider;
 import com.ismael.movies.model.Notifications;
 import com.ismael.movies.model.UserNotification;
 import jakarta.persistence.*;
@@ -37,7 +38,15 @@ public class User implements UserDetails {
     private String password;
 
     @Column(nullable = false)
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+
+    @Column(nullable = false)
     private UserRole role;
+
+    private String profilePic;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserNotification> userNotifications;
@@ -45,10 +54,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private boolean active = false;
 
-    public User(String login,String password,UserRole role){
+    public User(String login,String password,UserRole role, String name, Provider provider){
         this.login = login;
         this.password = password;
         this.role = role;
+        this.name = name;
+        this.provider = provider;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -14,18 +14,18 @@ import java.util.stream.Collectors;
 public class GenreController {
     @GetMapping("/movie-genres")
     public List<String> getMovieGenres() {
-        // Converte os valores do enum em uma lista de strings
+        // Convert enum values into a list of strings
         return Arrays.stream(MovieGenre.values())
-                .map(Enum::name) // Obtém o nome de cada enum
+                .map(Enum::name) //Gets the name of each enum
                 .collect(Collectors.toList());
     }
 
-    //TODO corrigir para listar o genero somente do filme especificado
+    //TODO fix to list the genre of only the specified film
     @GetMapping
     public List<String> getMovieGenreEqualsTo(String genre) {
-        // Converte os valores do enum em uma lista de strings
+        // Convert enum values into a list of strings
         return Arrays.stream(MovieGenre.values())
-                .map(Enum::name) // Obtém o nome de cada enum
+                .map(Enum::name) // Gets the name of each enum
                 .collect(Collectors.toList());
     }
 }

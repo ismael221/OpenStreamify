@@ -1,52 +1,50 @@
 package com.ismael.movies.services;
 
+import com.ismael.movies.model.EmailMessage;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 
 @Service
 public class EmailSenderService {
-    @Autowired
+
+    final
     JavaMailSender mailSender;
+
+    @Value("${spring.mail.username}")
+    private String from;
+
+    private static final Logger logger = LoggerFactory.getLogger(EmailSenderService.class);
 
     public EmailSenderService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
-    public String sendEmail(String recipientEmail, String fromEmail, String subject, String content) throws MessagingException, UnsupportedEncodingException {
+    @Async
+    public void sendEmail(EmailMessage emailMessage) {
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
-
-            helper.setFrom(fromEmail, "OpenStreamify");
-            helper.setTo(recipientEmail);
-
-            helper.setSubject(subject);
-            helper.setText(content, true);
-
+            helper.setFrom(from, "OpenStreamify");
+            helper.setTo(emailMessage.getTo());
+            helper.setSubject(emailMessage.getSubject());
+            helper.setText(emailMessage.getBody(), true);
             mailSender.send(message);
-
-            //EmailSenderService emailSender = new EmailSenderService(mailSender);
-            // Call the sendEmail method to send an email
-
-            return "Email sent successfully.";
+            logger.info("Email sent successfully.");
         } catch (MessagingException | UnsupportedEncodingException e) {
-            return "Failed to send email. Error: " + e.getMessage();
+            logger.debug("Failed to send email. Error: {}", e.getMessage());
         }
     }
 
-    public void sendVerificationEmail(String toEmail, String verificationCode) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject("Email Verification Code");
-        message.setText("Your verification code is: " + verificationCode);
-        mailSender.send(message);
-    }
 }

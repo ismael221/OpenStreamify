@@ -12,22 +12,18 @@ import java.util.Date;
 
 @Service
 public class VerificationCodeService {
-    @Autowired
-    private UserVerificationRepository verificationRepository;
+
+    private final UserVerificationRepository verificationRepository;
+
+    public VerificationCodeService(UserVerificationRepository verificationRepository) {
+        this.verificationRepository = verificationRepository;
+    }
 
     public boolean verifyCode(String email, String code) {
         UserVerification userVerification = verificationRepository.findByEmail(email);
 
-        //Verifica se o codigo gerado esta na janela de 10 minutos atrás
+        //Checks if the generated code is in the 10 minute window
         Instant tenMinutesInFuture = Instant.now().plus(Duration.ofMinutes(10));
-        Instant instantToCompare  = userVerification.getGeneratedAt();
-
-        Date geradoEm = Date.from(instantToCompare);
-        Date expiraEm = Date.from(tenMinutesInFuture);
-
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
-        String formattedVencimentoEm = formatter.format(expiraEm);
-        String formattedGeradoEm= formatter.format(geradoEm);
 
         boolean isValid = Instant.now().isAfter(userVerification.getGeneratedAt()) && Instant.now().isBefore(tenMinutesInFuture);
 

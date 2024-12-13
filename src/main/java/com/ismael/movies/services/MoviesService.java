@@ -20,16 +20,22 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@CacheConfig(cacheNames = "movies")
+@Cacheable(cacheNames = "movies")
 public class MoviesService {
-    @Autowired
+
+    final
     MovieRepository movieRepository;
     //TODO FIX THE CACHEC EVICT AS ITS NOT UPDATING WHEN ADDING A NEW MOVIE 2
 
-    @Autowired
+    final
     ModelMapper modelMapper;
 
     private  static  final Logger logger = LoggerFactory.getLogger(MoviesService.class);
+
+    public MoviesService(MovieRepository movieRepository, ModelMapper modelMapper) {
+        this.movieRepository = movieRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public MovieDTO convertToDto(Movie movie){
         return modelMapper.map(movie, MovieDTO.class);
@@ -40,6 +46,7 @@ public class MoviesService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "movies-list", allEntries = true)
     public MovieDTO newMovie(MovieDTO movie){
          Movie newMovie =  convertToEntity(movie);
          MovieDTO movieFound = convertToDto(movieRepository.save(newMovie));
@@ -55,8 +62,8 @@ public class MoviesService {
     }
 
     @Transactional
-    @CachePut
-    public Movie updateMovie(UUID movieRid, Movie movieRequest){
+    @CachePut(cacheNames = "movies-list", key = "#movieRid")
+    public MovieDTO updateMovie(UUID movieRid, MovieDTO movieRequest){
             Movie movie = getMovieByRID(movieRid);
             movie.setGenres(movieRequest.getGenres());
             movie.setTitle(movieRequest.getTitle());
@@ -66,14 +73,14 @@ public class MoviesService {
             movie.setCoverImgUrl(movieRequest.getCoverImgUrl());
             movie.setTrailerUrl(movieRequest.getTrailerUrl());
             movieRepository.save(movie);
-            return movie;
+            return convertToDto(movie);
     }
 
     @Transactional
-    @CacheEvict(allEntries = true,key = "#movieRid")
+    @CacheEvict(cacheNames = "movies-list",allEntries = true,key = "#movieRid")
     public void deleteMovie(UUID movieRid){
             Movie movie = getMovieByRID(movieRid);
-            movieRepository.deleteById((int) movie.getId());
+            movieRepository.delete(movie);
     }
 
     @Transactional(readOnly = true)

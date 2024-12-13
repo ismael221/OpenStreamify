@@ -4,6 +4,7 @@ import com.ismael.movies.DTO.RatingDTO;
 import com.ismael.movies.DTO.RatingResponseDTO;
 import com.ismael.movies.model.Rating;
 import com.ismael.movies.services.RatingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +17,15 @@ import java.util.UUID;
 @RequestMapping("api/v1/ratings")
 public class RatingRestController {
 
-    @Autowired
+    final
     RatingService ratingService;
 
+    public RatingRestController(RatingService ratingService) {
+        this.ratingService = ratingService;
+    }
+
     @PostMapping
-    public ResponseEntity<RatingResponseDTO> newRating(@RequestBody RatingDTO ratingDTO){
+    public ResponseEntity<RatingResponseDTO> newRating(@Valid @RequestBody RatingDTO ratingDTO){
             var novaAnalise = ratingService.addRating(ratingDTO);
             return  new ResponseEntity<>(novaAnalise, HttpStatus.CREATED);
     }
@@ -44,9 +49,15 @@ public class RatingRestController {
     }
 
     @GetMapping("{rid}")
-    public ResponseEntity<Rating> retrieveRatingByRid(@PathVariable("rid") UUID rid){
-        var ratingFound = ratingService.getRatingByRid(rid);
+    public ResponseEntity<RatingDTO> retrieveRatingByRid(@PathVariable("rid") UUID rid){
+        var ratingFound = ratingService.getRatingDtoByRid(rid);
         return new ResponseEntity<>(ratingFound,HttpStatus.OK);
+    }
+
+    @GetMapping("movie/{rid}")
+    public ResponseEntity<List> retrieveRatingByMovieRid(@PathVariable("rid") UUID rid){
+        List<RatingDTO> list = ratingService.listRatingsByMovieRID(rid);
+        return new ResponseEntity<>(list,HttpStatus.OK);
     }
 
 }

@@ -1,35 +1,58 @@
 import { config } from './config.js';
 
-var user_id;
+var user_id = localStorage.getItem("uuidUser");
+var notificationList = [];
+
 var email = localStorage.getItem('user');
 
-var notificationList = [];
+if (!email) {
+  getUserEmail().then(function(result) {
+    email = result;
+    localStorage.setItem('user', email); // Armazena o email no localStorage para chamadas futuras
+    // Chame getUserID ou outras funções que dependem do email aqui, se necessário
+    getUserID(email);
+  }).catch(function(error) {
+    console.error("Failed to fetch email:", error);
+  });
+} else {
+  // O email já existe, então chame getUserID diretamente
+  getUserID(email);
+}
+
+function getUserEmail() {
+  return new Promise(function(resolve, reject) {
+    $.ajax({
+      url: config.apiUrl + '/api/v1/auth/oauth',
+      method: 'GET',
+      contentType: 'application/json',
+      success: function(data) {
+        resolve(data); // Retorna o email no caso de sucesso
+      },
+      error: function(error) {
+        reject(error); // Retorna o erro no caso de falha
+      }
+    });
+  });
+}
 
 function getUserID(user) {
   $.ajax({
-    url: config.apiUrl + '/api/v1/auth/' + user,
+    url: config.apiUrl + '/api/v1/auth/' + user.trim(),
     method: 'GET',
     contentType: 'application/json',
-    headers: {
-      'Authorization': 'Bearer ' + config.apiKey
-    },
-    success: function (data) {
-      user_id = data;
+    success: function(data) {
       localStorage.setItem("uuidUser", data);
     },
-    error: function (error) {
-      console.error(error)
+    error: function(error) {
+      console.error(error);
     }
-  })
+  });
 }
 function retrieveNotifications(user_id) {
   $.ajax({
     url: config.apiUrl +'/api/v1/notice/' + localStorage.getItem('uuidUser'),
     method: 'GET',
     contentType: 'application/json',
-    headers: {
-      'Authorization': 'Bearer ' + config.apiKey
-    },
     success: function (data) {
       $('#notify').empty();
       notificationList = [];
@@ -86,9 +109,6 @@ $(document).on('click', 'button[id^="deleteNots"]',
       url: config.apiUrl +'/api/v1/notice/'+ user_id,
       method: 'POST',
       contentType: 'application/json',
-      headers: {
-        'Authorization': 'Bearer ' + config.apiKey
-      },
       success: function (data) {
         retrieveNotifications(user_id);
       },

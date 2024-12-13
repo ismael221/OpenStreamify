@@ -1,8 +1,10 @@
 package com.ismael.movies.services;
 
+import com.ismael.movies.enums.Provider;
 import com.ismael.movies.model.Exceptions.BadRequestException;
 import com.ismael.movies.model.Users.RegisterDTO;
 import com.ismael.movies.model.Users.User;
+import com.ismael.movies.model.Users.UserRole;
 import com.ismael.movies.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +18,17 @@ import java.util.UUID;
 
 @Service
 public class UserService {
-    @Autowired
+
+    final
     UserRepository userRepository;
 
-    @Autowired
+    final
     NotificationService notificationService;
+
+    public UserService(UserRepository userRepository, NotificationService notificationService) {
+        this.userRepository = userRepository;
+        this.notificationService = notificationService;
+    }
 
     public void createNewUser(RegisterDTO user){
         if (this.userRepository.findByLogin(user.login()) != null){
@@ -28,7 +36,7 @@ public class UserService {
         };
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.password());
-        User newUser = new User(user.login(),encryptedPassword,user.role());
+        User newUser = new User(user.login(),encryptedPassword,user.role(), user.name(), user.provider());
         this.userRepository.save(newUser);
 
         String mensagemPersonalizada = "🚨 *New user Alert* 🚨\n\n" +
@@ -82,5 +90,20 @@ public class UserService {
         }
 
         return false;
+    }
+
+    public void processOAuthPostLogin(String email,String name, String provider) {
+        User existUser = userRepository.findByLogin(email);
+        if (existUser == null) {
+            User newUser = new User();
+            newUser.setLogin(email);
+            newUser.setProvider(Provider.valueOf(provider.toUpperCase()));
+            newUser.setActive(true);
+            newUser.setRole(UserRole.USER);
+            newUser.setName(name);
+            newUser.setPassword(" ");
+
+            userRepository.save(newUser);
+        }
     }
 }
