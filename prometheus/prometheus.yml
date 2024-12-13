@@ -1,15 +1,19 @@
+global:
+  scrape_interval: 1m
+  evaluation_interval: 1m
+
 scrape_configs:
   - job_name: 'MoviesServerMetrics'
     metrics_path: '/actuator/prometheus'
-    scrape_interval: 3s
+    scrape_interval: 1m
     static_configs:
       - targets: ['192.168.100.12:8080']
         labels:
           application: 'Movies Application'
   - job_name: minio-job
-    scrape_interval: 3s
-    bearer_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9tZXRoZXVzIiwic3ViIjoiZUdWZkJtbDZ6N3Z1eDdPeG95REciLCJleHAiOjQ4ODM0MzU1MzR9.lyQvTnbiKkirNd0iLAKMVTW2OQG1HOo6u3BvM6Hg8lEtRqBENIbVRLtxfdLNt9WQAI_ZoeRIS8tWcU08L1PD7Q
+    bearer_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9tZXRoZXVzIiwic3ViIjoiUk9PVFVTRVIiLCJleHAiOjQ4ODQ0OTM0NzN9.M-RcXenpLiXRiyob8plLxAX95WHovoUM56nQcIzoA7yc73sQZ3Y-bL3NtYDXmYGnFm_w5PTDpa5jLIDU36NnJQ
     metrics_path: /minio/v2/metrics/cluster
+    scrape_interval: 1m
     scheme: http
     static_configs:
       - targets: ['192.168.100.12:9000']
@@ -21,4 +25,4 @@ alerting:
             - '192.168.100.12:9093'
 
 rule_files:
-    - minio-alerting.yml
+    - /etc/prometheus/minio-alerting.yml

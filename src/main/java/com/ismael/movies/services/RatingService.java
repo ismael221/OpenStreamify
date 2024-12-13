@@ -54,7 +54,7 @@ public class RatingService {
     }
 
     @Transactional
-    @CachePut
+    @CacheEvict(cacheNames = "ratings-list", allEntries = true)
     public RatingResponseDTO addRating(RatingDTO rating){
             Rating newRating = convertToEntity(rating);
             Movie movie = moviesService.getMovieByRID(rating.getMovie());
@@ -63,9 +63,9 @@ public class RatingService {
             Rating saved =  ratingRepository.save(newRating);
             return convertToResponseDTO(saved);
     }
-    //TODO FIX ISSUES WITH CACHE EVICT AS ITS NOT UPDATING THE LIST ON ADDING A NEW RATING
-    @Transactional
-    @Cacheable
+
+    @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "ratings-list")
     public List<RatingResponseDTO> listRatings(){
         List<Rating> ratings = ratingRepository.findAll();
         List<RatingResponseDTO> ratingsList = ratings
@@ -75,21 +75,36 @@ public class RatingService {
         return ratingsList;
     }
 
-    @Transactional
-    @Cacheable
-    public List<Rating> listRatingsByMovieRID(UUID movieId){
+    @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "ratings-list")
+    public List<RatingDTO> listRatingsByMovieRID(UUID movieId){
          List<Rating> ratings =  ratingRepository.findByMovie_rid(movieId);
-         return ratings;
+         return ratings.stream()
+                 .map(RatingDTO::from)
+                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Cacheable
+    public RatingDTO getRatingDtoByRid(UUID rid){
+        Rating rating = ratingRepository.findByRidEquals(rid).orElseThrow();
+        RatingDTO ratingDTO = RatingDTO.builder()
+                .user(rating.getUser())
+                .comment(rating.getComment())
+                .createdAt(rating.getCreatedAt())
+                .rating(rating.getRating())
+                .rid(rating.getRid())
+                .movie(rating.getMovie().getRid())
+                .build();
+          return ratingDTO;
+    }
+
     public Rating getRatingByRid(UUID rid){
-          return  ratingRepository.findByRidEquals(rid).orElseThrow();
+        return ratingRepository.findByRidEquals(rid).orElseThrow();
     }
 
     @Transactional
-    @CachePut
+    @CachePut(cacheNames = "ratings-list",key = "#rid")
     public Rating updateRating(UUID rid, Rating analise){
             Rating a = getRatingByRid(rid);
             a.setMovie(analise.getMovie());
@@ -100,7 +115,7 @@ public class RatingService {
     }
 
     @Transactional
-    @CacheEvict(allEntries = true)
+    @CacheEvict(cacheNames = "ratings-list",key = "#rid",allEntries = true)
     public void deleteRating(UUID rid){
         ratingRepository.deleteByRid(rid);
     }

@@ -20,7 +20,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@CacheConfig(cacheNames = "movies")
+@Cacheable(cacheNames = "movies")
 public class MoviesService {
     @Autowired
     MovieRepository movieRepository;
@@ -40,6 +40,7 @@ public class MoviesService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "movies-list", allEntries = true)
     public MovieDTO newMovie(MovieDTO movie){
          Movie newMovie =  convertToEntity(movie);
          MovieDTO movieFound = convertToDto(movieRepository.save(newMovie));
@@ -55,7 +56,7 @@ public class MoviesService {
     }
 
     @Transactional
-    @CachePut
+    @CachePut(cacheNames = "movies-list", key = "#movieRid")
     public MovieDTO updateMovie(UUID movieRid, MovieDTO movieRequest){
             Movie movie = getMovieByRID(movieRid);
             movie.setGenres(movieRequest.getGenres());
@@ -70,7 +71,7 @@ public class MoviesService {
     }
 
     @Transactional
-    @CacheEvict(allEntries = true,key = "#movieRid")
+    @CacheEvict(cacheNames = "movies-list",allEntries = true,key = "#movieRid")
     public void deleteMovie(UUID movieRid){
             Movie movie = getMovieByRID(movieRid);
             movieRepository.delete(movie);

@@ -36,8 +36,6 @@ public class MinioUploadConsumer {
     @Autowired
     MoviesService moviesService;
     @Autowired
-    UserService userService;
-    @Autowired
     NotificationService notificationService;
 
     private static final Logger logger = LoggerFactory.getLogger(MinioUploadConsumer.class);
@@ -88,11 +86,26 @@ public class MinioUploadConsumer {
 
             notificationService.enviarMensagemTelegram(mensagem);
             notificationService.notifyAllUsers("Novo filme disponivel: "+ newMovie.getTitle());
-            cleanUpLocalFiles(tempDir);
+            String rawDir = System.getProperty("java.io.tmpdir") + "/raw/" + ridFilme + "/";
+            cleanUpLocalFragmentFiles(tempDir);
+            cleanUpLocalRawFiles(rawDir);
         }
     }
 
-    private void cleanUpLocalFiles(String tempDir) throws IOException {
+    private void cleanUpLocalFragmentFiles(String tempDir) throws IOException {
+        File dir = new File(tempDir);
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    Files.deleteIfExists(file.toPath());
+                }
+            }
+        }
+        Files.deleteIfExists(Paths.get(tempDir));  // Remove o diretório temporário
+    }
+
+    private void cleanUpLocalRawFiles(String tempDir) throws IOException {
         File dir = new File(tempDir);
         File[] files = dir.listFiles();
         if (files != null) {

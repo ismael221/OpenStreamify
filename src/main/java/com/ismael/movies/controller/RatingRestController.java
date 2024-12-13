@@ -45,9 +45,15 @@ public class RatingRestController {
     }
 
     @GetMapping("{rid}")
-    public ResponseEntity<Rating> retrieveRatingByRid(@PathVariable("rid") UUID rid){
-        var ratingFound = ratingService.getRatingByRid(rid);
+    public ResponseEntity<RatingDTO> retrieveRatingByRid(@PathVariable("rid") UUID rid){
+        var ratingFound = ratingService.getRatingDtoByRid(rid);
         return new ResponseEntity<>(ratingFound,HttpStatus.OK);
+    }
+
+    @GetMapping("movie/{rid}")
+    public ResponseEntity<List> retrieveRatingByMovieRid(@PathVariable("rid") UUID rid){
+        List<RatingDTO> list = ratingService.listRatingsByMovieRID(rid);
+        return new ResponseEntity<>(list,HttpStatus.OK);
     }
 
 }

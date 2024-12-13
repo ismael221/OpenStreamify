@@ -87,6 +87,7 @@ public class NotificationController {
     @PostMapping("/send_alert")
     public String sendAlert(@RequestBody String alertData) {
         System.out.println(alertData);
+        notificationService.enviarMensagemTelegram(alertData);
         rabbitTemplate.convertAndSend(RabbitMQConfig.ALERT_QUEUE, alertData);
         return "Alert sent to RabbitMQ";
     }
