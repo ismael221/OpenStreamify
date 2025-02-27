@@ -83,7 +83,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/api/config").permitAll()
                         .requestMatchers(HttpMethod.GET,"/images/*").permitAll()
                         .requestMatchers(HttpMethod.GET,"/actuator/prometheus").permitAll()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
                         formLogin
