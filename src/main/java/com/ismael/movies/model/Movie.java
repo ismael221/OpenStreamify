@@ -28,12 +28,6 @@ public class Movie implements Serializable {
     private String title;
     @Column(nullable = false,columnDefinition = "MEDIUMTEXT")
     private String synopsis;
-    @ElementCollection(targetClass = MovieGenre.class) // Indica uma coleção de enumerações
-    @Enumerated(EnumType.STRING) // Armazena os enums como strings no banco
-    @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
-    @Column(nullable = false,name = "genre")
-    @Fetch(FetchMode.JOIN)
-    private Set<MovieGenre> genres;
     private Date released;
     @UuidGenerator
     @JdbcTypeCode(Types.VARCHAR)
@@ -42,6 +36,13 @@ public class Movie implements Serializable {
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private List<Rating> review;
+    @ManyToMany
+    @JoinTable(
+            name = "MovieAndSeriesGenre",
+            joinColumns = @JoinColumn(name = "movie_rid"),
+            inverseJoinColumns = @JoinColumn(name = "genre_rid")
+    )
+    private Set<Genre> genres;
     private String backgroundImgUrl;
     private String coverImgUrl;
     private String trailerUrl;

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class MovieDTO implements Serializable {
     @NotNull(message = "Movie synopsis cannot be null")
     private String synopsis;
     @NotNull(message = "Movie genres cannot be null")
-    private Set<MovieGenre> genres;
+    private List<UUID> genres;
     private Date released;
     private UUID rid;
     private String backgroundImgUrl;

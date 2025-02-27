@@ -3,9 +3,9 @@ spring:
     ansi:
       enabled: ALWAYS
   datasource:
-    username: root
-    password: ismael
-    url: jdbc:mysql://localhost:3306/movies_dev2
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE}
   jpa:
     properties:
       hibernate:
@@ -35,7 +35,7 @@ spring:
   redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
-      time-to-live: 1h
+      time-to-live: ${REDIS_TIME_TO_LIVE}
   rabbitmq:
     host: ${RABBIT_HOST}
     port: ${RABBIT_PORT}

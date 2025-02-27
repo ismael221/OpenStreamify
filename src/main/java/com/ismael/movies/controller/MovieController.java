@@ -125,8 +125,9 @@ public class MovieController {
         public String detailMovie(@PathVariable("rid") String movie_RID, Model model){
                 UUID uuid = UUID.fromString(movie_RID); // Checks if it is a valid UUID
                 List<String> genres = Arrays.stream(MovieGenre.values())
-                        .map(Enum::name)
+                        .map(MovieGenre::getName)
                         .collect(Collectors.toList());
+                genres.forEach(System.out::println);
                 model.addAttribute("genres", genres);
                 Movie  movieDetails = moviesService.getMovieByRID(uuid);
                 model.addAttribute("details",movieDetails);

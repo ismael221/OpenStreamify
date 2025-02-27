@@ -1,31 +1,49 @@
 package com.ismael.movies.controller;
 
-import com.ismael.movies.enums.MovieGenre;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+import com.ismael.movies.DTO.GenreDTO;
+import com.ismael.movies.model.Genre;
+import com.ismael.movies.services.GenreService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("api/v1/genres")
 public class GenreController {
-    @GetMapping("/movie-genres")
-    public List<String> getMovieGenres() {
-        // Convert enum values into a list of strings
-        return Arrays.stream(MovieGenre.values())
-                .map(Enum::name) //Gets the name of each enum
-                .collect(Collectors.toList());
+
+    private final GenreService genreService;
+
+
+    public GenreController(GenreService genreService) {
+        this.genreService = genreService;
     }
 
-    //TODO fix to list the genre of only the specified film
-    @GetMapping
-    public List<String> getMovieGenreEqualsTo(String genre) {
-        // Convert enum values into a list of strings
-        return Arrays.stream(MovieGenre.values())
-                .map(Enum::name) // Gets the name of each enum
-                .collect(Collectors.toList());
+    @PostMapping
+    public ResponseEntity<GenreDTO> createNewGenre(@RequestBody Genre genre) {
+        Genre saved = genreService.createNewGenre(genre);
+        GenreDTO dto = GenreDTO.convertToDTO(saved);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
+
+    @GetMapping("/{rid}")
+    public ResponseEntity<GenreDTO> getGenreByRid(@PathVariable UUID rid){
+        Genre found = genreService.retrieveGenreById(rid).orElseThrow();
+        GenreDTO dto = GenreDTO.convertToDTO(found);
+        return new ResponseEntity<>(dto,HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<GenreDTO>> findAll(){
+        List<Genre> list = genreService.listAllGenres();
+         List<GenreDTO> newList = list.stream().map(GenreDTO::convertToDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(newList,HttpStatus.OK);
+    }
+
 }

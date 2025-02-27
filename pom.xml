@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ismael</groupId>
-	<artifactId>movie</artifactId>
+	<artifactId>openstreamify</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>movie</name>
 	<description>Projeto da atividade 1 senax</description>
