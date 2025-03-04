@@ -3,6 +3,7 @@ services:
   # Container da aplicação Spring Boot
   spring-app:
     build: .
+    container_name: "OpenStreamify"
     ports:
       - "8080:8080"
     volumes:
@@ -10,7 +11,7 @@ services:
       - ./logs:/app/logs
       - ./uploads:/app/uploads
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
       redis:
         condition: service_completed_successfully
@@ -21,7 +22,7 @@ services:
       minio:
         condition: service_healthy
       rabbitmq:
-          condition: service_healthy
+        condition: service_healthy
     env_file:
       - .env
     environment:
@@ -32,18 +33,22 @@ services:
       - SMTP_PORT=${SMTP_PORT}
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASSWORD=${SMTP_PASSWORD}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
-      - RABBIT_HOST=${RABBIT_HOST}
-      - RABBIT_PORT=${RABBIT_PORT}
-      - RABBIT_USERNAME=${RABBIT_USERNAME}
-      - RABBIT_PASSWORD=${RABBIT_PASSWORD}
-      - MINIO_ENDPOINT=%{MINIO_ENDPOINT}
+      - REDIS_HOST=host.docker.internal
+      - REDIS_PORT=6380
+      - RABBIT_HOST=host.docker.internal
+      - RABBIT_PORT=5672
+      - RABBIT_USERNAME=guest
+      - RABBIT_PASSWORD=guest
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_USER=${POSTGRESQL_USER}
+      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
+      - MINIO_ENDPOINT=http://host.docker.internal:9000
       - MINIO_ACCESSKEY=${MINIO_ACCESSKEY}
       - MINIO_SECRETKEY=${MINIO_SECRETKEY}
       - MINIO_BUCKET=${MINIO_BUCKET}
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - SPRING_DATASOURCE_URL= jdbc:postgresql://postgres:5432/movies_dev
     networks:
       - app-network
     deploy:
@@ -89,15 +94,16 @@ services:
     networks:
       - app-network
 
-  # MySQL
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
+  # PostgreSQL
+  postgres:
+    image: postgres:17
+    container_name: postgres
     environment:
-      MYSQL_ROOT_PASSWORD: ismael
-      MYSQL_DATABASE: movies_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ismael
+      POSTGRES_DB: movies_dev
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d movies_dev" ]
       interval: 30s
       timeout: 10s
       retries: 5

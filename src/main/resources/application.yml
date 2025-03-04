@@ -3,15 +3,15 @@ spring:
     ansi:
       enabled: ALWAYS
   datasource:
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
-    url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE}
+    username: ${POSTGRESQL_USER}
+    password: ${POSTGRESQL_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/${POSTGRESQL_DATABASE}
+    driver-class-name: org.postgresql.Driver
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
       naming:
@@ -75,10 +75,10 @@ management:
 
 logging:
   level:
-    root: DEBUG
+    root: ERROR
     com.ismael.movie: ERROR
     org.hibernate.SQL: ERROR
-    org.springframework.web: DEBUG
+    org.springframework.web: ERROR
 
 server:
   tomcat:

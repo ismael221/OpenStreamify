@@ -4,6 +4,7 @@
 [![Languages](https://img.shields.io/badge/language-Java-orange.svg)](https://www.java.com/)
 [![Framework](https://img.shields.io/badge/framework-Spring%20Boot-green.svg)](https://spring.io/projects/spring-boot)
 [![Docker](https://img.shields.io/badge/Docker-compatible-blue.svg)](https://www.docker.com/)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/ismael221/OpenStreamify/releases)
 
 
 ## Description
@@ -40,7 +41,7 @@ This is a self-hosted movie streaming platform developed in **Spring Boot** for 
 - **Thymeleaf**: Template engine to render HTML pages.
 - **ModelMapper**: For entity-to-DTO conversion.
 - **Docker**: For containerizing the application and monitoring services.
-- **MySQL**: Relational database used for storing movies and users data.
+- **PostgreSQL**: Relational database used for storing movies and users data.
 - **Redis**: Caching system for optimizing queries.
 - **RabbitMQ**: Messaging system for inter-service communication.
 - **Grafana**: Monitoring and analytics platform.
@@ -71,9 +72,9 @@ This is a self-hosted movie streaming platform developed in **Spring Boot** for 
    SERVER_PORT=8080
    
    # 🛢️ Database
-   MYSQL_PASSWORD=your_mysql_password_here
-   MYSQL_USER=root
-   MYSQL_DATABASE=your_database_name_here
+    POSTGRESQL_PASSWORD=your_postgres_password_here
+    POSTGRESQL_USER=postgres
+    POSTGRESQL_DATABASE=your_database_name_here
    
    # 🔴 Redis
    REDIS_HOST=localhost

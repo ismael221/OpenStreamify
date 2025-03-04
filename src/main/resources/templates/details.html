@@ -33,13 +33,14 @@
           <div class="row">
             <div class="col-md-6">
               <h1 class="movie-details-title">[[${details.title}]]</h1>
-              <p
+                <!--
+                  <p
                 class="movie-genre"
                 th:each="genre : ${details.genres}"
                 style="display: inline-block"
               >
                 <span class="badge" th:text="${genre}">Genre name</span>
-              </p>
+              </p> -->
               <div class="movie-actions">
                 <a th:href="@{'/play/'+ ${details.rid}}">
                   <button
