@@ -111,7 +111,7 @@ public class MovieController {
                 String serverUrl = this.serverUrl;
                 model.addAttribute("media", media);
                 model.addAttribute("config",serverUrl);
-                return "assistir";  // Nome do template Thymeleaf
+                return "watch";  // Nome do template Thymeleaf
         }
 
 

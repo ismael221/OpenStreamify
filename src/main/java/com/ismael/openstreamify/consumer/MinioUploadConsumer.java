@@ -64,7 +64,7 @@ public class MinioUploadConsumer {
     private void uploadFilesToMinIO(String tempDir, String ridFilme) throws Exception {
         File dir = new File(tempDir);
         System.out.println(dir);
-        File[] files = dir.listFiles((dir1, name) -> name.endsWith(".ts") || name.endsWith(".m3u8"));
+        File[] files = dir.listFiles((dir1, name) -> name.endsWith(".ts") || name.endsWith(".m3u8") || name.endsWith(".vtt") || name.endsWith(".srt"));
         System.out.printf("Trying to upload ..." );
         if (files != null) {
             for (File file : files) {

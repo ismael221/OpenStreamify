@@ -42,6 +42,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET,"/live").permitAll()
                         .requestMatchers(HttpMethod.GET,"/js/*").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/manifest.json").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/screenshots/*").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/icons/*").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/service-worker.js").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/notice/send_alert").permitAll()
                         .requestMatchers(HttpMethod.GET,"/oauth/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/oauth/**").permitAll()
