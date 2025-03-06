@@ -165,15 +165,15 @@ body {
 }
 
       .tabs-container {
-            width: 90%;
-            max-width: 800px;
             margin: auto;
-        }
+      }
         .tabs {
             display: flex;
             justify-content: space-around;
             border-bottom: 2px solid #444;
             margin-top: 10px;
+                margin-left: 30px;
+                margin-right: 30px;
         }
         .tab {
             padding: 10px 20px;
@@ -194,7 +194,6 @@ body {
             display: none;
             padding: 20px;
             text-align: left;
-            background-color: #222;
             border-radius: 8px;
             margin-top: 10px;
         }

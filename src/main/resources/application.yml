@@ -93,5 +93,10 @@ minio:
   bucket:
     stream: ${MINIO_BUCKET}
 
+app:
+  security:
+    public-key: ${PUBLIC_VAPID_KEY}
+    private-key: ${PRIVATE_VAPID_KEY}
+
 TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
 TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}

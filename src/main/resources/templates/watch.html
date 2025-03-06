@@ -17,7 +17,7 @@
             class="span-media-title">[[${media.title}]]</span></a>
 </div>
 <div class="video-container">
-    <video id="player" class="plyr" controls autoplay playsinline>
+    <video id="player" class="plyr" th:attr="poster=${media.backgroundImgUrl}" controls autoplay playsinline>
         <source th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" type="application/x-mpegURL"/>
         <track kind="subtitles" th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" srclang="pt"
                label="Português" default/>
