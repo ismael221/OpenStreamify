@@ -2,7 +2,7 @@ package com.ismael.openstreamify.services;
 
 import com.ismael.openstreamify.DTO.RatingDTO;
 import com.ismael.openstreamify.DTO.RatingResponseDTO;
-import com.ismael.openstreamify.model.Movie;
+import com.ismael.openstreamify.model.Video;
 import com.ismael.openstreamify.model.Rating;
 import com.ismael.openstreamify.repository.RatingRepository;
 import org.modelmapper.ModelMapper;
@@ -30,7 +30,7 @@ public class RatingService {
     ModelMapper modelMapper;
 
     final
-    MoviesService moviesService;
+    VideosService videosService;
 
     public RatingDTO convertToDto(Rating rating){
         return modelMapper.map(rating, RatingDTO.class);
@@ -45,18 +45,18 @@ public class RatingService {
     }
 
 
-    public RatingService(RatingRepository ratingRepository, ModelMapper modelMapper, MoviesService moviesService) {
+    public RatingService(RatingRepository ratingRepository, ModelMapper modelMapper, VideosService videosService) {
         this.ratingRepository = ratingRepository;
         this.modelMapper = modelMapper;
-        this.moviesService = moviesService;
+        this.videosService = videosService;
     }
 
     @Transactional
     @CacheEvict(cacheNames = "ratings-list", allEntries = true)
     public RatingResponseDTO addRating(RatingDTO rating){
             Rating newRating = convertToEntity(rating);
-            Movie movie = moviesService.getMovieByRID(rating.getMovie());
-            newRating.setMovie(movie);
+            Video video = videosService.getMovieByRID(rating.getMovie());
+            newRating.setVideo(video);
             newRating.setCreatedAt(new Date());
             Rating saved =  ratingRepository.save(newRating);
             return convertToResponseDTO(saved);
@@ -76,7 +76,7 @@ public class RatingService {
     @Transactional(readOnly = true)
     @Cacheable(cacheNames = "ratings-list")
     public List<RatingDTO> listRatingsByMovieRID(UUID movieId){
-         List<Rating> ratings =  ratingRepository.findByMovie_rid(movieId);
+         List<Rating> ratings =  ratingRepository.findByVideo_rid(movieId);
          return ratings.stream()
                  .map(RatingDTO::from)
                  .collect(Collectors.toList());
@@ -92,7 +92,7 @@ public class RatingService {
                 .createdAt(rating.getCreatedAt())
                 .rating(rating.getRating())
                 .rid(rating.getRid())
-                .movie(rating.getMovie().getRid())
+                .movie(rating.getVideo().getRid())
                 .build();
           return ratingDTO;
     }
@@ -105,7 +105,7 @@ public class RatingService {
     @CachePut(cacheNames = "ratings-list",key = "#rid")
     public Rating updateRating(UUID rid, Rating analise){
             Rating a = getRatingByRid(rid);
-            a.setMovie(analise.getMovie());
+            a.setVideo(analise.getVideo());
             a.setRating(analise.getRating());
             a.setComment(analise.getComment());
             ratingRepository.save(a);

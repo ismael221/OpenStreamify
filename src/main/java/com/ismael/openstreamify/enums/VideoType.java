@@ -1,6 +1,6 @@
 package com.ismael.openstreamify.enums;
 
-public enum MediaType {
+public enum VideoType {
     MOVIE,
     SERIES,
     TVSHOW

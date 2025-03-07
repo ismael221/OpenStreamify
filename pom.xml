@@ -11,7 +11,7 @@
     <groupId>com.ismael</groupId>
     <artifactId>openstreamify</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>movie</name>
+    <name>video</name>
     <description>Projeto da atividade 1 senax</description>
     <properties>
         <java.version>17</java.version>

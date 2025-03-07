@@ -26,6 +26,6 @@ public class Genre {
     private Date createdAt;
     private Date updatedAt;
     @ManyToMany(mappedBy = "genres")
-    private Set<Movie> movies;
+    private Set<Video> videos;
 
 }

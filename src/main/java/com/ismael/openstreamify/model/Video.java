@@ -1,5 +1,6 @@
 package com.ismael.openstreamify.model;
 
+import com.ismael.openstreamify.enums.VideoType;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
@@ -14,10 +15,10 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "movies", uniqueConstraints = {
+@Table(name = "videos", uniqueConstraints = {
         @UniqueConstraint(columnNames = "rid")
 })
-public class Movie implements Serializable {
+public class Video implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +36,16 @@ public class Movie implements Serializable {
     @Column(name = "rid", nullable = false, updatable = false, unique = true)
     private UUID rid;
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "video", cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private List<Rating> review;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private VideoType videoType;
+
+    private Date releaseDate;
+    private Date endDate;
 
     @ManyToMany
     @JoinTable(
@@ -51,5 +59,8 @@ public class Movie implements Serializable {
     private String coverImgUrl;
     private String trailerUrl;
     private String type;
+
+    @OneToMany(mappedBy = "series", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Episode> episodes;
 }
 

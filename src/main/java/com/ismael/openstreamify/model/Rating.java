@@ -24,7 +24,7 @@ public class Rating implements Serializable {
     @ManyToOne
     @JoinColumn(name = "movie_rid", nullable = false)
     @JsonBackReference
-    private Movie movie;
+    private Video video;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String comment;

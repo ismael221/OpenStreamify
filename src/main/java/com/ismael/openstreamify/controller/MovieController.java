@@ -1,11 +1,10 @@
 package com.ismael.openstreamify.controller;
 
-import com.ismael.openstreamify.DTO.MovieDTO;
-import com.ismael.openstreamify.enums.MovieGenre;
+import com.ismael.openstreamify.DTO.VideoDTO;
 import com.ismael.openstreamify.infra.security.TokenService;
-import com.ismael.openstreamify.model.Movie;
+import com.ismael.openstreamify.model.Video;
 import com.ismael.openstreamify.model.Users.User;
-import com.ismael.openstreamify.services.MoviesService;
+import com.ismael.openstreamify.services.VideosService;
 import com.ismael.openstreamify.services.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,14 +18,13 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MovieController {
 
         final
-        MoviesService moviesService;
+        VideosService videosService;
 
         final
         TokenService tokenService;
@@ -37,8 +35,8 @@ public class MovieController {
         @Value("${server.url}")
         private String serverUrl;
 
-        public MovieController(MoviesService moviesService, TokenService tokenService, UserService userService) {
-                this.moviesService = moviesService;
+        public MovieController(VideosService videosService, TokenService tokenService, UserService userService) {
+                this.videosService = videosService;
                 this.tokenService = tokenService;
                 this.userService = userService;
         }
@@ -77,10 +75,10 @@ public class MovieController {
         @GetMapping("/")
         public String homePage(Model model) {
 
-                List<MovieDTO> moviesList = moviesService.listAllMovies();
+                List<VideoDTO> moviesList = videosService.listAllMovies();
 
                 // Partition the movie list manually
-                List<List<MovieDTO>> movieChunks = partitionList(moviesList, 4);
+                List<List<VideoDTO>> movieChunks = partitionList(moviesList, 4);
                 model.addAttribute("moviesChunks", movieChunks);
                 return "index";
         }
@@ -99,7 +97,7 @@ public class MovieController {
         @GetMapping("/list")
         public String listAllMovies(Model model){
              //   model.addAttribute("css",theme);
-                model.addAttribute("moviesList",moviesService.listAllMovies());
+                model.addAttribute("moviesList", videosService.listAllMovies());
                 return "movies";
         }
 
@@ -107,7 +105,7 @@ public class MovieController {
         @GetMapping("/play/{rid}")
         public String watchMovie(@PathVariable("rid") String mediaRID, Model model) {
                 UUID uuid = UUID.fromString(mediaRID); // Checks if it is a valid UUID
-                Movie media = moviesService.getMovieByRID(uuid);
+                Video media = videosService.getMovieByRID(uuid);
                 String serverUrl = this.serverUrl;
                 model.addAttribute("media", media);
                 model.addAttribute("config",serverUrl);
@@ -118,13 +116,13 @@ public class MovieController {
         @GetMapping("/details/{rid}")
         public String detailMovie(@PathVariable("rid") String movie_RID, Model model){
                 UUID uuid = UUID.fromString(movie_RID); // Checks if it is a valid UUID
-//                List<String> genres = Arrays.stream(MovieGenre.values())
-//                        .map(MovieGenre::getName)
+//                List<String> genres = Arrays.stream(Genre.values())
+//                        .map(Genre::getName)
 //                        .collect(Collectors.toList());
 //                genres.forEach(System.out::println);
 //                model.addAttribute("genres", genres);
-                Movie  movieDetails = moviesService.getMovieByRID(uuid);
-                model.addAttribute("details",movieDetails);
+                Video videoDetails = videosService.getMovieByRID(uuid);
+                model.addAttribute("details", videoDetails);
                 return "details";
         }
 

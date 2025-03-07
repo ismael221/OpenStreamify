@@ -1,6 +1,6 @@
 package com.ismael.openstreamify.enums;
 
-public enum MovieGenre {
+public enum Genre {
 
     ACTION("Action"),
     ADVENTURE("Adventure"),
@@ -21,7 +21,7 @@ public enum MovieGenre {
 
     String name;
 
-    MovieGenre(String name) {
+    Genre(String name) {
         this.name = name;
     }
 

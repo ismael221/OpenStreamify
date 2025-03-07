@@ -1,7 +1,7 @@
 package com.ismael.openstreamify.DTO;
 
 import com.ismael.openstreamify.model.Genre;
-import com.ismael.openstreamify.model.Movie;
+import com.ismael.openstreamify.model.Video;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,9 +29,8 @@ public class GenreDTO {
         genreDTO.setCreatedAt(genre.getCreatedAt());
         genreDTO.setUpdatedAt(genre.getUpdatedAt());
 
-        // Mapeando apenas os IDs dos filmes
-        Set<UUID> movieIds = genre.getMovies().stream()
-                .map(Movie::getRid) // Assumindo que Movie também tem um campo rid
+        Set<UUID> movieIds = genre.getVideos().stream()
+                .map(Video::getRid)
                 .collect(Collectors.toSet());
         genreDTO.setMovieIds(movieIds);
 

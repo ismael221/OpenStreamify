@@ -2,8 +2,8 @@ package com.ismael.openstreamify.consumer;
 
 import com.ismael.openstreamify.config.MinioConfig;
 import com.ismael.openstreamify.config.RabbitMQConfig;
-import com.ismael.openstreamify.model.Movie;
-import com.ismael.openstreamify.services.MoviesService;
+import com.ismael.openstreamify.model.Video;
+import com.ismael.openstreamify.services.VideosService;
 import com.ismael.openstreamify.services.NotificationService;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
@@ -31,16 +31,16 @@ public class MinioUploadConsumer {
     final
     MinioConfig minioConfig;
     final
-    MoviesService moviesService;
+    VideosService videosService;
     final
     NotificationService notificationService;
 
     private static final Logger logger = LoggerFactory.getLogger(MinioUploadConsumer.class);
 
-    public MinioUploadConsumer(MinioClient minioClient, MinioConfig minioConfig, MoviesService moviesService, NotificationService notificationService) {
+    public MinioUploadConsumer(MinioClient minioClient, MinioConfig minioConfig, VideosService videosService, NotificationService notificationService) {
         this.minioClient = minioClient;
         this.minioConfig = minioConfig;
-        this.moviesService = moviesService;
+        this.videosService = videosService;
         this.notificationService = notificationService;
     }
 
@@ -82,14 +82,14 @@ public class MinioUploadConsumer {
                     logger.info("File {} sent to MinIO.", file.getName());
                 }
             }
-            Movie newMovie = moviesService.getMovieByRID(UUID.fromString(ridFilme));
+            Video newVideo = videosService.getMovieByRID(UUID.fromString(ridFilme));
             String mensagem = "🎬 *Processamento de Filme Concluído*\n\n" +
-                    "O filme *" + newMovie.getTitle() + "* (ID: " + newMovie.getRid() + ") foi tratado com sucesso.\n" +
+                    "O filme *" + newVideo.getTitle() + "* (ID: " + newVideo.getRid() + ") foi tratado com sucesso.\n" +
                     "Data de conclusão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
                     "✔️ O arquivo está pronto para uso.";
 
             notificationService.enviarMensagemTelegram(mensagem);
-            notificationService.notifyAllUsers("Novo filme disponivel: "+ newMovie.getTitle());
+            notificationService.notifyAllUsers("Novo filme disponivel: "+ newVideo.getTitle());
             String rawDir = System.getProperty("java.io.tmpdir") + "/raw/" + ridFilme + "/";
             cleanUpLocalFragmentFiles(tempDir);
             cleanUpLocalRawFiles(rawDir);

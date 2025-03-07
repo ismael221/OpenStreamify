@@ -9,7 +9,7 @@
 
 ## Description
 
-This is a self-hosted movie streaming platform developed in **Spring Boot** for movie and series management and streaming. The application includes features like JWT-based authentication, OAuth2 login, **Spring MVC** for handling HTTP requests, and an access control system based on user permissions. Additionally, it supports movie and series streaming using **HLS (HTTP Live Streaming)**, notifications when a new movie or series is added, and a one-time password (OTP) system for secure password recovery.
+This is a self-hosted video streaming platform developed in **Spring Boot** for video and series management and streaming. The application includes features like JWT-based authentication, OAuth2 login, **Spring MVC** for handling HTTP requests, and an access control system based on user permissions. Additionally, it supports video and series streaming using **HLS (HTTP Live Streaming)**, notifications when a new video or series is added, and a one-time password (OTP) system for secure password recovery.
 
 ### Features
 
@@ -46,7 +46,7 @@ This is a self-hosted movie streaming platform developed in **Spring Boot** for 
 - **RabbitMQ**: Messaging system for inter-service communication.
 - **Grafana**: Monitoring and analytics platform.
 - **Prometheus**: Monitoring and alerting toolkit.
-- **minIO**: Object storage used to store movie files.
+- **minIO**: Object storage used to store video files.
 
 ## System Requirements
 
@@ -144,9 +144,9 @@ This is a self-hosted movie streaming platform developed in **Spring Boot** for 
 ### Movies
 
 - **GET** `/api/v1/movies`: Lists all movies.
-- **POST** `/api/v1/movies`: Adds a new movie.
-- **GET** `/api/v1/movies/{rid_movie}`: Retrieves details of a specific movie.
-- **POST** `/api/v1/ratings`: Adds a review for a movie.
+- **POST** `/api/v1/movies`: Adds a new video.
+- **GET** `/api/v1/movies/{rid_movie}`: Retrieves details of a specific video.
+- **POST** `/api/v1/ratings`: Adds a review for a video.
 
 ### Streaming
 
