@@ -84,7 +84,7 @@ public class MinioUploadConsumer {
             }
             Video newVideo = videosService.getMovieByRID(UUID.fromString(ridFilme));
             String mensagem = "🎬 *Processamento de Filme Concluído*\n\n" +
-                    "O filme *" + newVideo.getTitle() + "* (ID: " + newVideo.getRid() + ") foi tratado com sucesso.\n" +
+                    "O filme *" + newVideo.getTitle() + "* (ID: " + newVideo.getId() + ") foi tratado com sucesso.\n" +
                     "Data de conclusão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n" +
                     "✔️ O arquivo está pronto para uso.";
 

@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface RatingRepository extends JpaRepository<Rating,Integer> {
-    List<Rating> findByVideo_rid(UUID Rid);
+    List<Rating> findByVideo_id(UUID Rid);
     Optional<Rating> findByRidEquals(UUID rid);
 
     @Modifying

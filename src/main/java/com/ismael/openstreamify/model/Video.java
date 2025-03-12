@@ -16,13 +16,14 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "videos", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "rid")
+        @UniqueConstraint(columnNames = "id")
 })
 public class Video implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator
+    @Column(unique = true, nullable = false, updatable = false)
+    private UUID id;
 
     @Column(nullable = false)
     private String title;
@@ -31,10 +32,6 @@ public class Video implements Serializable {
     private String synopsis;
 
     private Date released;
-
-    @UuidGenerator
-    @Column(name = "rid", nullable = false, updatable = false, unique = true)
-    private UUID rid;
 
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
@@ -58,7 +55,6 @@ public class Video implements Serializable {
     private String backgroundImgUrl;
     private String coverImgUrl;
     private String trailerUrl;
-    private String type;
 
     @OneToMany(mappedBy = "series", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Episode> episodes;

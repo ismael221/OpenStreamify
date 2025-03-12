@@ -32,7 +32,7 @@ public class RatingDTO implements Serializable {
                 .createdAt(rating.getCreatedAt())
                 .rating(rating.getRating())
                 .rid(rating.getRid())
-                .movie(rating.getVideo().getRid())
+                .movie(rating.getVideo().getId())
                 .build();
         return ratingDTO;
     }

@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Integer> {
-    Optional<Video> getMoviesByRidIs(UUID rid);
+    Optional<Video> findByIdIs(UUID rid);
 }

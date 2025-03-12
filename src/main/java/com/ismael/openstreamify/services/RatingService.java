@@ -76,7 +76,7 @@ public class RatingService {
     @Transactional(readOnly = true)
     @Cacheable(cacheNames = "ratings-list")
     public List<RatingDTO> listRatingsByMovieRID(UUID movieId){
-         List<Rating> ratings =  ratingRepository.findByVideo_rid(movieId);
+         List<Rating> ratings =  ratingRepository.findByVideo_id(movieId);
          return ratings.stream()
                  .map(RatingDTO::from)
                  .collect(Collectors.toList());
@@ -92,7 +92,7 @@ public class RatingService {
                 .createdAt(rating.getCreatedAt())
                 .rating(rating.getRating())
                 .rid(rating.getRid())
-                .movie(rating.getVideo().getRid())
+                .movie(rating.getVideo().getId())
                 .build();
           return ratingDTO;
     }

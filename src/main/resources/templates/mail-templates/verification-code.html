@@ -70,7 +70,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img th:src="@{ ${baseUrl} + '/images/logo.png'}" alt="Logo">
+            <img th:src="|cid:${logoImage}|" alt="Logo">
         </div>
         <div class="content">
             <h1 th:text="#{main-text-code}">Código de Verificação</h1>

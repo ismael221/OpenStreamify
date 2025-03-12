@@ -30,7 +30,7 @@ public class GenreDTO {
         genreDTO.setUpdatedAt(genre.getUpdatedAt());
 
         Set<UUID> movieIds = genre.getVideos().stream()
-                .map(Video::getRid)
+                .map(Video::getId)
                 .collect(Collectors.toSet());
         genreDTO.setMovieIds(movieIds);
 
