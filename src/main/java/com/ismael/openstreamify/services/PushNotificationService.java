@@ -22,6 +22,7 @@ import java.util.List;
 
 @Service
 public class PushNotificationService {
+
     private static final Logger logger = LoggerFactory.getLogger(PushNotificationService.class);
 
     private final SecurityConfig securityConfig;
@@ -36,8 +37,6 @@ public class PushNotificationService {
     public PushNotificationService(SecurityConfig securityConfig, SubscriptionController subscriptionController) throws Exception {
         this.securityConfig = securityConfig;
         this.subscriptionController = subscriptionController;
-
-        KeyPair keyPair = generateVapidKeys();
 
         logger.info("Public Key: {}", securityConfig.getPublicKeyEncoded());
         logger.info("Private Key: {}", securityConfig.getPrivateKeyEncoded());

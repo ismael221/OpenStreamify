@@ -20,13 +20,9 @@ import java.util.stream.Collectors;
 @Service
 @Cacheable(cacheNames = "movies")
 public class VideosService {
-
-    final
-    VideoRepository videoRepository;
     //TODO FIX THE CACHEC EVICT AS ITS NOT UPDATING WHEN ADDING A NEW MOVIE 2
-
-    final
-    ModelMapper modelMapper;
+    private final VideoRepository videoRepository;
+    private final ModelMapper modelMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(VideosService.class);
 

@@ -7,6 +7,7 @@ import com.ismael.openstreamify.model.Users.User;
 import com.ismael.openstreamify.repository.NotificationsRepository;
 import com.ismael.openstreamify.repository.UserNotificationRepository;
 import com.ismael.openstreamify.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
@@ -19,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 @Cacheable(cacheNames = "notifications")
 public class NotificationService {
 
@@ -28,35 +30,18 @@ public class NotificationService {
     @Value("${TELEGRAM_CHAT_ID}")
     private String chatId;
 
-    final
-    NotificationsRepository notificationsRepository;
+    private final NotificationsRepository notificationsRepository;
+    private final UserRepository userRepository;
+    private final UserNotificationRepository userNotificationRepository;
+    private final ModelMapper modelMapper;
+    private final NotificationQueueService notificationQueueService;
 
-    final
-    UserRepository userRepository;
-
-    final
-    UserNotificationRepository userNotificationRepository;
-
-    final
-    ModelMapper modelMapper;
-
-    final
-    NotificationQueueService notificationQueueService;
-
-    public NotificationService(NotificationsRepository notificationsRepository, UserRepository userRepository, UserNotificationRepository userNotificationRepository, ModelMapper modelMapper, NotificationQueueService notificationQueueService) {
-        this.notificationsRepository = notificationsRepository;
-        this.userRepository = userRepository;
-        this.userNotificationRepository = userNotificationRepository;
-        this.modelMapper = modelMapper;
-        this.notificationQueueService = notificationQueueService;
-    }
-
-    public NotificationDTO convertToDTO(Notifications notifications){
-        return  modelMapper.map(notifications,NotificationDTO.class);
+    public NotificationDTO convertToDTO(Notifications notifications) {
+        return modelMapper.map(notifications, NotificationDTO.class);
     }
 
     @Transactional
-    @CacheEvict(cacheNames = "notifications-list",allEntries = true)
+    @CacheEvict(cacheNames = "notifications-list", allEntries = true)
     public void sendNotification(String message, List<UUID> userIds) {
         // Create a new notification
         Notifications notification = new Notifications();
@@ -68,7 +53,7 @@ public class NotificationService {
         // Search for users with the given IDs
         List<User> users = userRepository.findAllById(userIds);
 
-        for (User user: users){
+        for (User user : users) {
             UserNotification userNotification = UserNotification.builder()
                     .user(user)
                     .notification(notification)
@@ -81,7 +66,7 @@ public class NotificationService {
 
     @Transactional
     @Cacheable(cacheNames = "notifications-list")
-    public List<NotificationDTO> listNotificationsByUserId(UUID userId){
+    public List<NotificationDTO> listNotificationsByUserId(UUID userId) {
         List<Notifications> oldList = notificationsRepository.findByUserId(userId);
         List<NotificationDTO> notificationDTOS = oldList.stream()
                 .map(this::convertToDTO)
@@ -90,14 +75,14 @@ public class NotificationService {
     }
 
     @Transactional
-    @CacheEvict(cacheNames = "notifications-list", key = "#userId",allEntries = true)
+    @CacheEvict(cacheNames = "notifications-list", key = "#userId", allEntries = true)
     public void markNotificationAsVisualized(UUID notificationId, UUID userId) {
         userNotificationRepository.markAsVisualized(notificationId, userId);
     }
 
     @Transactional
-    @CacheEvict(cacheNames = "notifications-list", key = "#userId",allEntries = true)
-    public void  markAllNotificationsAsVisualized(UUID userId){
+    @CacheEvict(cacheNames = "notifications-list", key = "#userId", allEntries = true)
+    public void markAllNotificationsAsVisualized(UUID userId) {
         userNotificationRepository.markAllAsVisualized(userId);
     }
 
@@ -116,7 +101,7 @@ public class NotificationService {
 
     @Transactional
     @CacheEvict(cacheNames = "notifications-list", allEntries = true)
-    public void notifyAllUsers(String message){
+    public void notifyAllUsers(String message) {
         Notifications notification = new Notifications();
         notification.setMessage(message);
         notification.setCreatedAt(new Date());
@@ -124,7 +109,7 @@ public class NotificationService {
         notificationsRepository.save(notification);
 
         List<User> users = userRepository.findAll();
-        for (User user: users){
+        for (User user : users) {
             UserNotification userNotification = UserNotification.builder()
                     .user(user)
                     .notification(notification)

@@ -17,7 +17,7 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class ImagesService {
 
-    private  static  final Logger logger = LoggerFactory.getLogger(ImagesService.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImagesService.class);
 
     //Upload directory configuration
     private final Path uploadDir = Paths.get("uploads");
@@ -36,7 +36,7 @@ public class ImagesService {
         String filename = System.currentTimeMillis() + "-" + file.getOriginalFilename();
         Path filePath = uploadDir.resolve(filename);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
+        logger.info("Image file uploaded to {}", filePath.toAbsolutePath());
         // Returns the image URL return serverUrl + "/api/v1/media/img/" + filename;
         return serverUrl + "/api/v1/media/img/" + filename;
     }
@@ -48,8 +48,8 @@ public class ImagesService {
         if (resource.exists() && resource.isReadable()) {
             return resource;
         } else {
-            logger.error("Arquivo não encontrado {}", filename);
-            throw new RuntimeException("Arquivo não encontrado: " + filename);
+            logger.error("Image file not found {}", filename);
+            throw new RuntimeException("Image file not found: " + filename);
         }
     }
 }

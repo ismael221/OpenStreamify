@@ -16,13 +16,12 @@ import java.io.UnsupportedEncodingException;
 @Service
 public class EmailSenderService {
 
-    final
-    JavaMailSender mailSender;
+    private static final Logger logger = LoggerFactory.getLogger(EmailSenderService.class);
+
+    private final JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String from;
-
-    private static final Logger logger = LoggerFactory.getLogger(EmailSenderService.class);
 
     public EmailSenderService(JavaMailSender mailSender) {
         this.mailSender = mailSender;

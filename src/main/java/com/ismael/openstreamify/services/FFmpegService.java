@@ -2,9 +2,9 @@ package com.ismael.openstreamify.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,15 +17,8 @@ import java.util.concurrent.Future;
 @Service
 public class FFmpegService {
 
-    final
-    RabbitTemplate rabbitTemplate;
-
     private static final Logger logger = LoggerFactory.getLogger(FFmpegService.class);
     private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-    public FFmpegService(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
-    }
 
     @Async
     public Future<Integer> executeFFmpegCommand(String file) {
@@ -33,7 +26,7 @@ public class FFmpegService {
 
             String fileName = removeExtension(file);
 
-            String uploadDir = System.getProperty("java.io.tmpdir")  + File.separator + "raw";
+            String uploadDir = System.getProperty("java.io.tmpdir") + File.separator + "raw";
 
             File directory = new File(uploadDir);
 
