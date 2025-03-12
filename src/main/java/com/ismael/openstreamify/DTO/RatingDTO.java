@@ -26,8 +26,8 @@ public class RatingDTO implements Serializable {
     private Date createdAt;
     private String user;
 
-    public static RatingDTO from(Rating rating){
-        RatingDTO ratingDTO =  RatingDTO.builder().user(rating.getUser())
+    public static RatingDTO from(Rating rating) {
+        RatingDTO ratingDTO = RatingDTO.builder().user(rating.getUser())
                 .comment(rating.getComment())
                 .createdAt(rating.getCreatedAt())
                 .rating(rating.getRating())

@@ -38,7 +38,7 @@ public class EmailSenderService {
             helper.setSubject(emailMessage.getSubject());
             helper.setText(emailMessage.getBody(), true);
             mailSender.send(message);
-            logger.info("Email sent successfully.");
+            logger.info("Email sent successfully to {}.", emailMessage.getTo());
         } catch (MessagingException | UnsupportedEncodingException e) {
             logger.debug("Failed to send email. Error: {}", e.getMessage());
         }
