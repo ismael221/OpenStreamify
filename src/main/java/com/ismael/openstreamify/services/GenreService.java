@@ -11,23 +11,23 @@ import java.util.stream.Collectors;
 @Service
 public class GenreService {
 
-    final GenreRepository genreRepository;
+    private final GenreRepository genreRepository;
 
     public GenreService(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
 
-    public Genre createNewGenre(Genre genre){
+    public Genre createNewGenre(Genre genre) {
         genre.setCreatedAt(Date.from(Instant.now()));
         genre.setUpdatedAt(Date.from(Instant.now()));
         return genreRepository.save(genre);
     }
 
-    public Optional<Genre> retrieveGenreById(UUID rid){
+    public Optional<Genre> retrieveGenreById(UUID rid) {
         return genreRepository.findByRid(rid);
     }
 
-    public List<Genre> listAllGenres(){
+    public List<Genre> listAllGenres() {
         return genreRepository.findAll();
     }
 

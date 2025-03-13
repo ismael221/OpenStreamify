@@ -20,28 +20,24 @@ import java.util.stream.Collectors;
 
 //TODO Added the DTO class to fix the json infinite loop
 @Service
+@RequiredArgsConstructor
 @CacheConfig(cacheNames = "ratings")
 public class RatingService {
 
-    final
-    RatingRepository ratingRepository;
+    private final RatingRepository ratingRepository;
+    private final ModelMapper modelMapper;
+    private final VideosService videosService;
 
-    final
-    ModelMapper modelMapper;
-
-    final
-    VideosService videosService;
-
-    public RatingDTO convertToDto(Rating rating){
+    public RatingDTO convertToDto(Rating rating) {
         return modelMapper.map(rating, RatingDTO.class);
     }
 
-    public RatingResponseDTO convertToResponseDTO(Rating rating){
+    public RatingResponseDTO convertToResponseDTO(Rating rating) {
         return modelMapper.map(rating, RatingResponseDTO.class);
     }
 
-    public Rating convertToEntity(RatingDTO ratingDTO){
-        return  modelMapper.map(ratingDTO, Rating.class);
+    public Rating convertToEntity(RatingDTO ratingDTO) {
+        return modelMapper.map(ratingDTO, Rating.class);
     }
 
 
@@ -53,18 +49,18 @@ public class RatingService {
 
     @Transactional
     @CacheEvict(cacheNames = "ratings-list", allEntries = true)
-    public RatingResponseDTO addRating(RatingDTO rating){
-            Rating newRating = convertToEntity(rating);
-            Video video = videosService.getMovieByRID(rating.getMovie());
-            newRating.setVideo(video);
-            newRating.setCreatedAt(new Date());
-            Rating saved =  ratingRepository.save(newRating);
-            return convertToResponseDTO(saved);
+    public RatingResponseDTO addRating(RatingDTO rating) {
+        Rating newRating = convertToEntity(rating);
+        Video video = videosService.getMovieByRID(rating.getMovie());
+        newRating.setVideo(video);
+        newRating.setCreatedAt(new Date());
+        Rating saved = ratingRepository.save(newRating);
+        return convertToResponseDTO(saved);
     }
 
     @Transactional(readOnly = true)
     @Cacheable(cacheNames = "ratings-list")
-    public List<RatingResponseDTO> listRatings(){
+    public List<RatingResponseDTO> listRatings() {
         List<Rating> ratings = ratingRepository.findAll();
         List<RatingResponseDTO> ratingsList = ratings
                 .stream()
@@ -75,16 +71,16 @@ public class RatingService {
 
     @Transactional(readOnly = true)
     @Cacheable(cacheNames = "ratings-list")
-    public List<RatingDTO> listRatingsByMovieRID(UUID movieId){
-         List<Rating> ratings =  ratingRepository.findByVideo_id(movieId);
-         return ratings.stream()
-                 .map(RatingDTO::from)
-                 .collect(Collectors.toList());
+    public List<RatingDTO> listRatingsByMovieRID(UUID movieId) {
+        List<Rating> ratings = ratingRepository.findByVideo_rid(movieId);
+        return ratings.stream()
+                .map(RatingDTO::from)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Cacheable
-    public RatingDTO getRatingDtoByRid(UUID rid){
+    public RatingDTO getRatingDtoByRid(UUID rid) {
         Rating rating = ratingRepository.findByRidEquals(rid).orElseThrow();
         RatingDTO ratingDTO = RatingDTO.builder()
                 .user(rating.getUser())
@@ -94,27 +90,27 @@ public class RatingService {
                 .rid(rating.getRid())
                 .movie(rating.getVideo().getId())
                 .build();
-          return ratingDTO;
+        return ratingDTO;
     }
 
-    public Rating getRatingByRid(UUID rid){
+    public Rating getRatingByRid(UUID rid) {
         return ratingRepository.findByRidEquals(rid).orElseThrow();
     }
 
     @Transactional
-    @CachePut(cacheNames = "ratings-list",key = "#rid")
-    public Rating updateRating(UUID rid, Rating analise){
-            Rating a = getRatingByRid(rid);
-            a.setVideo(analise.getVideo());
-            a.setRating(analise.getRating());
-            a.setComment(analise.getComment());
-            ratingRepository.save(a);
-            return a;
+    @CachePut(cacheNames = "ratings-list", key = "#rid")
+    public Rating updateRating(UUID rid, Rating analise) {
+        Rating a = getRatingByRid(rid);
+        a.setVideo(analise.getVideo());
+        a.setRating(analise.getRating());
+        a.setComment(analise.getComment());
+        ratingRepository.save(a);
+        return a;
     }
 
     @Transactional
-    @CacheEvict(cacheNames = "ratings-list",key = "#rid",allEntries = true)
-    public void deleteRating(UUID rid){
+    @CacheEvict(cacheNames = "ratings-list", key = "#rid", allEntries = true)
+    public void deleteRating(UUID rid) {
         ratingRepository.deleteByRid(rid);
     }
 }

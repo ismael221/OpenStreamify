@@ -7,6 +7,7 @@ import com.ismael.openstreamify.services.VideosService;
 import com.ismael.openstreamify.services.NotificationService;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -24,40 +25,33 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class MinioUploadConsumer {
 
-    final
-    MinioClient minioClient;
-    final
-    MinioConfig minioConfig;
-    final
-    VideosService videosService;
-    final
-    NotificationService notificationService;
+    private final MinioClient minioClient;
+    private final MinioConfig minioConfig;
+    private final VideosService videosService;
+    private final NotificationService notificationService;
 
     private static final Logger logger = LoggerFactory.getLogger(MinioUploadConsumer.class);
-
-    public MinioUploadConsumer(MinioClient minioClient, MinioConfig minioConfig, VideosService videosService, NotificationService notificationService) {
-        this.minioClient = minioClient;
-        this.minioConfig = minioConfig;
-        this.videosService = videosService;
-        this.notificationService = notificationService;
-    }
 
     @Async
     @RabbitListener(queues = RabbitMQConfig.MINIO_QUEUE)
     public void uploadVideo(String ridFilme) throws Exception {
         String tempDir = System.getProperty("java.io.tmpdir") + "/hls/" + ridFilme + "/";
         if (isMinioOnline()) {
-            uploadFilesToMinIO(tempDir,ridFilme);
+            logger.info("Uploading video to MinIO : {}", ridFilme);
+            uploadFilesToMinIO(tempDir, ridFilme);
         } else {
             // If MinIO is not online, a message remains in the queue for reprocessing
+            logger.warn("Minio is not online");
             throw new RuntimeException("MinIO offline - upload attempt failed");
         }
     }
 
     private boolean isMinioOnline() {
         // Check MinIO status
+        logger.info("MinIO online - isMinioOnline");
         return true;
     }
 
@@ -65,7 +59,7 @@ public class MinioUploadConsumer {
         File dir = new File(tempDir);
         System.out.println(dir);
         File[] files = dir.listFiles((dir1, name) -> name.endsWith(".ts") || name.endsWith(".m3u8") || name.endsWith(".vtt") || name.endsWith(".srt"));
-        System.out.printf("Trying to upload ..." );
+        System.out.printf("Trying to upload ...");
         if (files != null) {
             for (File file : files) {
                 try (InputStream stream = new FileInputStream(file)) {
@@ -89,7 +83,7 @@ public class MinioUploadConsumer {
                     "✔️ O arquivo está pronto para uso.";
 
             notificationService.enviarMensagemTelegram(mensagem);
-            notificationService.notifyAllUsers("Novo filme disponivel: "+ newVideo.getTitle());
+            notificationService.notifyAllUsers("Novo filme disponivel: " + newVideo.getTitle());
             String rawDir = System.getProperty("java.io.tmpdir") + "/raw/" + ridFilme + "/";
             cleanUpLocalFragmentFiles(tempDir);
             cleanUpLocalRawFiles(rawDir);
@@ -106,6 +100,7 @@ public class MinioUploadConsumer {
                 }
             }
         }
+        logger.info("Clean up local fragment files...");
         Files.deleteIfExists(Paths.get(tempDir));  // Remove temporary directory
     }
 
@@ -119,6 +114,7 @@ public class MinioUploadConsumer {
                 }
             }
         }
+        logger.info("Clean up local raw files...");
         Files.deleteIfExists(Paths.get(tempDir));  // Remove temporary directory
     }
 }

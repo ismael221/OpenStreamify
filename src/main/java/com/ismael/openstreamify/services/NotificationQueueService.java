@@ -1,22 +1,22 @@
 package com.ismael.openstreamify.services;
 
 import com.ismael.openstreamify.config.RabbitMQConfig;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class NotificationQueueService {
 
-    final
-    RabbitTemplate rabbitTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(NotificationQueueService.class);
 
-    public NotificationQueueService(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
+    private final QueueService queueService;
+
+    public void sendToNoticationsQueue(String message) {
+        logger.info("Sending notification to notications queue");
+        queueService.sendToQueue(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
     }
-
-    public void sendToNoticationsQueue(String message){
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
-    }
-
 
 }
