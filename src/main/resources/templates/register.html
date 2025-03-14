@@ -74,7 +74,8 @@
       }
 
       input[type="email"],
-      input[type="password"] {
+      input[type="password"],
+      input[type="text"] {
         background-color: #3b3e52;
         color: white;
       }
@@ -197,23 +198,23 @@
             <input type="email" id="email" name="email" required />
           </div>
           <div class="form-group">
-            <label for="password" th:text="#{password}">Password</label>
+            <label for="name" th:text="#{name}">Name</label>
             <input
-              type="password"
-              id="password"
-              name="password"
+              type="text"
+              id="name"
+              name="name"
               required
-              minlength="6"
+              maxlength="50"
             />
           </div>
           <div class="form-group">
-            <label for="confirm-password" th:text="#{confirmPassword}"
+            <label for="password" th:text="#{password}"
               >Confirm Password</label
             >
             <input
               type="password"
-              id="confirm-password"
-              name="confirm-password"
+              id="password"
+              name="password"
               required
               minlength="6"
             />

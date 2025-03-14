@@ -7,10 +7,10 @@ RUN apk add --no-cache ffmpeg
 WORKDIR /app
 
 # Copia o jar da aplicação para o container
-COPY target/movie.jar /app/movie.jar
+COPY target/openstreamify.jar /app/openstreamify.jar
 
 # Expõe a porta em que a aplicação irá rodar
 EXPOSE 8080
 
 # Define o comando para iniciar a aplicação
-ENTRYPOINT ["java", "-jar", "movie.jar"]
+ENTRYPOINT ["java", "-jar", "openstreamify.jar"]

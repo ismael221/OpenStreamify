@@ -5,13 +5,8 @@ $(document).ready(function () {
       e.preventDefault(); 
   
       const password = $("#password").val();
-      const confirmPassword = $("#confirm-password").val();
+      const name = $("#name").val();
       const login = $("#email").val();
-  
-      if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return; 
-      }
   
       $.ajax({
         url: config.apiUrl + "/api/v1/auth/register",
@@ -19,8 +14,10 @@ $(document).ready(function () {
         contentType: "application/json",
         data: JSON.stringify({
           login: login,
+          name: name,
           password: password,
           role: "USER",
+          provider: "LOCAL"
         }),
         success: function (response) {
           const email = $("#email").val();

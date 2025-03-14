@@ -85,7 +85,7 @@
       padding:5px;
     }
 
-   .movie-file-container {
+   .video-file-container {
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
@@ -112,7 +112,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" id="add-newMovie-nav">
+                <a class="nav-link" href="#" id="add-newVideo-nav">
                   <img
                     th:src="@{/images/add_circle.svg}"
                     class="material-symbols-outlined"
@@ -122,7 +122,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" id="upload-movie-nav">
+                <a class="nav-link" href="#" id="upload-video-nav">
                   <img
                     th:src="@{/images/cloud_upload.svg}"
                     class="material-symbols-outlined"
@@ -159,8 +159,8 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
           <h2>Admin Panel</h2>
 
-          <!-- Add New Movie Section -->
-          <section id="add-movie" class="mt-4">
+          <!-- Add New Video Section -->
+          <section id="add-video" class="mt-4">
             <h3>Add New Movie</h3>
             <form id="addMovieForm">
               <div class="mb-3">
@@ -169,7 +169,7 @@
                   type="text"
                   class="form-control"
                   id="title"
-                  placeholder="Enter movie title"
+                  placeholder="Enter video title"
                   required
                 />
               </div>
@@ -179,7 +179,7 @@
                   class="form-control"
                   id="synopsis"
                   rows="3"
-                  placeholder="Enter movie synopsis"
+                  placeholder="Enter video synopsis"
                   required
                 ></textarea>
               </div>
@@ -230,8 +230,8 @@
             </form>
           </section>
 
-          <!-- Upload Movie File Section -->
-          <section id="upload-movie-file" class="mt-5">
+          <!-- Upload Video File Section -->
+          <section id="upload-video-file" class="mt-5">
             <h3>Upload Movie File</h3>
             <form id="uploadMovieForm" enctype="multipart/form-data">
               <div class="mb-3">
@@ -255,7 +255,7 @@
                   required
                   onchange="loadMovieFile(event)"
                 />
-                <div class="movie-file-container">
+                <div class="video-file-container">
                   <video width="100%" controls id="video_here">
                   </video>
                 </div>

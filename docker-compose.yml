@@ -3,26 +3,52 @@ services:
   # Container da aplicação Spring Boot
   spring-app:
     build: .
+    container_name: "OpenStreamify"
     ports:
       - "8080:8080"
+    volumes:
+      - ./videos:/app/videos
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
     depends_on:
-       mysql:
+      postgres:
         condition: service_healthy
-       redis:
-         condition: service_completed_successfully
-       prometheus:
-         condition: service_completed_successfully
-       grafana:
-         condition: service_completed_successfully
-
+      redis:
+        condition: service_completed_successfully
+      prometheus:
+        condition: service_completed_successfully
+      grafana:
+        condition: service_completed_successfully
+      minio:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - .env
     environment:
       - JWT_SECRET=${JWT_SECRET}
       - SERVER_URL=${SERVER_URL}
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/movies_dev
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=ismael
-      - SPRING_REDIS_HOST=redis
-      - SPRING_REDIS_PORT=6379
+      - SERVER_PORT=${SERVER_PORT}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - REDIS_HOST=host.docker.internal
+      - REDIS_PORT=6380
+      - RABBIT_HOST=host.docker.internal
+      - RABBIT_PORT=5672
+      - RABBIT_USERNAME=guest
+      - RABBIT_PASSWORD=guest
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_USER=${POSTGRESQL_USER}
+      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
+      - MINIO_ENDPOINT=http://host.docker.internal:9000
+      - MINIO_ACCESSKEY=${MINIO_ACCESSKEY}
+      - MINIO_SECRETKEY=${MINIO_SECRETKEY}
+      - MINIO_BUCKET=${MINIO_BUCKET}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - SPRING_DATASOURCE_URL= jdbc:postgresql://postgres:5432/movies_dev
     networks:
       - app-network
     deploy:
@@ -36,7 +62,7 @@ services:
     image: redis:7.0
     container_name: redis
     ports:
-      - "6379:6379"
+      - "6380:6379"
     networks:
       - app-network
     deploy:
@@ -68,14 +94,16 @@ services:
     networks:
       - app-network
 
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
+  # PostgreSQL
+  postgres:
+    image: postgres:17
+    container_name: postgres
     environment:
-      MYSQL_ROOT_PASSWORD: ismael
-      MYSQL_DATABASE: movies_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ismael
+      POSTGRES_DB: movies_dev
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d movies_dev" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -87,6 +115,48 @@ services:
           cpus: '1.0'
           memory: '1024M'
 
+  # MinIO
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "mc", "alias", "set", "local", "http://localhost:9000", "minioadmin", "minioadmin" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  minio_data:

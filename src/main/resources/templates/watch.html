@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>OpenStreamify Fullscreen Video Player</title>
+    <!-- Plyr CSS -->
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3/dist/plyr.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+    <link rel="icon" href="/images/favicon.ico" type="image/png"/>
+</head>
+<body class="watch-card">
+<div class="header">
+    <a th:href="@{'/details/'+ ${media.rid}}" class="back-button"><i class="fas fa-arrow-left"></i></a>
+    <a class="media-title" th:href="@{'/details/'+ ${media.rid}}"><span
+            class="span-media-title">[[${media.title}]]</span></a>
+</div>
+<div class="video-container">
+    <video id="player" class="plyr" th:attr="poster=${media.backgroundImgUrl}" controls autoplay playsinline>
+        <source th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" type="application/x-mpegURL"/>
+        <track kind="subtitles" th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" srclang="pt"
+               label="Português" default/>
+    </video>
+</div>
+
+<!-- HLS.js JavaScript-->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/plyr@3/dist/plyr.polyfilled.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const video = document.getElementById("player");
+        const videoSrc = video.querySelector("source").src;
+
+        // Função para salvar o tempo atual do vídeo
+        function saveCurrentTime() {
+            if (video.currentTime > 0 && !video.paused && !video.ended) {
+                localStorage.setItem("currentTime_" + videoSrc, video.currentTime);
+            }
+        }
+
+        // Função para carregar o tempo salvo
+        function loadSavedTime() {
+            const savedTime = localStorage.getItem("currentTime_" + videoSrc);
+            if (savedTime) {
+                video.currentTime = parseFloat(savedTime);
+            }
+        }
+
+        // Configuração do Plyr com suporte a HLS
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                loadSavedTime(); // Carrega o tempo salvo
+                video.play();
+            });
+        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            video.src = videoSrc;
+            video.addEventListener("loadedmetadata", function () {
+                loadSavedTime();
+                video.play();
+            });
+        }
+
+        // Inicializar Plyr
+        const player = new Plyr(video, {
+            controls: [
+                "play", "restart", "rewind", "fast-forward", "progress", "current-time", "duration",
+                "mute", "volume", "captions", "settings", "pip", "airplay", "fullscreen"
+            ],
+              thumbnail: {
+                enabled: true, // Habilitar miniaturas
+                src: (time) => {
+                    // Defina o caminho para suas miniaturas, ajustando conforme sua estrutura de arquivos
+                    const index = Math.floor(time); // Usar o tempo como o índice para a miniatura
+                    return `${config}/thumbnails/thumbnail_${String(index).padStart(3, '0')}.jpg`;
+                },
+                width: 160,  // Largura da miniatura
+                height: 90,  // Altura da miniatura
+                offset: 0,   // Definir o offset, caso necessário
+            },
+        });
+
+        player.on("languagechange", () => {
+            setTimeout(() => {
+                const track = document.querySelector("track[data-src]");
+                if (track) {
+                    track.src = track.getAttribute("data-src");
+                    track.track.mode = "showing";
+                }
+            }, 100);
+        });
+
+        // Eventos para salvar o tempo do vídeo
+        video.addEventListener("pause", saveCurrentTime);
+        video.addEventListener("timeupdate", saveCurrentTime);
+        window.addEventListener("beforeunload", saveCurrentTime);
+    });
+</script>
+</body>
+</html>

@@ -146,6 +146,60 @@ body {
     height: 40px;
 }
 
+.addtowatch{
+    border-radius: 50px;
+    margin-left: 8px;
+    background: gray;
+    font-weight: bolder;
+    border: none;
+}
+
+.me-2{
+    font-weight: bolder
+}
+
+.trailer{
+    background: darkgray;
+    font-weight: bolder;
+    border: none;
+}
+
+      .tabs-container {
+            margin: auto;
+      }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 2px solid #444;
+            margin-top: 10px;
+                margin-left: 30px;
+                margin-right: 30px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            border-bottom: 3px solid transparent;
+        }
+        .tab.active {
+            border-bottom: 3px solid #dddddd;
+            font-weight: bold;
+        }
+        .content {
+            display: none;
+            padding: 20px;
+            text-align: left;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .content.active {
+            display: block;
+        }
 
 /** movies.html **/
 
@@ -441,4 +495,12 @@ video {
     text-decoration: solid;
     color: #f33737;
     font-size: unset;
+}
+
+.addtowatch{
+    border-radius: 50px;
+    margin-left: 8px;
+    background: gray;
+    font-weight: bolder;
+    border: none;
 }

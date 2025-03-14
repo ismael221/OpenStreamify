@@ -3,15 +3,15 @@ spring:
     ansi:
       enabled: ALWAYS
   datasource:
-    username: root
-    password: ismael
-    url: jdbc:mysql://localhost:3306/movies_dev2
+    username: ${POSTGRESQL_USER}
+    password: ${POSTGRESQL_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/${POSTGRESQL_DATABASE}
+    driver-class-name: org.postgresql.Driver
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
       naming:
@@ -35,7 +35,7 @@ spring:
   redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
-      time-to-live: 1h
+      time-to-live: ${REDIS_TIME_TO_LIVE}
   rabbitmq:
     host: ${RABBIT_HOST}
     port: ${RABBIT_PORT}
@@ -75,10 +75,10 @@ management:
 
 logging:
   level:
-    root: DEBUG
+    root: ERROR
     com.ismael.movie: ERROR
     org.hibernate.SQL: ERROR
-    org.springframework.web: DEBUG
+    org.springframework.web: ERROR
 
 server:
   tomcat:
@@ -92,6 +92,11 @@ minio:
   secret-key: ${MINIO_SECRETKEY}
   bucket:
     stream: ${MINIO_BUCKET}
+
+app:
+  security:
+    public-key: ${PUBLIC_VAPID_KEY}
+    private-key: ${PRIVATE_VAPID_KEY}
 
 TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
 TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
