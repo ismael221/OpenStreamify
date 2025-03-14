@@ -1,157 +1,160 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Reset Password - OpenStreamify</title>
-    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+    <link rel="icon" href="/images/favicon.ico" type="image/png"/>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
-      rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+            rel="stylesheet"
     />
     <style>
-      body {
-        background-color: #1a1d29;
-        color: white;
-        font-family: "Manrope", sans-serif;
-      }
+        body {
+            background-color: #1a1d29;
+            color: white;
+            font-family: "Manrope", sans-serif;
+        }
 
-      .card {
-        background-color: #2a2d3e;
-        border: none;
-        border-radius: 10px;
-      }
+        .card {
+            background-color: #2a2d3e;
+            border: none;
+            border-radius: 10px;
+        }
 
-      .form-control {
-        background-color: #3b3e52;
-        border: none;
-        color: white;
-      }
-      .form-control::placeholder {
-        color: white;
-      }
+        .form-control {
+            background-color: #3b3e52;
+            border: none;
+            color: white;
+        }
 
-      .form-control:focus {
-        background-color: #3b3e52;
-        border-color: #007bff;
-        color: white;
-      }
+        .form-control::placeholder {
+            color: white;
+        }
 
-      .btn-primary {
-        background-color: #007bff;
-        border: none;
-      }
+        .form-control:focus {
+            background-color: #3b3e52;
+            border-color: #007bff;
+            color: white;
+        }
 
-      .btn-primary:hover {
-        background-color: #0056b3;
-      }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
 
-      .openstreamyfy-logo {
-        width: 150px;
-        margin-bottom: 20px;
-      }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
 
-      .card-header {
-        text-align: center;
-      }
+        .openstreamyfy-logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
 
-      .card-body {
-        padding: 2rem;
-      }
+        .card-header {
+            text-align: center;
+        }
 
-      .card-footer {
-        text-align: center;
-        padding-top: 0;
-        padding-bottom: 1.5rem;
-      }
+        .card-body {
+            padding: 2rem;
+        }
 
-      .footer-link {
-        color: #007bff;
-        text-decoration: none;
-      }
+        .card-footer {
+            text-align: center;
+            padding-top: 0;
+            padding-bottom: 1.5rem;
+        }
 
-      .footer-link:hover {
-        text-decoration: underline;
-      }
+        .footer-link {
+            color: #007bff;
+            text-decoration: none;
+        }
 
-      .main-container {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      ::placeholder {
-        color: white;
-        opacity: 1; /* Firefox */
-      }
+        .footer-link:hover {
+            text-decoration: underline;
+        }
 
-      ::-ms-input-placeholder {
-        /* Edge 12 -18 */
-        color: white;
-      }
-      .form-label {
-        font-size: 14px;
-        color: #b3b3b3;
-      }
+        .main-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        ::placeholder {
+            color: white;
+            opacity: 1; /* Firefox */
+        }
+
+        ::-ms-input-placeholder {
+            /* Edge 12 -18 */
+            color: white;
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: #b3b3b3;
+        }
     </style>
-  </head>
-  <body>
-    <div class="container main-container">
-      <div class="card col-md-4 col-sm-12">
+</head>
+<body>
+<div class="container main-container">
+    <div class="card col-md-4 col-sm-12">
         <div class="card-header">
-          <img
-            th:src="@{/images/logo.png}"
-            alt="OpenStreamify Logo"
-            class="openstreamyfy-logo"
-          />
-          <h4 th:text="#{passwordReset}">Reset your password</h4>
+            <img
+                    th:src="@{/images/logo.png}"
+                    alt="OpenStreamify Logo"
+                    class="openstreamyfy-logo"
+            />
+            <h4 th:text="#{passwordReset}">Reset your password</h4>
         </div>
         <div class="card-body">
-          <p class="text-center" th:text="#{resetPwdText}">
-            Enter the email address associated with your account, and we'll send
-            you a link to reset your password.
-          </p>
-          <form>
-            <div class="mb-3">
-              <label for="email" class="form-label" th:text="#{emailAdress}"
-                >Email Address</label
-              >
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                placeholder="Enter your email"
-                required
-                th:placeholder="#{enterYourEmail}"
-              />
-            </div>
-            <div class="d-grid">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                th:text="#{sendEmail}"
-              >
-                Send Email
-              </button>
-            </div>
-          </form>
+            <p class="text-center" th:text="#{resetPwdText}">
+                Enter the email address associated with your account, and we'll send
+                you a link to reset your password.
+            </p>
+            <form>
+                <div class="mb-3">
+                    <label for="email" class="form-label" th:text="#{emailAdress}"
+                    >Email Address</label
+                    >
+                    <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            placeholder="Enter your email"
+                            required
+                            th:placeholder="#{enterYourEmail}"
+                    />
+                </div>
+                <div class="d-grid">
+                    <button
+                            type="submit"
+                            class="btn btn-primary"
+                            th:text="#{sendEmail}"
+                    >
+                        Send Email
+                    </button>
+                </div>
+            </form>
         </div>
         <div class="card-footer">
-          <a
-            th:href="@{'/auth/login'}"
-            class="footer-link"
-            th:text="#{backLogin}"
+            <a
+                    th:href="@{'/auth/login'}"
+                    class="footer-link"
+                    th:text="#{backLogin}"
             >Back to Login</a
-          >
+            >
         </div>
-      </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module" th:src="@{/js/reset.js}"></script>
-  </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" th:src="@{/js/reset.js}"></script>
+</body>
 </html>

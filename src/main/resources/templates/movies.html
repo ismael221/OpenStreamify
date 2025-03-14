@@ -1,63 +1,63 @@
 <!doctype html>
 <html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Filmes - OpenStreamify</title>
     <!-- Bootstrap CSS -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
     />
-    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+    <link rel="icon" href="/images/favicon.ico" type="image/png"/>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
-      rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+            rel="stylesheet"
     />
     <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
-  />
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
     <!-- Estilo Personalizado -->
-    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
-  </head>
-  <body>
-    <!-- Barra de Navegação -->
-    <header th:insert="navbar.html :: nav" class="sticky-top"></header>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Barra de Navegação -->
+<header th:insert="navbar.html :: nav" class="sticky-top"></header>
 
-    <!-- Cabeçalho -->
-    <header class="container mt-5">
-      <h1 class="mb-4 movies-list-h1" th:text="#{movies}">Movies</h1>
-    </header>
+<!-- Cabeçalho -->
+<header class="container mt-5">
+    <h1 class="mb-4 movies-list-h1" th:text="#{movies}">Movies</h1>
+</header>
 
-    <!-- Grade de Filmes -->
-    <div class="container">
-      <div class="row movies-grid">
+<!-- Grade de Filmes -->
+<div class="container">
+    <div class="row movies-grid">
         <!-- Cartão do Movie -->
         <div class="col-md-2 mb-4" th:each="m : ${moviesList}">
-          <a th:href="@{'/details/'+ ${m.rid}}" class="movie-link">
-            <div class="card movie-list-card">
-              <img
-                th:src="${m.coverImgUrl}"
-                class="card-img-top movie-list-poster"
-                alt="Filme 1"
-                loading="lazy"
-              />
-              <div class="card-body">
-                <p class="movie-list-title">Filme 1</p>
-              </div>
-            </div>
-          </a>
+            <a th:href="@{'/details/'+ ${m.rid}}" class="movie-link">
+                <div class="card movie-list-card">
+                    <img
+                            th:src="${m.coverImgUrl}"
+                            class="card-img-top movie-list-poster"
+                            alt="Filme 1"
+                            loading="lazy"
+                    />
+                    <div class="card-body">
+                        <p class="movie-list-title">Filme 1</p>
+                    </div>
+                </div>
+            </a>
         </div>
-      </div>
     </div>
+</div>
 
-    <!-- Bootstrap JS e dependências -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/sockjs/1.0.2/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <script th:src="@{/js/jquery-3.7.1.js}"></script>
-    <script type="module" th:src="@{/js/notification.js}"></script>
-  </body>
+<!-- Bootstrap JS e dependências -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/sockjs/1.0.2/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script th:src="@{/js/jquery-3.7.1.js}"></script>
+<script type="module" th:src="@{/js/notification.js}"></script>
+</body>
 </html>

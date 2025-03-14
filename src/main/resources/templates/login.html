@@ -1,244 +1,251 @@
 <!doctype html>
 <html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>OpenStreamify Login</title>
-    <link rel="icon" href="/images/favicon.ico" type="image/png" />
+    <link rel="icon" href="/images/favicon.ico" type="image/png"/>
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
-      rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Manrope:wght@200..800&display=swap"
+            rel="stylesheet"
     />
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Manrope", sans-serif;
-      }
-
-      body {
-        background-color: #141b29;
-        color: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-
-      .login-container {
-        width: 100%;
-        max-width: 400px;
-        padding: 20px;
-        background-color: #2a2d3e;
-        border-radius: 8px;
-        box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-        text-align: center;
-        margin: 15px;
-      }
-
-      .login-box .logo {
-        width: 150px;
-        margin-bottom: 30px;
-      }
-
-      .login-box form {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .login-box input[type="email"],
-      .login-box input[type="password"] {
-        padding: 15px;
-        margin-bottom: 20px;
-        border: none;
-        border-radius: 4px;
-        font-size: 16px;
-      }
-
-      .login-box #login-form button {
-        padding: 15px;
-        background-color: #1a73e8;
-        color: white;
-        font-size: 18px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-bottom: 20px;
-      }
-
-      .login-box button:hover {
-        background-color: #1558b8;
-      }
-
-      .forgot-password {
-        color: #1a73e8;
-        font-size: 14px;
-        text-decoration: none;
-      }
-
-      .forgot-password:hover {
-        text-decoration: underline;
-      }
-
-      .signup-link {
-        margin-top: 20px;
-      }
-
-      .signup-link a {
-        color: #1a73e8;
-        text-decoration: none;
-      }
-
-      .signup-link a:hover {
-        text-decoration: underline;
-      }
-      input {
-        background-color: #3b3e52;
-        color: white;
-      }
-      ::placeholder {
-        color: white;
-        opacity: 1; /* Firefox */
-      }
-
-      ::-ms-input-placeholder {
-        /* Edge 12 -18 */
-        color: white;
-      }
-
-              .google-button{
-        width: 100%;
-        background: floralwhite;
-        color: gray;
-        padding: 10px;
-        font-size: 18px;
-        border: none;
-        border-radius: 15px;
-        cursor: pointer;
-        margin-bottom: 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Manrope", sans-serif;
         }
-        .github-button{
-        width: 100%;
-        background: black;
-        color: white;
-        padding: 11px;
-        font-size: 18px;
-        border: none;
-        border-radius: 15px;
-        cursor: pointer;
-        margin-bottom: 20px;
+
+        body {
+            background-color: #141b29;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .github-icon{
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #2a2d3e;
+            border-radius: 8px;
+            box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+            text-align: center;
+            margin: 15px;
+        }
+
+        .login-box .logo {
+            width: 150px;
+            margin-bottom: 30px;
+        }
+
+        .login-box form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-box input[type="email"],
+        .login-box input[type="password"] {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .login-box #login-form button {
+            padding: 15px;
+            background-color: #1a73e8;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .login-box button:hover {
+            background-color: #1558b8;
+        }
+
+        .forgot-password {
+            color: #1a73e8;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .signup-link {
+            margin-top: 20px;
+        }
+
+        .signup-link a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        input {
+            background-color: #3b3e52;
+            color: white;
+        }
+
+        ::placeholder {
+            color: white;
+            opacity: 1; /* Firefox */
+        }
+
+        ::-ms-input-placeholder {
+            /* Edge 12 -18 */
+            color: white;
+        }
+
+        .google-button {
+            width: 100%;
+            background: floralwhite;
+            color: gray;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .github-button {
+            width: 100%;
+            background: black;
+            color: white;
+            padding: 11px;
+            font-size: 18px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .github-icon {
             width: 30px;
             height: auto;
             float: left;
             margin-left: 5%;
         }
-        .google-icon{
+
+        .google-icon {
             width: 30px;
             height: auto;
             float: left;
             margin-left: 5%;
         }
+
         .divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 20px 0;
-  }
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+        }
 
-  .divider::before,
-  .divider::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1px solid #8d8d8d;
-  }
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #8d8d8d;
+        }
 
-  .divider:not(:empty)::before {
-    margin-right: 10px;
-  }
+        .divider:not(:empty)::before {
+            margin-right: 10px;
+        }
 
-  .divider:not(:empty)::after {
-    margin-left: 10px;
-  }
- .login-box button:hover {
-    background-color: #474c53;
-    transform: scale(1.03);
-    outline: 3px solid #ccc;
-    border: 2px solid #333;
-}
+        .divider:not(:empty)::after {
+            margin-left: 10px;
+        }
+
+        .login-box button:hover {
+            background-color: #474c53;
+            transform: scale(1.03);
+            outline: 3px solid #ccc;
+            border: 2px solid #333;
+        }
     </style>
-  </head>
-  <body>
-    <div class="login-container">
-      <div class="login-box">
+</head>
+<body>
+<div class="login-container">
+    <div class="login-box">
         <img
-          th:src="@{/images/logo.png}"
-          alt="OpenStreamify Logo"
-          class="logo"
+                th:src="@{/images/logo.png}"
+                alt="OpenStreamify Logo"
+                class="logo"
         />
         <form id="login-form">
-          <input
-            type="email"
-            name="login"
-            placeholder="Email"
-            required
-            th:placeholder="#{email}"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-            th:placeholder="#{password}"
-          />
-          <button type="submit" th:text="#{login}">Log In</button>
-          <a
-                  th:href="@{'/auth/reset'}"
-                  class="forgot-password"
-                  th:text="#{forgot}"
-          >Forgot password?</a
-          >
+            <input
+                    type="email"
+                    name="login"
+                    placeholder="Email"
+                    required
+                    th:placeholder="#{email}"
+            />
+            <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                    th:placeholder="#{password}"
+            />
+            <button type="submit" th:text="#{login}">Log In</button>
+            <a
+                    th:href="@{'/auth/reset'}"
+                    class="forgot-password"
+                    th:text="#{forgot}"
+            >Forgot password?</a
+            >
         </form>
         <div class="divider">or</div>
         <a href="/oauth2/authorization/google">
-          <button type="button" class="google-button" >
-            <img th:src="@{/images/google.png}" alt="Google icon" class="google-icon">
-            <p th:text="#{google-text}">Sign in with Google</p>
-          </button>
+            <button type="button" class="google-button">
+                <img th:src="@{/images/google.png}" alt="Google icon" class="google-icon">
+                <p th:text="#{google-text}">Sign in with Google</p>
+            </button>
         </a>
         <a href="/oauth2/authorization/github">
-          <button type="button" class="github-button" >
-            <img th:src="@{/images/github.png}" alt="Github icon" class="github-icon">
-          <p th:text="#{github-text}">Sign in with GitHub</p>
-          </button>
+            <button type="button" class="github-button">
+                <img th:src="@{/images/github.png}" alt="Github icon" class="github-icon">
+                <p th:text="#{github-text}">Sign in with GitHub</p>
+            </button>
         </a>
         <div class="signup-link">
-          <p th:text="#{newTo}" style="padding: 5px">New to OpenStreamify?</p>
-          <a th:href="@{'/auth/register'}" th:text="#{signUp}"> Sign up </a>
+            <p th:text="#{newTo}" style="padding: 5px">New to OpenStreamify?</p>
+            <a th:href="@{'/auth/register'}" th:text="#{signUp}"> Sign up </a>
         </div>
-      <!-- Modal de sucesso -->
-      <div id="success-modal" class="modal">
-        <p style="color: green">
-          Login bem-sucedido! Bem-vindo à OpenStreamify.
-        </p>
-      </div>
+        <!-- Modal de sucesso -->
+        <div id="success-modal" class="modal">
+            <p style="color: green">
+                Login bem-sucedido! Bem-vindo à OpenStreamify.
+            </p>
+        </div>
 
-      <!-- Modal de erro -->
-      <div id="error-modal" class="modal">
-        <p style="color: red">
-          Erro ao fazer login: Credenciais inválidas. Por favor, tente
-          novamente.
-        </p>
-      </div>
+        <!-- Modal de erro -->
+        <div id="error-modal" class="modal">
+            <p style="color: red">
+                Erro ao fazer login: Credenciais inválidas. Por favor, tente
+                novamente.
+            </p>
+        </div>
     </div>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
     <script type="module" th:src="@{/js/login.js}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-  </body>
+</body>
 </html>
