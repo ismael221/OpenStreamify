@@ -5,6 +5,7 @@ import com.ismael.openstreamify.DTO.RatingResponseDTO;
 import com.ismael.openstreamify.model.Video;
 import com.ismael.openstreamify.model.Rating;
 import com.ismael.openstreamify.repository.RatingRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -40,13 +41,6 @@ public class RatingService {
         return modelMapper.map(ratingDTO, Rating.class);
     }
 
-
-    public RatingService(RatingRepository ratingRepository, ModelMapper modelMapper, VideosService videosService) {
-        this.ratingRepository = ratingRepository;
-        this.modelMapper = modelMapper;
-        this.videosService = videosService;
-    }
-
     @Transactional
     @CacheEvict(cacheNames = "ratings-list", allEntries = true)
     public RatingResponseDTO addRating(RatingDTO rating) {
@@ -72,7 +66,7 @@ public class RatingService {
     @Transactional(readOnly = true)
     @Cacheable(cacheNames = "ratings-list")
     public List<RatingDTO> listRatingsByMovieRID(UUID movieId) {
-        List<Rating> ratings = ratingRepository.findByVideo_rid(movieId);
+        List<Rating> ratings = ratingRepository.findByVideo_id(movieId);
         return ratings.stream()
                 .map(RatingDTO::from)
                 .collect(Collectors.toList());
