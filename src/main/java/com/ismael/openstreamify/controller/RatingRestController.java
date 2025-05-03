@@ -1,7 +1,7 @@
 package com.ismael.openstreamify.controller;
 
-import com.ismael.openstreamify.DTO.RatingDTO;
-import com.ismael.openstreamify.DTO.RatingResponseDTO;
+import com.ismael.openstreamify.dto.RatingDTO;
+import com.ismael.openstreamify.dto.RatingResponseDTO;
 import com.ismael.openstreamify.model.Rating;
 import com.ismael.openstreamify.services.RatingService;
 import jakarta.validation.Valid;

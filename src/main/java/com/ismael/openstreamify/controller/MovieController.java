@@ -1,6 +1,6 @@
 package com.ismael.openstreamify.controller;
 
-import com.ismael.openstreamify.DTO.MovieDTO;
+import com.ismael.openstreamify.dto.MovieDTO;
 import com.ismael.openstreamify.infra.security.TokenService;
 import com.ismael.openstreamify.model.Video;
 import com.ismael.openstreamify.model.Users.User;
@@ -75,10 +75,10 @@ public class MovieController {
     @GetMapping("/")
     public String homePage(Model model) {
 
-        List<MovieDTO> moviesList = videosService.listAllMovies();
+        List<Video> moviesList = videosService.listAllMovies();
 
         // Partition the movie list manually
-        List<List<MovieDTO>> movieChunks = partitionList(moviesList, 4);
+        List<List<Video>> movieChunks = partitionList(moviesList, 4);
         model.addAttribute("moviesChunks", movieChunks);
         return "index";
     }
@@ -215,6 +215,7 @@ public class MovieController {
 
     @GetMapping("/watchlist")
     public String getWatchlist() {
+
         return "watchlist";
     }
 }

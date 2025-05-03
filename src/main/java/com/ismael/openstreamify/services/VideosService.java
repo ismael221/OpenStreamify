@@ -1,6 +1,6 @@
 package com.ismael.openstreamify.services;
 
-import com.ismael.openstreamify.DTO.MovieDTO;
+import com.ismael.openstreamify.dto.MovieDTO;
 import com.ismael.openstreamify.enums.VideoType;
 import com.ismael.openstreamify.model.Exceptions.ResourceNotFoundException;
 import com.ismael.openstreamify.model.Video;
@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Service
 @Cacheable(cacheNames = "movies")
 public class VideosService {
-    //TODO FIX THE CACHEC EVICT AS ITS NOT UPDATING WHEN ADDING A NEW MOVIE 2
     private final VideoRepository videoRepository;
     private final ModelMapper modelMapper;
 
@@ -50,15 +49,9 @@ public class VideosService {
 
     @Transactional(readOnly = true)
     @Cacheable(cacheNames = "movies-list")
-    public List<MovieDTO> listAllMovies() {
+    public List<Video> listAllMovies() {
         List<Video> moviesFoundList = videoRepository.findAll();
-
-        List<MovieDTO> moviesListConverted = moviesFoundList
-                .stream()
-                .filter(x -> x.getVideoType() == VideoType.MOVIE)
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-        return moviesListConverted;
+        return moviesFoundList;
     }
 
     @Transactional

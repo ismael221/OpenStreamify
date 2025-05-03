@@ -1,4 +1,4 @@
-package com.ismael.openstreamify.DTO;
+package com.ismael.openstreamify.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,10 +13,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RatingResponseDTO implements Serializable {
-    private UUID rid;
-    private String comment;
-    private int rating;
-    private String user;
+public class NotificationDTO implements Serializable {
+    private UUID rid ;
+    private String message;
     private Date createdAt;
 }

@@ -1,6 +1,6 @@
 package com.ismael.openstreamify.controller;
 
-import com.ismael.openstreamify.DTO.VerificationCodeDTO;
+import com.ismael.openstreamify.dto.VerificationCodeDTO;
 import com.ismael.openstreamify.model.UserVerification;
 import com.ismael.openstreamify.model.Users.User;
 import com.ismael.openstreamify.services.UserService;

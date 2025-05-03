@@ -2,7 +2,7 @@ package com.ismael.openstreamify.controller;
 
 import com.ismael.openstreamify.model.Genre;
 import com.ismael.openstreamify.services.GenreService;
-import com.ismael.openstreamify.DTO.GenreDTO;
+import com.ismael.openstreamify.dto.GenreDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

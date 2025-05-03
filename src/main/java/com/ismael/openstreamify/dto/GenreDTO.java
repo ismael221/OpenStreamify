@@ -1,4 +1,4 @@
-package com.ismael.openstreamify.DTO;
+package com.ismael.openstreamify.dto;
 
 import com.ismael.openstreamify.model.Genre;
 import com.ismael.openstreamify.model.Video;

@@ -1,9 +1,9 @@
 package com.ismael.openstreamify.controller;
 
-import com.ismael.openstreamify.DTO.EpisodeRequestDTO;
-import com.ismael.openstreamify.DTO.EpisodeResponseDTO;
+import com.ismael.openstreamify.dto.EpisodeRequestDTO;
+import com.ismael.openstreamify.dto.EpisodeResponseDTO;
 
-import com.ismael.openstreamify.DTO.SerieResponseDTO;
+import com.ismael.openstreamify.dto.SerieResponseDTO;
 import com.ismael.openstreamify.services.EpisodeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

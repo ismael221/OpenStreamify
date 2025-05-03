@@ -1,7 +1,7 @@
 package com.ismael.openstreamify.services;
 
-import com.ismael.openstreamify.DTO.RatingDTO;
-import com.ismael.openstreamify.DTO.RatingResponseDTO;
+import com.ismael.openstreamify.dto.RatingDTO;
+import com.ismael.openstreamify.dto.RatingResponseDTO;
 import com.ismael.openstreamify.model.Video;
 import com.ismael.openstreamify.model.Rating;
 import com.ismael.openstreamify.repository.RatingRepository;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//TODO Added the DTO class to fix the json infinite loop
+//TODO Added the dto class to fix the json infinite loop
 @Service
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "ratings")

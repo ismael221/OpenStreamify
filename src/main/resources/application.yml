@@ -33,9 +33,9 @@ spring:
           starttls:
             enable: true
   redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-      time-to-live: ${REDIS_TIME_TO_LIVE}
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    time-to-live: ${REDIS_TIME_TO_LIVE}
   rabbitmq:
     host: ${RABBIT_HOST}
     port: ${RABBIT_PORT}
@@ -95,8 +95,8 @@ minio:
 
 app:
   security:
-    public-key: ${PUBLIC_VAPID_KEY}
-    private-key: ${PRIVATE_VAPID_KEY}
+    public-key: BEEPxh-BXc-elMHVJyuMzp9nqyfvxuSvcvgvG6x9k0-Qenu5pz8Eu8t13-QiBwW4uKxpggOhJ_fn7p4HxNxO9is
+    private-key: Pr2cLTPoSIUGuYPH_goidcWs_7jmLTzQlP-ziYgIpzA
 
 TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
 TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}

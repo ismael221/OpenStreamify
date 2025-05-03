@@ -1,4 +1,4 @@
-package com.ismael.openstreamify.DTO;
+package com.ismael.openstreamify.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

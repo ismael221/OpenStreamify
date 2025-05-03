@@ -42,7 +42,7 @@
                     <span class="badge" th:text="${genre}">Genre name</span>
                   </p> -->
                     <div class="movie-actions">
-                        <a th:href="@{'/play/'+ ${details.rid}}">
+                        <a th:href="@{'/play/'+ ${details.id}}">
                             <button
                                     type="button"
                                     class="btn btn-primary btn-lg me-2"
@@ -119,7 +119,7 @@
                 </div>
 
                 <!-- Formulário -->
-                <input type="text" style="display: none;" th:value="${details.rid}" id="movie-rid">
+                <input type="text" style="display: none;" th:value="${details.id}" id="movie-rid">
                 <input type="text" id="name" placeholder="Your Name" style="color: white;">
                 <textarea id="review" placeholder="Write your review here..." style="color: white;"></textarea>
                 <button id="submitReview">Submit Review</button>

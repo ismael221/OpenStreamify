@@ -1,6 +1,6 @@
 package com.ismael.openstreamify.services;
 
-import com.ismael.openstreamify.DTO.NotificationDTO;
+import com.ismael.openstreamify.dto.NotificationDTO;
 import com.ismael.openstreamify.model.Notifications;
 import com.ismael.openstreamify.model.UserNotification;
 import com.ismael.openstreamify.model.Users.User;

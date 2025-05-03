@@ -12,14 +12,14 @@
 </head>
 <body class="watch-card">
 <div class="header">
-    <a th:href="@{'/details/'+ ${media.rid}}" class="back-button"><i class="fas fa-arrow-left"></i></a>
-    <a class="media-title" th:href="@{'/details/'+ ${media.rid}}"><span
+    <a th:href="@{'/details/'+ ${media.id}}" class="back-button"><i class="fas fa-arrow-left"></i></a>
+    <a class="media-title" th:href="@{'/details/'+ ${media.id}}"><span
             class="span-media-title">[[${media.title}]]</span></a>
 </div>
 <div class="video-container">
     <video id="player" class="plyr" th:attr="poster=${media.backgroundImgUrl}" controls autoplay playsinline>
-        <source th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" type="application/x-mpegURL"/>
-        <track kind="subtitles" th:src="${config + '/api/v1/media/hls/' + media.rid + '.m3u8'}" srclang="pt"
+        <source th:src="${config + '/api/v1/media/hls/' + media.id + '.m3u8'}" type="application/x-mpegURL"/>
+        <track kind="subtitles" th:src="${config + '/api/v1/media/hls/' + media.id + '.m3u8'}" srclang="pt"
                label="Português" default/>
     </video>
 </div>

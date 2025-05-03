@@ -1,8 +1,7 @@
 package com.ismael.openstreamify.controller;
 
-import com.ismael.openstreamify.DTO.MovieDTO;
+import com.ismael.openstreamify.dto.MovieDTO;
 import com.ismael.openstreamify.enums.VideoType;
-import com.ismael.openstreamify.model.Genre;
 import com.ismael.openstreamify.model.Video;
 import com.ismael.openstreamify.services.VideosService;
 import jakarta.validation.Valid;
@@ -11,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/movies")
@@ -29,7 +26,7 @@ public class VideoController {
 
     @GetMapping
     public ResponseEntity<List> getAllMovies() {
-        List<MovieDTO> movies = videosService.listAllMovies();
+        List<Video> movies = videosService.listAllMovies();
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 

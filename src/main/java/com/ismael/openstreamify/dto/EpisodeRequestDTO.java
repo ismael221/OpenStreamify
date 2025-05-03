@@ -1,6 +1,5 @@
-package com.ismael.openstreamify.DTO;
+package com.ismael.openstreamify.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

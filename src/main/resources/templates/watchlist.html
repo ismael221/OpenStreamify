@@ -35,7 +35,7 @@
     <div class="row movies-grid">
         <!-- Cartão do Video -->
         <div class="col-md-2 mb-4" th:each="m : ${moviesList}">
-            <a th:href="@{'/details/'+ ${m.rid}}" class="movie-link">
+            <a th:href="@{'/details/'+ ${m.ID}}" class="movie-link">
                 <div class="card movie-list-card">
                     <img
                             th:src="${m.coverImgUrl}"

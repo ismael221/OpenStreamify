@@ -1,8 +1,8 @@
 package com.ismael.openstreamify.services;
 
-import com.ismael.openstreamify.DTO.EpisodeRequestDTO;
-import com.ismael.openstreamify.DTO.EpisodeResponseDTO;
-import com.ismael.openstreamify.DTO.SerieResponseDTO;
+import com.ismael.openstreamify.dto.EpisodeRequestDTO;
+import com.ismael.openstreamify.dto.EpisodeResponseDTO;
+import com.ismael.openstreamify.dto.SerieResponseDTO;
 import com.ismael.openstreamify.model.Episode;
 import com.ismael.openstreamify.model.Video;
 import com.ismael.openstreamify.repository.EpisodeRepository;

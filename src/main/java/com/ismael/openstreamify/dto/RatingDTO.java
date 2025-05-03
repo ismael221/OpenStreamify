@@ -1,4 +1,4 @@
-package com.ismael.openstreamify.DTO;
+package com.ismael.openstreamify.dto;
 
 import com.ismael.openstreamify.model.Rating;
 import jakarta.validation.constraints.NotNull;

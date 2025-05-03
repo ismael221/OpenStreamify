@@ -160,7 +160,7 @@
                         th:each="m : ${movieChunk}"
                         style="padding: 20px; margin: 10px"
                 >
-                    <a th:href="@{'/details/'+ ${m.rid}}">
+                    <a th:href="@{'/details/'+ ${m.id}}">
                         <img
                                 th:src="${m.coverImgUrl}"
                                 class="d-block w-100"
